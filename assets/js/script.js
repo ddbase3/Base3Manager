@@ -135,12 +135,12 @@ var loadModule = function() {
 			});
 	});
 
-	$("#modulehead").load("ajax/header.php?alias=" + alias, function() {
+	$("#modulehead").load("header.php?alias=" + alias, function() {
 		headerLoaded = true;
 		fillHeader();
 	});
 
-	$("#moduletabs").load("ajax/tabs.php?alias=" + alias, function() {
+	$("#moduletabs").load("tabs.php?alias=" + alias, function() {
 		initTabs(alias);
 		var tabButton = $('#moduletabs a:first');
 		if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
@@ -173,7 +173,7 @@ var loadScope = function() {
 
 	currentScope = scope;
 
-	$("#modulenavi").load("ajax/modulenavi.php?scope=" + scope, function() {
+	$("#modulenavi").load("modulenavi.php?scope=" + scope, function() {
 		initModules();
 		if (!reloadContent) return;
 		$("#modulenavi ul").draggable({ axis: "x" });
@@ -207,7 +207,7 @@ var loadTab = function(alias, tabalias) {
 	$('a[rev="' + tabalias + '"]').parent().addClass("active");
 	// onCurrentEntryChangedContent = function() {};
 	$(document).off("currentEntryChanged");
-	$("#wrap").load("ajax/content.php?alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
+	$("#wrap").load("content.php?alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
 		$(document).on("currentEntryChanged", onCurrentEntryChangedContent);
 		contentLoaded = true;
 		fillContent();

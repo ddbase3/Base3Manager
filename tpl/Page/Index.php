@@ -56,10 +56,10 @@
 
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
 		<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
-		<script type="text/javascript" src="assets/coolmap/jquery.coolmap.js"></script>
+		<script type="text/javascript" src="plugin/Base3Manager/assets/coolmap/jquery.coolmap.js"></script>
 
-		<script src="plugin/Base3Manager/assets/assets/base3mindmap/base3mindmap.js"></script>
-		<link rel="stylesheet" href="plugin/Base3Manager/assets/assets/base3mindmap/base3mindmap.css" />
+		<script src="plugin/Base3Manager/assets/base3mindmap/base3mindmap.js"></script>
+		<link rel="stylesheet" href="plugin/Base3Manager/assets/base3mindmap/base3mindmap.css" />
 
 		<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 		<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
@@ -72,7 +72,35 @@
 		<div id="head">
 
 			<div id="systemnavi">
-<?php include("inc/systemnavi.php"); ?>
+
+				<ul>
+					<li>
+						<a href="https://account.base3.de/" target="_blank">Benutzerverwaltung</a>
+					</li>
+				</ul>
+
+<?php /*
+				<ul>
+					<li>
+						<a href="#">Benutzer</a>
+						<ul>
+							<li><a href="#">Daten</a></li>
+							<li><a href="#">Passwort</a></li>
+							<li><a href="#">Logout</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Verwaltung</a>
+					</li>
+					<li>
+						<a href="#">Hilfe</a>
+						<ul>
+							<li><a href="#">Inhalt</a></li>
+							<li><a href="#">Über</a></li>
+						</ul>
+					</li>
+				</ul>
+*/ ?>
 			</div>
 
 			<div id="modulenavi"></div>

@@ -24,7 +24,7 @@ class CommentsDialog implements IOutput {
 		$view = $this->servicelocator->get('view');
 		$view->setPath(DIR_PLUGIN . 'Base3Manager');
 		$view->setTemplate('Dialog/CommentsDialog.php');
-		$view->assign("id", $_REQUEST["id"]);
+		$view->assign("id", intval($_REQUEST["id"]));
 		return $view->loadTemplate();
 	}
 
