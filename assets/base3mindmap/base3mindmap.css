@@ -1,0 +1,8 @@
+.base3mindmap { display:inline-block; width:auto; height:auto; font-family: Arial, sans-serif; font-size:12px; }
+.base3mindmap div { position:relative; z-index:2; width:auto; height:100%; vertical-align:middle; }
+.base3mindmap .cell { display:table-cell; padding:5px 10px; }
+.base3mindmap .left .node { display:inline-block; float:right; clear:both; }
+.base3mindmap .right .node { display:inline-block; float:left; clear:both; }
+.base3mindmap span { display:inline-block; }
+.base3mindmap .root span { background:#eee; border:1px solid #000; border-radius:6px; font-size:13px; font-weight:bold; padding:3px; }
+.base3mindmap canvas { position:absolute; z-index:1; left:0; top:0; }
