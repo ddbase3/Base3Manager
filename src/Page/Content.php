@@ -16,6 +16,7 @@ class Content implements IOutput {
 
 	public function getOutput($out = "html") {
 
+		define("B3ROOT", '');
 		define("B3INCLUDE", true);
 		include("inc/config.php");
 		include("inc/init.php");

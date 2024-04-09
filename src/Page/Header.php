@@ -6,10 +6,13 @@ use Api\IOutput;
 
 class Header implements IOutput {
 
-	private $servicelocator;
+	private $classmap;
+	private $base3manager;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->classmap = $servicelocator->get('classmap');
+		$this->base3manager = $servicelocator->get('base3manager');
 	}
 
 	// Implementation of IBase
@@ -25,21 +28,11 @@ class Header implements IOutput {
 		if (!isset($_REQUEST["alias"])) die();
 		$alias = str_replace("/", "", $_REQUEST["alias"]);
 
-		$header_include_file = 'modules/' . $alias . '/header.php';
-		if (file_exists($header_include_file)) {
+		$module = $this->base3manager->getModule($alias);
+		if (!$module || !$module["header"]) return '';
 
-			ob_start();
-			include($header_include_file);
-			$out = ob_get_contents();
-			ob_end_clean();
-			return $out;
-
-		}
-
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'Base3Manager');
-		$view->setTemplate('Page/Header.php');
-		return $view->loadTemplate();
+		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module["header"]);
+		return $instance->getOutput();
 	}
 
 	public function getHelp() {

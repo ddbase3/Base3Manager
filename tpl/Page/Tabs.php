@@ -1,8 +1,12 @@
 <ul>
 <?php
-	foreach ($this->_['tabs'] as $tabalias => $tab) {
+	foreach ($this->_['tabs'] as $tab) {
 ?>
-	<li><a href="#" rel="<?php echo $this->_['alias']; ?>" rev="<?php echo $tabalias; ?>"><?php echo utf8_encode($tab->getName()); ?></a></li>
+	<li>
+		<a href="#" rel="<?php echo $this->_['alias']; ?>" rev="<?php echo $tab['tab']; ?>">
+			<?php echo $tab['name']; ?>
+		</a>
+	</li>
 <?php
 	}
 ?>

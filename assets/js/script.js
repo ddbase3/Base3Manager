@@ -106,7 +106,7 @@ var loadModule = function() {
 
 	loadEntry(alias, method, entryId);
 
-	$("#modulesub").load("ajax/subnavi.php?alias=" + alias, function() {
+	$("#modulesub").load("subnavi.php?alias=" + alias, function() {
 		set_view_mode();
 		$("#modulesubnavi a")
 			.click(function() {
