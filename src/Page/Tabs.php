@@ -30,7 +30,7 @@ class Tabs implements IOutput {
 		$alias = str_replace("/", "", $_REQUEST["alias"]);
 
 		$module = $this->base3manager->getModule($alias);
-		if (!$module || !$module["tabs"]) return '';
+		if (!$module || !isset($module["tabs"])) return '';
 
 		$view = $this->servicelocator->get('view');
 		$view->setPath(DIR_PLUGIN . 'Base3Manager');

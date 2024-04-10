@@ -13,17 +13,11 @@ abstract class AbstractHeaderControl implements IOutput {
                 $this->view = $servicelocator->get('view');
         }
 
-        // Implementation of IBase
-
-        public function getName() {
-                return strtolower($this->getTemplate());
-        }
-
         // Implementation of IOutput
 
         public function getOutput($out = "html") {
-                $this->view->setPath(DIR_PLUGIN . 'Base3Manager');
-                $this->view->setTemplate('HeaderControl/' . $this->getTemplate() . '.php');
+                $this->view->setPath($this->getPath());
+                $this->view->setTemplate($this->getTemplate());
                 return $this->view->loadTemplate();
         }
 
@@ -33,6 +27,7 @@ abstract class AbstractHeaderControl implements IOutput {
 
 	// Abstract methods
 
+	abstract protected function getPath(); 
 	abstract protected function getTemplate(); 
 }
 

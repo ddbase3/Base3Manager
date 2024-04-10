@@ -99,7 +99,7 @@
 					singleSelect: true,
 					datacol: {
 						'entryid': function(val) {
-							return '<a class="' + currentModule + 'edit' + opt.subEntryName + '" href="#" rel="' + val + '"><img src="img/edit.gif" border="0" /></a>';
+							return '<a class="' + currentModule + 'edit' + opt.subEntryName + '" href="#" rel="' + val + '"><img src="plugin/Base3Manager/assets/img/edit.gif" border="0" /></a>';
 						}
 					},
 					onSuccess: function(grid) {

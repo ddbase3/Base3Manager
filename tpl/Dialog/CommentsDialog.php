@@ -1,4 +1,4 @@
-<div id="comments"><img border="0" src="img/loading.gif" /></div>
+<div id="comments"><img border="0" src="plugin/Base3Manager/assets/img/loading.gif" /></div>
 
 <form id="newcomment">
 	<p>Neuer Kommentar</p>
@@ -21,7 +21,7 @@
 	}
 	$.get(url, function(result) { printComments(result); });
 	$("#newcomment").submit(function() {
-		$("#comments").append('<img border="0" src="img/loading.gif" />');
+		$("#comments").append('<img border="0" src="plugin/Base3Manager/assets/img/loading.gif" />');
 		$.post("ajax/connector.php?module=system&method=comments", {
 			id: <?php echo $this->_['id']; ?>,
 			comment: $("#newcomment textarea").val()

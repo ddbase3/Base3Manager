@@ -33,9 +33,9 @@
 
 		$.get('ajax/connector.php?module=system&method=info&id='+currentEntryId, function(res) {
 			var entryinfo = "";
-			if (typeof res.comments !== "undefined") entryinfo += '<img title="Kommentare" border="0" src="img/head/comments.png" /> '+res.comments+'<br />';
-			if (typeof res.created !== "undefined") entryinfo += '<img title="erstellt" border="0" src="img/head/add.png" /> '+convertDateSql2Human(res.created)+' - '+res.createdby+'<br />';
-			if (typeof res.lastchanged !== "undefined") entryinfo += '<img title="ge&auml;ndert" border="0" src="img/head/page_white_edit.png" /> '+convertDateSql2Human(res.lastchanged)+' - '+res.lastchangedby+'<br />';
+			if (typeof res.comments !== "undefined") entryinfo += '<img title="Kommentare" border="0" src="plugin/Base3Manager/assets/img/head/comments.png" /> '+res.comments+'<br />';
+			if (typeof res.created !== "undefined") entryinfo += '<img title="erstellt" border="0" src="plugin/Base3Manager/assets/img/head/add.png" /> '+convertDateSql2Human(res.created)+' - '+res.createdby+'<br />';
+			if (typeof res.lastchanged !== "undefined") entryinfo += '<img title="ge&auml;ndert" border="0" src="plugin/Base3Manager/assets/img/head/page_white_edit.png" /> '+convertDateSql2Human(res.lastchanged)+' - '+res.lastchangedby+'<br />';
 			$("#entryinfo").html(entryinfo);
 		});
 	}

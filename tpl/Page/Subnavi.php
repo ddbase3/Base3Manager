@@ -10,107 +10,107 @@
 
 <div class="control">
 
-<?php if (CONTROL_NEW_ENTRY) { ?>
+<?php if ($this->_['manager']['controlnewentry']) { ?>
 	<button class="view_mode entry_select entry_empty" id="new_entry" title="Neuer Eintrag">
-		<img border="0" src="img/icons/add.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/add.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_COPY_ENTRY) { ?>
+<?php if ($this->_['manager']['controlcopyentry']) { ?>
 	<button class="view_mode entry_select entry_filled" id="copy_entry" title="Eintrag kopieren">
-		<img border="0" src="img/icons/application_double.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/application_double.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_RELOAD_ENTRY) { ?>
+<?php if ($this->_['manager']['controlreloadentry']) { ?>
 	<button class="view_mode" id="reload_entry" title="Eintrag neu laden">
-		<img border="0" src="img/icons/arrow_refresh.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/arrow_refresh.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_EDIT_ENTRY) { ?>
+<?php if ($this->_['manager']['controleditentry']) { ?>
 	<button class="view_mode edit_access entry_select entry_filled" id="edit_entry" title="Eintrag bearbeiten">
-		<img border="0" src="img/icons/page_white_edit.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/page_white_edit.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_SAVE_ENTRY) { ?>
+<?php if ($this->_['manager']['controlsaveentry']) { ?>
 	<button class="edit_mode edit_access entry_select entry_filled" id="save_entry" title="Daten speichern">
-		<img border="0" src="img/icons/accept.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/accept.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_RESTORE_ENTRY) { ?>
+<?php if ($this->_['manager']['controlrestoreentry']) { ?>
 	<button class="edit_mode edit_access entry_select entry_filled" id="restore_entry" title="&Auml;nderungen r&uuml;ckg&auml;ngig machen">
-		<img border="0" src="img/icons/arrow_redo.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/arrow_redo.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_DELETE_ENTRY) { ?>
+<?php if ($this->_['manager']['controldeleteentry']) { ?>
 	<button class="view_mode edit_access entry_select entry_filled" id="delete_entry" title="Eintrag l&ouml;schen">
-		<img border="0" src="img/icons/delete.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/delete.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_ARCHIVE_ENTRY) { ?>
+<?php if ($this->_['manager']['controlarchiveentry']) { ?>
 	<button class="view_mode edit_access entry_select entry_filled" id="archive_entry" title="Archivieren">
-		<img border="0" src="img/icons/package.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/package.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_ACCESS_ENTRY) { ?>
+<?php if ($this->_['manager']['controlaccessentry']) { ?>
 	<button class="view_mode edit_access entry_select entry_filled" id="access_entry" title="Zugriffssteuerung">
-		<img border="0" src="img/icons/lock.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/lock.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_RATE_ENTRY) { ?>
+<?php if ($this->_['manager']['controlrateentry']) { ?>
 	<button class="view_mode entry_select entry_filled" id="rate_entry" title="Eintrag bewerten">
-		<img border="0" src="img/icons/star.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/star.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_COMMENT_ENTRY) { ?>
+<?php if ($this->_['manager']['controlcommententry']) { ?>
 	<button class="view_mode entry_select entry_filled" id="comment_entry" title="Kommentare anzeigen">
-		<img border="0" src="img/icons/comments.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/comments.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_LOG_ENTRY) { ?>
+<?php if ($this->_['manager']['controllogentry']) { ?>
 	<button class="view_mode entry_select entry_filled" id="log_entry" title="Log anzeigen">
-		<img border="0" src="img/icons/book.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/book.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_CLOUD_ENTRY) { ?>
+<?php if ($this->_['manager']['controlcloudentry']) { ?>
 	<button class="view_mode entry_select entry_filled" id="cloud_entry" title="Eintrag mit anderem Tool &ouml;ffnen">
-		<img border="0" src="img/icons/weather_clouds.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/weather_clouds.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_SHARE_ENTRY) { ?>
+<?php if ($this->_['manager']['controlshareentry']) { ?>
 	<button class="view_mode entry_select entry_filled" id="share_entry" title="Eintrag teilen">
-		<img border="0" src="img/icons/share.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/share.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_FIND_ENTRY) { ?>
+<?php if ($this->_['manager']['controlfindentry']) { ?>
 	<button class="view_mode entry_select" id="find_entry" title="Eintrag suchen">
-		<img border="0" src="img/icons/find.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/find.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_SUGGEST_ENTRY) { ?>
+<?php if ($this->_['manager']['controlsuggestentry']) { ?>
 	<input type="text" class="view_mode entry_select" id="suggest_entry" value="" title="Suchfeld" />
 <?php } ?>
-<?php if (CONTROL_GOTO_LAST_ENTRY) { ?>
+<?php if ($this->_['manager']['controlgotolastentry']) { ?>
 	<button class="view_mode entry_select" id="goto_last_entry" title="Zum letzten Eintrag">
-		<img border="0" src="img/icons/resultset_first.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/resultset_first.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_GOTO_NEXT_ENTRY) { ?>
+<?php if ($this->_['manager']['controlgotonextentry']) { ?>
 	<button class="view_mode entry_select" id="goto_next_entry" title="Zum n&auml;chsten Eintrag">
-		<img border="0" src="img/icons/resultset_previous.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/resultset_previous.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_GOTO_PREV_ENTRY) { ?>
+<?php if ($this->_['manager']['controlgotopreventry']) { ?>
 	<button class="view_mode entry_select" id="goto_prev_entry" title="Zum vorherigen Eintrag">
-		<img border="0" src="img/icons/resultset_next.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/resultset_next.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_GOTO_FIRST_ENTRY) { ?>
+<?php if ($this->_['manager']['controlgotofirstentry']) { ?>
 	<button class="view_mode entry_select" id="goto_first_entry" title="Zum ersten Eintrag">
-		<img border="0" src="img/icons/resultset_last.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/resultset_last.png" />
 	</button>
 <?php } ?>
-<?php if (CONTROL_FILTER_ENTRY) { ?>
+<?php if ($this->_['manager']['controlfilterentry']) { ?>
 	<button class="view_mode" id="filter_entry" title="Filter für Auflistungen und Suche">
-		<img border="0" src="img/icons/filter.png" />
+		<img border="0" src="plugin/Base3Manager/assets/img/icons/filter.png" />
 	</button>
 <?php } ?>
 </div>
@@ -315,7 +315,7 @@
 		});
 	});
 
-	<?php $createDialogSize = $this->_['module']['create']; ?>
+	<?php $createDialogSize = isset($this->_['module']['create']) ? $this->_['module']['create'] : null; ?>
 	$("#new_entry").click(function() {
 		var modaldialog = $('<div class="modaldialog" />').appendTo("body").dialog({
 			width: <?php echo $createDialogSize == null ? 800 : $createDialogSize["width"]; ?>,
@@ -323,7 +323,8 @@
 			title: "Neuer Eintrag",
 			modal: true,
 			open: function () {
-				$(this).load("modules/"+currentModule+"/create/create.php", function() {
+				// $(this).load("modules/"+currentModule+"/create/create.php", function() {
+				$(this).load("createdialog.php?module="+currentModule, function() {
 					modaldialog.find("form").submit(function() { return false; });
 				});
 			},

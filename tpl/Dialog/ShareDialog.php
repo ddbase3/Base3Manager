@@ -1,9 +1,9 @@
 <div class="sharedialog">
 	<div class="step1">
 		<ul>
-			<li><a href="#" rel="clipboard"><img src="img/icons64/clipboard.png" /><span>Zwischenablage</span></a></li>
-			<li><a href="#" rel="contact"><img src="img/icons64/contact.png" /><span>Kontakt</span></a></li>
-			<li><a href="#" rel="user"><img src="img/icons64/user.png" /><span>Benutzer</span></a></li>
+			<li><a href="#" rel="clipboard"><img src="plugin/Base3Manager/assets/img/icons64/clipboard.png" /><span>Zwischenablage</span></a></li>
+			<li><a href="#" rel="contact"><img src="plugin/Base3Manager/assets/img/icons64/contact.png" /><span>Kontakt</span></a></li>
+			<li><a href="#" rel="user"><img src="plugin/Base3Manager/assets/img/icons64/user.png" /><span>Benutzer</span></a></li>
 		</ul>
 	</div>
 

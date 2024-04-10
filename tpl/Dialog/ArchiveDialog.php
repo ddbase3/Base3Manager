@@ -4,7 +4,7 @@
 
 <form id="setarchiveform">
 	<div id="setarchive">
-		<img border="0" src="img/loading.gif" />
+		<img border="0" src="plugin/Base3Manager/assets/img/loading.gif" />
 	</div>
 </form>
 

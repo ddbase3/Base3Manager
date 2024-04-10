@@ -36,8 +36,8 @@
 	var cssRole = { "font-weight": "bold" };
 	var cssRoleList = { "margin": "0", "padding": "0 10px 0 0", "list-style": "none" };
 	var cssRoleListItem = { "margin": "0", "padding": "0 0 0 20px", "min-height": "16px", "border": "1px solid #ffffff", "cursor": "pointer" };
-	var cssRoleRead = { "background": "url(img/icons/eye.png) no-repeat left center" };
-	var cssRoleWrite = { "background": "url(img/icons/page_white_edit.png) no-repeat left center" };
+	var cssRoleRead = { "background": "url(plugin/Base3Manager/assets/img/icons/eye.png) no-repeat left center" };
+	var cssRoleWrite = { "background": "url(plugin/Base3Manager/assets/img/icons/page_white_edit.png) no-repeat left center" };
 	var cssActiveItem = { "background-color": "#eeeeee", "border": "1px solid #cccccc" };
 	var cssInactiveItem = { "background-color": "transparent", "border": "1px solid #ffffff" };
 

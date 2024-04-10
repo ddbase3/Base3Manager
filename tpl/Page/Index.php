@@ -47,7 +47,7 @@
 		<script type="text/javascript" src="plugin/Base3Manager/assets/searchfilter/jquery.searchfilter.js"></script>
 
 		<link type="text/css" rel="stylesheet" href="plugin/Base3Manager/assets/layout/base.css" />
-		<link type="text/css" rel="stylesheet" href="plugin/Base3Manager/assets/layout/<?php echo LAYOUT; ?>/style.css" />
+		<link type="text/css" rel="stylesheet" href="plugin/Base3Manager/assets/layout/<?php echo $this->_['layout']; ?>/style.css" />
 		<script type="text/javascript" src="plugin/Base3Manager/assets/js/script.js"></script>
 
 		<script type="text/javascript" src="plugin/Base3Manager/assets/flexigridbase3manager/script.js"></script>
