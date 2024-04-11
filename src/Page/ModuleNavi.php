@@ -8,10 +8,14 @@ class ModuleNavi implements IOutput {
 
 	private $servicelocator;
 	private $configuration;
+	private $accesscontrol;
+	private $base3manager;
 
 	public function __construct() {
 		$this->servicelocator = \Base3\ServiceLocator::getInstance();
 		$this->configuration = $this->servicelocator->get('configuration');
+		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
+		$this->base3manager = $this->servicelocator->get('base3manager');
 	}
 
 	// Implementation of IBase
@@ -35,29 +39,29 @@ class ModuleNavi implements IOutput {
 		$view->setPath(DIR_PLUGIN . 'Base3Manager');
 		$view->setTemplate('Page/ModuleNavi.php');
 
-		// Array mit Instanzen aller Bereiche (typenavi-Menüpunkte) 
-		$modules = array();
-
-		$handle = opendir("modules/");
-
-		while ($file = readdir($handle)) {
-			if (in_array($file, array(".", ".."))) continue;
-			$filename = "modules/".$file."/module.php";
-			if (!file_exists($filename)) continue;
-			include($filename);
-
-			$class = strtoupper(substr($file, 0, 1)).substr($file, 1).'Module';
-			$module = new $class();
-			if (!$module->isEnabled()) continue;
-			$modules[$file] = $module;
-		}
-
-		closedir($handle);
-
+		$modules = $this->base3manager->getModules();
 		uasort($modules, function($a, $b) {
-			if ($a->getOrder() == $b->getOrder()) return 0;
-			return ($a->getOrder() < $b->getOrder()) ? -1 : 1;
+			if ($a['order'] == $b['order']) return 0;
+			return ($a['order'] < $b['order']) ? -1 : 1;
 		});
+
+                $authenticated = !!$this->accesscontrol->getUserId();
+                foreach ($modules as $key => $module) {
+                        $enabled = 0;
+                        if (isset($module['enabled'])) {
+                                if (is_array($module['enabled'])) {
+                                        if (isset($module['enabled']['authenticated']) && $module['enabled']['authenticated']) {
+						$enabled = 1;
+						if (isset($module['enabled']['scope']) && !in_array(SCOPE, $module['enabled']['scope'])) $enabled = 0;
+						if (isset($module['enabled']['noscope']) && in_array(SCOPE, $module['enabled']['noscope'])) $enabled = 0;
+					}
+                                } else {
+                                        $enabled = $module['enabled'];
+                                }
+                        }
+                        if (!$enabled) unset($modules[$key]);
+                }
+
 		$view->assign("modules", $modules);
 
 		return $view->loadTemplate();
