@@ -54,15 +54,23 @@
 
 		<script type="text/javascript" src="control/data/countrycodes.php?out=js"></script>
 
+<?php /*
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
 		<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+*/ ?>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.js"></script>
 		<script type="text/javascript" src="plugin/Base3Manager/assets/coolmap/jquery.coolmap.js"></script>
 
 		<script src="plugin/Base3Manager/assets/base3mindmap/base3mindmap.js"></script>
 		<link rel="stylesheet" href="plugin/Base3Manager/assets/base3mindmap/base3mindmap.css" />
 
+<?php /*
 		<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 		<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+*/ ?>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
 
 		<meta name="generator" content="BASE3 XRM" />
 
