@@ -109,7 +109,7 @@
 	</button>
 <?php } ?>
 <?php if ($this->_['manager']['controlfilterentry']) { ?>
-	<button class="view_mode" id="filter_entry" title="Filter für Auflistungen und Suche">
+	<button class="view_mode entry_select" id="filter_entry" title="Filter für Auflistungen und Suche">
 		<img border="0" src="plugin/Base3Manager/assets/img/icons/filter.png" />
 	</button>
 <?php } ?>

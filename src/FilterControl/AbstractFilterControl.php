@@ -19,6 +19,10 @@ abstract class AbstractFilterControl implements IOutput {
 
                 $this->view->setPath($this->getPath());
                 $this->view->setTemplate($this->getTemplate());
+
+		$alias = str_replace(array('/', '.', '?'), '', $_REQUEST["module"]);
+                $this->view->assign('alias', $alias);
+
                 return $this->view->loadTemplate();
         }
 
