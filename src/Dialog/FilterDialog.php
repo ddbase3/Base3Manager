@@ -4,7 +4,7 @@ namespace Base3Manager\Dialog;
 
 use Api\IOutput;
 
-class CreateDialog implements IOutput {
+class FilterDialog implements IOutput {
 
 	private $servicelocator;
 	private $classmap;
@@ -19,7 +19,7 @@ class CreateDialog implements IOutput {
 	// Implementation of IBase
 
 	public function getName() {
-		return "createdialog";
+		return "filterdialog";
 	}
 
 	// Implementation of IOutput
@@ -28,21 +28,23 @@ class CreateDialog implements IOutput {
 
 		$alias = str_replace(array('/', '.', '?'), '', $_REQUEST["module"]);
 		$module = $this->base3manager->getModule($alias);
-		if (!$module || !isset($module['create']) || !isset($module['create']['control'])) die();
+		if (!$module || !isset($module['filter'])) die();
 
 		$view = $this->servicelocator->get('view');
 		$view->setPath(DIR_PLUGIN . 'Base3Manager');
-		$view->setTemplate('Dialog/CreateDialog.php');
+		$view->setTemplate('Dialog/FilterDialog.php');
 
-		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module['create']['control']);
+		$view->assign('alias', $alias);
+
+		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module['filter']);
 		if ($instance == null) die();
-		$view->assign('createcontrol', $instance->getOutput());
+		$view->assign('filtercontrol', $instance->getOutput());
 
 		return $view->loadTemplate();
 	}
 
 	public function getHelp() {
-		return 'Help of CreateDialog' . "\n";
+		return 'Help of FilterDialog' . "\n";
 	}
 
 }

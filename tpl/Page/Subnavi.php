@@ -81,7 +81,7 @@
 	</button>
 <?php } ?>
 <?php if ($this->_['manager']['controlfindentry']) { ?>
-	<button class="view_mode entry_select" id="find_entry" title="Eintrag suchen">
+	<button class="view_mode entry_select" id="find_entry" title="Eintrag suchen" data-control="<?php echo $this->_['module']['list']; ?>">
 		<img border="0" src="plugin/Base3Manager/assets/img/icons/find.png" />
 	</button>
 <?php } ?>
@@ -183,13 +183,13 @@
 		});
 	});
 
-	$("#filter_entry").click(function() {
+	$("#filter_entry").on('click', function() {
 		var modaldialog = $('<div class="modaldialog" />').appendTo("body").dialog({
 			width: 500,
 			height: 300,
 			title: "Filter",
 			modal: true,
-			open: function () { $(this).html('<p>Keine Filter verf&uuml;gbar.</p>').load("modules/"+currentModule+"/search/filter.php"); },
+			open: function () { $(this).html('<p>Keine Filter verf&uuml;gbar.</p>').load("filterdialog.php?module="+currentModule); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -197,7 +197,7 @@
 		});
 	});
 
-	$("#log_entry").click(function() {
+	$("#log_entry").on('click', function() {
 		var modaldialog = $('<div class="modaldialog" />').appendTo("body").dialog({
 			width: 570,
 			height: 500,
@@ -254,12 +254,15 @@
 		});
 	});
 
-	$("#find_entry").click(function() {
+	$("#find_entry").on('click', function() {
+		let control = $(this).attr('data-control');
+		let url = control + '.php?alias=' + currentModule;
 		$('<div class="dialog" />').appendTo("body").dialog({
 			width: 800,
 			height: 500,
 			title: "Detailsuche",
-			open: function () { $(this).load("modules/"+currentModule+"/search/detail.php"); },
+			// open: function () { $(this).load("modules/"+currentModule+"/search/detail.php"); },
+			open: function () { $(this).load(url); },
 			close: function () { $(this).dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }

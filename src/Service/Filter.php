@@ -1,6 +1,6 @@
 <?php
 
-namespace Base3Manager\Dialog;
+namespace Base3Manager\Service;
 
 use Api\IOutput;
 
@@ -16,6 +16,9 @@ class Filter implements IOutput {
 
 	public function getOutput($out = "html") {
 
+		session_save_path("/tmp");
+		session_start();
+
 		$module = $_REQUEST["module"];
 		$unset = isset($_REQUEST["unset"]);
 
@@ -30,6 +33,7 @@ class Filter implements IOutput {
 			$_SESSION["filter"][$module][$key] = $value;
 		}
 
+		return json_encode($_SESSION["filter"][$module]);
 		return "done";
 	}
 

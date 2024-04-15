@@ -32,7 +32,9 @@ class Subnavi implements IOutput {
                 $alias = str_replace("/", "", $_REQUEST["alias"]);
 
                 $module = $this->base3manager->getModule($alias);
-                if (!$module || !isset($module["subnavi"])) return '';
+                if (!$module) return '';
+
+		if (!isset($module['list'])) $module['list'] = 'standardlistcontrol';
 
                 $view = $this->servicelocator->get('view');
                 $view->setPath(DIR_PLUGIN . 'Base3Manager');
@@ -43,7 +45,7 @@ class Subnavi implements IOutput {
 		$manager = $this->configuration->get('manager');
                 $view->assign("manager", $manager);
 
-		$subnavi = $module['subnavi'];
+		$subnavi = isset($module['subnavi']) ? $module['subnavi'] : array();
 		uasort($subnavi, function($a, $b) {
                         if ($a['order'] == $b['order']) return 0;
                         return ($a['order'] < $b['order']) ? -1 : 1;

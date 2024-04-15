@@ -6,9 +6,7 @@
 ?>
 <form name="create">
 
-<?php
-	include('modules/' . $this->_['module'] . '/create/create.php');
-?>
+<?php echo $this->_['createcontrol']; ?>
 
 	<br />
         <table border="0" width="100%">
