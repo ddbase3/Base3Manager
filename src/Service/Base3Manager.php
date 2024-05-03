@@ -13,7 +13,8 @@ class Base3Manager {
 		$this->servicelocator = \Base3\ServiceLocator::getInstance();
 		$this->classmap = $this->servicelocator->get('classmap');
 
-		$this->config = file_get_contents('inc/config.json');
+		$cnf = file_get_contents('inc/config.json');
+		$this->config = json_decode($cnf, true);
 	}
 
 	public function getModules() {
@@ -45,6 +46,10 @@ class Base3Manager {
 		}
 
 		return null;	
+	}
+
+	public function getConfig() {
+		return $this->config;
 	}
 
 }

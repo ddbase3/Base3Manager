@@ -30,10 +30,10 @@
 <?php
         } else {
 ?>
-                                <input type="radio" name="access" value="private" <?php if (!ACCESS_STD_ALL_USERS) echo 'checked="checked" '; ?>/>
+                                <input type="radio" name="access" value="private" <?php if (!$this->_['accessstdallusers']) echo 'checked="checked" '; ?>/>
                                 Datensatz privat nutzen
                                 <br />
-                                <input type="radio" name="access" value="all" <?php if (ACCESS_STD_ALL_USERS) echo 'checked="checked" '; ?>/>
+                                <input type="radio" name="access" value="all" <?php if ($this->_['accessstdallusers']) echo 'checked="checked" '; ?>/>
                                 Datensatz f&uuml;r alle Benutzer verf&uuml;gbar
 <?php
         }

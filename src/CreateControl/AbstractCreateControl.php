@@ -16,7 +16,6 @@ abstract class AbstractCreateControl implements IOutput {
         // Implementation of IOutput
 
         public function getOutput($out = "html") {
-
                 $this->view->setPath($this->getPath());
                 $this->view->setTemplate($this->getTemplate());
                 return $this->view->loadTemplate();
