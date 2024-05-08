@@ -6,8 +6,8 @@ use Api\IOutput;
 
 abstract class AbstractContentControl implements IOutput {
 
-        private $view;
-	private $base3manager;
+        protected $view;
+	protected $base3manager;
 
         public function __construct() {
                 $servicelocator = \Base3\ServiceLocator::getInstance();
@@ -26,9 +26,6 @@ abstract class AbstractContentControl implements IOutput {
 
 		$module = $this->base3manager->getModule($alias);
                 $this->view->assign('module', $module);
-
-		$config = $this->base3manager->getConfig();
-		$this->view->assign('config', $config);
 
                 return $this->view->loadTemplate();
         }

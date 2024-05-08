@@ -29,7 +29,9 @@ class Content implements IOutput {
 		define("B3ROOT", '');
 		define("B3INCLUDE", true);
 		include("inc/config.php");
-		include("inc/init.php");
+
+		session_save_path("/tmp");
+		session_start();
 
 		if (!isset($_REQUEST["alias"])) die();
 		$alias = str_replace("/", "", $_REQUEST["alias"]);

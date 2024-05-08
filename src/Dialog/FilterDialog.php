@@ -30,11 +30,14 @@ class FilterDialog implements IOutput {
 		$module = $this->base3manager->getModule($alias);
 		if (!$module || !isset($module['filter'])) die();
 
+		$status = isset($module['status']) ? $module['status'] : array();
+
 		$view = $this->servicelocator->get('view');
 		$view->setPath(DIR_PLUGIN . 'Base3Manager');
 		$view->setTemplate('Dialog/FilterDialog.php');
 
 		$view->assign('alias', $alias);
+		$view->assign('status', $status);
 
 		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module['filter']);
 		if ($instance == null) die();

@@ -7,7 +7,7 @@
 
 	$alias = $this->_['alias'];
 
-	$statuslist = isset($status[$alias]) ? $status[$alias] : array();
+	$statuslist = $this->_['status'];  // isset($status[$alias]) ? $status[$alias] : array();
 	$filter = isset($_SESSION["filter"]) && isset($_SESSION["filter"][$alias]) ? $_SESSION["filter"][$alias] : array();
 ?>
 

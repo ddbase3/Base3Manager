@@ -1,5 +1,5 @@
 <ul id="modulesubnavi">
-<?php foreach ($this->_['subnavi'] as $button) { /* modules/<?php echo $alias; ?>/subnavi/<?php echo $buttonalias; ?>/dialog.php */ ?>
+<?php foreach ($this->_['subnavi'] as $button) { /* modules / <?php echo $alias; ?> / subnavi / <?php echo $buttonalias; ?> / dialog.php */ ?>
 	<li>
 		<a href="content.php?alias=<?php echo $this->_['alias']; ?>&subnavialias=<?php echo $button['subnavi']; ?>" rev="<?php echo $button['dialog']['width']."x".$button['dialog']['height']; ?>" title="<?php echo htmlentities($button['name']); ?>">
 			<?php echo htmlentities($button['name']); ?>
@@ -261,7 +261,7 @@
 			width: 800,
 			height: 500,
 			title: "Detailsuche",
-			// open: function () { $(this).load("modules/"+currentModule+"/search/detail.php"); },
+			// open: function () { $(this).load("modules / "+currentModule+" / search / detail.php"); },
 			open: function () { $(this).load(url); },
 			close: function () { $(this).dialog("destroy").remove(); },
 			buttons: {
@@ -326,7 +326,7 @@
 			title: "Neuer Eintrag",
 			modal: true,
 			open: function () {
-				// $(this).load("modules/"+currentModule+"/create/create.php", function() {
+				// $(this).load("modules / "+currentModule+" / create / create.php", function() {
 				$(this).load("createdialog.php?module="+currentModule, function() {
 					modaldialog.find("form").submit(function() { return false; });
 				});

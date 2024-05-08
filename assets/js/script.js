@@ -158,8 +158,9 @@ var loadType = function() {
 	var method = numArgs >= 2 ? arguments[1] : "last";
 	var entryId = numArgs >= 3 ? arguments[2] : 0;
 
-	$.get("ajax/typedefinitions.php?type=" + type, function(res) {
+	$.get("typeservice.json?type=" + type, function(res) {
 		if (!res.scope || !res.module) return;
+		currentModule = res.module;
 		loadScope(res.scope, false);
 		loadModule(res.module, "id", entryId);
 	});

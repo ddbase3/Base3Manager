@@ -30,7 +30,9 @@ class ModuleNavi implements IOutput {
 
 		define("B3INCLUDE", true);
 		include("inc/config.php");
-		include("inc/init.php");
+
+		session_save_path("/tmp");
+		session_start();
 
 		$cnf = $this->configuration->get('manager');
 		define("SCOPE", isset($_REQUEST["scope"]) ? $_REQUEST["scope"] : $cnf['stdscope']);
