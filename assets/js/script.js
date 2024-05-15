@@ -106,7 +106,7 @@ var loadModule = function() {
 
 	loadEntry(alias, method, entryId);
 
-	$("#modulesub").load("subnavi.php?alias=" + alias, function() {
+	$("#modulesub").load("?name=subnavi&alias=" + alias, function() {
 		set_view_mode();
 		$("#modulesubnavi a")
 			.click(function() {
@@ -135,12 +135,12 @@ var loadModule = function() {
 			});
 	});
 
-	$("#modulehead").load("header.php?alias=" + alias, function() {
+	$("#modulehead").load("?name=header&alias=" + alias, function() {
 		headerLoaded = true;
 		fillHeader();
 	});
 
-	$("#moduletabs").load("tabs.php?alias=" + alias, function() {
+	$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
 		initTabs(alias);
 		var tabButton = $('#moduletabs a:first');
 		if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
@@ -158,7 +158,7 @@ var loadType = function() {
 	var method = numArgs >= 2 ? arguments[1] : "last";
 	var entryId = numArgs >= 3 ? arguments[2] : 0;
 
-	$.get("typeservice.json?type=" + type, function(res) {
+	$.get("?name=typeservice&out=json&type=" + type, function(res) {
 		if (!res.scope || !res.module) return;
 		currentModule = res.module;
 		loadScope(res.scope, false);
@@ -174,7 +174,7 @@ var loadScope = function() {
 
 	currentScope = scope;
 
-	$("#modulenavi").load("modulenavi.php?scope=" + scope, function() {
+	$("#modulenavi").load("?name=modulenavi&scope=" + scope, function() {
 		initModules();
 		if (!reloadContent) return;
 		$("#modulenavi ul").draggable({ axis: "x" });
@@ -208,7 +208,7 @@ var loadTab = function(alias, tabalias) {
 	$('a[rev="' + tabalias + '"]').parent().addClass("active");
 	// onCurrentEntryChangedContent = function() {};
 	$(document).off("currentEntryChanged");
-	$("#wrap").load("content.php?alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
+	$("#wrap").load("?name=content&alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
 		$(document).on("currentEntryChanged", onCurrentEntryChangedContent);
 		contentLoaded = true;
 		fillContent();

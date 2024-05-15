@@ -1,7 +1,7 @@
 <ul id="modulesubnavi">
 <?php foreach ($this->_['subnavi'] as $button) { /* modules / <?php echo $alias; ?> / subnavi / <?php echo $buttonalias; ?> / dialog.php */ ?>
 	<li>
-		<a href="content.php?alias=<?php echo $this->_['alias']; ?>&subnavialias=<?php echo $button['subnavi']; ?>" rev="<?php echo $button['dialog']['width']."x".$button['dialog']['height']; ?>" title="<?php echo htmlentities($button['name']); ?>">
+		<a href="?name=content&alias=<?php echo $this->_['alias']; ?>&subnavialias=<?php echo $button['subnavi']; ?>" rev="<?php echo $button['dialog']['width']."x".$button['dialog']['height']; ?>" title="<?php echo htmlentities($button['name']); ?>">
 			<?php echo htmlentities($button['name']); ?>
 		</a>
 	</li>
@@ -147,7 +147,7 @@
 			height: 200,
 			title: "Archiv",
 			modal: true,
-			open: function () { $(this).load("archivedialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=archivedialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -161,7 +161,7 @@
 			height: 410,
 			title: "BASE3 System",
 			modal: true,
-			open: function () { $(this).load("clouddialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=clouddialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -175,7 +175,7 @@
 			height: 300,
 			title: "Eintrag teilen",
 			modal: true,
-			open: function () { $(this).load("sharedialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=sharedialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -189,7 +189,7 @@
 			height: 300,
 			title: "Filter",
 			modal: true,
-			open: function () { $(this).html('<p>Keine Filter verf&uuml;gbar.</p>').load("filterdialog.php?module="+currentModule); },
+			open: function () { $(this).html('<p>Keine Filter verf&uuml;gbar.</p>').load("?name=filterdialog&module="+currentModule); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -203,7 +203,7 @@
 			height: 500,
 			title: "Log Eintrag #" + currentEntryId,
 			modal: true,
-			open: function () { $(this).load("logdialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=logdialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -218,7 +218,7 @@
 			title: "Kommentare",
 			modal: true,
 			// open: function () { $(this).load("ajax/comments.dialog.php?id=" + currentEntryId); },
-			open: function () { $(this).load("commentsdialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=commentsdialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -232,7 +232,7 @@
 			height: 500,
 			title: "Zugriff",
 			modal: true,
-			open: function () { $(this).load("accessdialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=accessdialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -246,7 +246,7 @@
 			height: 300,
 			title: "Bewertung",
 			modal: true,
-			open: function () { $(this).load("ratedialog.php?id=" + currentEntryId); },
+			open: function () { $(this).load("?name=ratedialog&id=" + currentEntryId); },
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Schließen": function() { $(this).dialog("close"); }
@@ -256,7 +256,7 @@
 
 	$("#find_entry").on('click', function() {
 		let control = $(this).attr('data-control');
-		let url = control + '.php?alias=' + currentModule;
+		let url = '?name=' + control + '&alias=' + currentModule;
 		$('<div class="dialog" />').appendTo("body").dialog({
 			width: 800,
 			height: 500,
@@ -297,7 +297,7 @@
 			title: "Eintrag kopieren",
 			modal: true,
 			open: function () {
-				$(this).load("copydialog.php?id=" + currentEntryId, function() {
+				$(this).load("?name=copydialog&id=" + currentEntryId, function() {
 					$(this).find('[name="newentryname"]').val(currentEntry["name"] + " (Kopie)");
 				});
 			},
@@ -327,7 +327,7 @@
 			modal: true,
 			open: function () {
 				// $(this).load("modules / "+currentModule+" / create / create.php", function() {
-				$(this).load("createdialog.php?module="+currentModule, function() {
+				$(this).load("?name=createdialog&module="+currentModule, function() {
 					modaldialog.find("form").submit(function() { return false; });
 				});
 			},
