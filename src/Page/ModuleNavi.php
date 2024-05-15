@@ -28,8 +28,8 @@ class ModuleNavi implements IOutput {
 
 	public function getOutput($out = "html") {
 
-		define("B3INCLUDE", true);
-		include("inc/config.php");
+		// define("B3INCLUDE", true);
+		// include("inc/config.php");
 
 		session_save_path("/tmp");
 		session_start();
