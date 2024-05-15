@@ -1,9 +1,4 @@
-<?php
-	define("B3INCLUDE", true);
-
-	include("inc/config.php");
-
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 	<head>
@@ -81,13 +76,13 @@
 
 			<div id="systemnavi">
 
+<?php /*
 				<ul>
 					<li>
 						<a href="https://account.base3.de/" target="_blank">Benutzerverwaltung</a>
 					</li>
 				</ul>
 
-<?php /*
 				<ul>
 					<li>
 						<a href="#">Benutzer</a>
