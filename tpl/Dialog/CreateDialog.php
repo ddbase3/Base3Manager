@@ -1,11 +1,3 @@
-<?php
-        define("B3INCLUDE", true);
-
-        include("inc/config.php");
-
-        session_save_path("/tmp");
-        session_start();
-?>
 <form name="create">
 
 <?php echo $this->_['createcontrol']; ?>

@@ -1,10 +1,4 @@
 <?php
-	session_save_path("/tmp");
-	session_start();
-
-	define("B3INCLUDE", 1);
-	include("inc/config.php");
-
 	$alias = $this->_['alias'];
 
 	$statuslist = $this->_['status'];  // isset($status[$alias]) ? $status[$alias] : array();
