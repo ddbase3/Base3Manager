@@ -127,7 +127,7 @@
 			var type = $(this).val();
 			var role = $("#accessconfigedit").find('input[name="role"]').val();
 			var roleid = $("#accessconfigedit").find('input[name="roleid"]').val();
-			$.post("ajax/connector.php?module=system&method=access", { action: "change", id: <?php echo $this->_['id']; ?>, role: role, roleid: roleid, type: type });
+			$.post("?name=connector&out=json&module=system&method=access", { action: "change", id: <?php echo $this->_['id']; ?>, role: role, roleid: roleid, type: type });
 
 			var oppositeType = type == "read" ? "write" : "read";
 			$("#accessroles").find('#'+role+'access'+roleid).removeClass(oppositeType).addClass(type).css(type == "read" ? cssRoleRead : cssRoleWrite);
@@ -136,7 +136,7 @@
 		editbox.find("button.remove").click(function() {
 			var role = $("#accessconfigedit").find('input[name="role"]').val();
 			var roleid = $("#accessconfigedit").find('input[name="roleid"]').val();
-			$.post("ajax/connector.php?module=system&method=access", { action: "remove", id: <?php echo $this->_['id']; ?>, role: role, roleid: roleid });
+			$.post("?name=connector&out=json&module=system&method=access", { action: "remove", id: <?php echo $this->_['id']; ?>, role: role, roleid: roleid });
 
 			if (role == "user" && roleid == 0) $("#accessconfignew_public").show();
 			if (role == "group" && roleid == 0) $("#accessconfignew_allusersread, #accessconfignew_alluserswrite").show();
@@ -162,7 +162,7 @@
 		});
 	}
 
-	$.get("ajax/connector.php?module=system&method=usersandgroups", function(result) {
+	$.get("?name=connector&out=json&module=system&method=usersandgroups", function(result) {
 
 		var select = $("#accessconfignew_select");
 		for (var i=0; i<result.length; i++)
@@ -186,7 +186,7 @@
 		var role = valparts[0];
 		var roleid = parseInt(valparts[1]);
 
-		$.post("ajax/connector.php?module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: role, roleid: roleid, type: type });
+		$.post("?name=connector&out=json&module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: role, roleid: roleid, type: type });
 
 		if (!box.find("ul."+role+"s").length) {
 			$('<p>' + ( role == "group" ? 'Gruppen' : 'Benutzer' ) + '</p>').css(cssRole).appendTo(box);
@@ -205,7 +205,7 @@
 		return false;
 	});
 	$("#accessconfignew_public").click(function() {
-		$.post("ajax/connector.php?module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: "user", roleid: 0, type: "read" });
+		$.post("?name=connector&out=json&module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: "user", roleid: 0, type: "read" });
 
 		if (!box.find("ul.general").length) {
 			$('<p>Allgemein</p>').css(cssRole).appendTo(box);
@@ -221,7 +221,7 @@
 		return false;
 	});
 	$("#accessconfignew_allusersread").click(function() {
-		$.post("ajax/connector.php?module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: "group", roleid: 0, type: "read" });
+		$.post("?name=connector&out=json&module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: "group", roleid: 0, type: "read" });
 
 		if (!box.find("ul.general").length) {
 			$('<p>Allgemein</p>').css(cssRole).appendTo(box);
@@ -237,7 +237,7 @@
 		return false;
 	});
 	$("#accessconfignew_alluserswrite").click(function() {
-		$.post("ajax/connector.php?module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: "group", roleid: 0, type: "write" });
+		$.post("?name=connector&out=json&module=system&method=access", { action: "add", id: <?php echo $this->_['id']; ?>, role: "group", roleid: 0, type: "write" });
 
 		if (!box.find("ul.general").length) {
 			$('<p>Allgemein</p>').css(cssRole).appendTo(box);
@@ -253,7 +253,7 @@
 		return false;
 	});
 
-	$.get("ajax/connector.php?module=system&method=access&id=<?php echo $this->_['id']; ?>", function(result) {
+	$.get("?name=connector&out=json&module=system&method=access&id=<?php echo $this->_['id']; ?>", function(result) {
 
 		if (result.owner && typeof result.owner !== undefined) {
 			$('<p>Eigent&uuml;mer</p>').css(cssRole).appendTo(box);

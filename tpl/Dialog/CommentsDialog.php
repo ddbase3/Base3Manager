@@ -7,7 +7,7 @@
 </form>
 
 <script>
-	var url = "ajax/connector.php?module=system&method=comments&id=<?php echo $this->_['id']; ?>";
+	var url = "?name=connector&out=json&module=system&method=comments&id=<?php echo $this->_['id']; ?>";
 	var printComments = function(result) {
 		$("#comments").html("");
 		for (key in result) {
@@ -22,7 +22,7 @@
 	$.get(url, function(result) { printComments(result); });
 	$("#newcomment").submit(function() {
 		$("#comments").append('<img border="0" src="plugin/Base3Manager/assets/img/loading.gif" />');
-		$.post("ajax/connector.php?module=system&method=comments", {
+		$.post("?name=connector&out=json&module=system&method=comments", {
 			id: <?php echo $this->_['id']; ?>,
 			comment: $("#newcomment textarea").val()
 		}, function(result) {

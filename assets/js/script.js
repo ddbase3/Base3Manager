@@ -48,7 +48,6 @@ var loadEntry = function() {
 	}
 
 	id = method == "prev" || method == "next" ? currentEntryId : entryId;
-	// var url = "ajax/connector.php?module=" + alias + "&method=" + method + "&id=" + id;
 	var url = "?name=connector&out=json&module=" + alias + "&method=" + method + "&id=" + id;
 
 	var oldEntryId = currentEntryId;
@@ -61,7 +60,6 @@ var loadEntry = function() {
 
 	loadingEntry = true;
 	$.getJSON(url, function(result) {
-console.log(result);
 		loadingEntry = false;
 		entryLoaded = true;
 		if (result == null || typeof result[0] === "undefined") {

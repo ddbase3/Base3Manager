@@ -30,7 +30,7 @@ class Connector implements IOutput {
 
 		$module = $this->base3manager->getModule($_REQUEST["module"]);
 
-		if (!isset($module['connector'])) die('No connector defined for module '.$_REQUEST["module"]);
+		if (!isset($module['connector'])) die('No connector defined for module ' . $_REQUEST["module"]);
 
 		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module['connector']);
 		if ($instance == null) die('Connector not found.');

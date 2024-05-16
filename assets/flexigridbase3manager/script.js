@@ -31,7 +31,7 @@
 
 				object.html('<table name="' + opt.subEntryName + 's" style="display:none;"></table>');
 				$('table[name="' + opt.subEntryName + 's"]').flexigrid({
-					url : 'ajax/connector.php?module=' + currentModule + '&method=' + opt.subEntryName + 'items&id=' + currentEntryId,
+					url : '?name=connector&out=json&module=' + currentModule + '&method=' + opt.subEntryName + 'items&id=' + currentEntryId,
 					dataType : 'json',
 					colModel : opt.colModel,
 					buttons : [
@@ -50,7 +50,7 @@
 								buttons: {
 									"Ok": function() {
 										var data = $(this).find("form").serialize();
-										$.post("ajax/connector.php?module=" + currentModule + "&method=" + opt.subEntryName + "items&id=" + currentEntryId, data, function(res) {
+										$.post("?name=connector&out=json&module=" + currentModule + "&method=" + opt.subEntryName + "items&id=" + currentEntryId, data, function(res) {
 											$('table[name="' + opt.subEntryName + 's"]').flexReload();
 										});
 										$(this).dialog("close");
@@ -77,7 +77,7 @@
 								entries += $(this).attr("id").substr(3) + ",";
 							});
 							entries = entries.substr(0, entries.length - 1);
-							$.post("ajax/connector.php?module=" + currentModule + "&method=" + opt.subEntryName + "items&id=" + currentEntryId + "&action=disconnect", { entries: entries }, function() {
+							$.post("?name=connector&out=json&module=" + currentModule + "&method=" + opt.subEntryName + "items&id=" + currentEntryId + "&action=disconnect", { entries: entries }, function() {
 								$('table[name="' + opt.subEntryName + 's"]').flexReload();
 							});
 						} },

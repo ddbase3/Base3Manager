@@ -22,12 +22,12 @@
 
 
 <script>
-	var url = "ajax/connector.php?module=system&method=rating&id=<?php echo $this->_['id']; ?>";
+	var url = "?name=connector&out=json&module=system&method=rating&id=<?php echo $this->_['id']; ?>";
 	var selectrating = $('select[name="rating"]');
 
 	selectrating.change(function() {
 		var rating = $(this).val();
-		$.post("ajax/connector.php?module=system&method=setrating", {
+		$.post("?name=connector&out=json&module=system&method=setrating", {
 			id: <?php echo $this->_['id']; ?>,
 			rating: rating ? 7 - rating : 0  // 0: rating aufheben, sonst 1-6
 		}, function() {

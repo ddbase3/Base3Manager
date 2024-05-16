@@ -10,7 +10,7 @@
 
 
 <script>
-	var url = "ajax/connector.php?module=system&method=archived&id=<?php echo $this->_['id']; ?>";
+	var url = "?name=connector&out=json&module=system&method=archived&id=<?php echo $this->_['id']; ?>";
 	$.get(url, function(result) {
 		var archived = parseInt(result.archived);
 		var frm = $("#setarchive");
@@ -22,7 +22,7 @@
 		$('#setarchive'+archived).attr("checked", "checked");
 		$("#setarchive").buttonset();
 		$('input[name="setarchive"]').change(function() {
-			$.post("ajax/connector.php?module=system&method=setarchive", {
+			$.post("?name=connector&out=json&module=system&method=setarchive", {
 				id: <?php echo $this->_['id']; ?>,
 				archive: $(this).val()
 			});

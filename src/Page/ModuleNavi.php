@@ -37,8 +37,10 @@ class ModuleNavi implements IOutput {
 
 		$modules = $this->base3manager->getModules();
 		uasort($modules, function($a, $b) {
-			if ($a['order'] == $b['order']) return 0;
-			return ($a['order'] < $b['order']) ? -1 : 1;
+			$ao = isset($a['order']) ? $a['order'] : 0;
+			$bo = isset($b['order']) ? $b['order'] : 0;
+			if ($ao == $bo) return 0;
+			return ($ao < $bo) ? -1 : 1;
 		});
 
                 $authenticated = !!$this->accesscontrol->getUserId();

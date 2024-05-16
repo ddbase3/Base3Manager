@@ -17,7 +17,7 @@
 </table>
 
 <script>
-	var url = "ajax/connector.php?module=system&method=log&id=<?php echo $this->_['id']; ?>";
+	var url = "?name=connector&out=json&module=system&method=log&id=<?php echo $this->_['id']; ?>";
 	$.getJSON(url, function(result) {
 		$('#logs_id').text(result.id);
 		$('#logs_uuid').text(result.uuid);

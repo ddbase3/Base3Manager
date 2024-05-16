@@ -271,7 +271,7 @@
 	});
 
 	$("#suggest_entry").autocomplete({
-		source: "ajax/connector.php?module="+currentModule+"&method=suggest",
+		source: "?name=connector&out=json&module="+currentModule+"&method=suggest",
 		minLength: 2,
 		focus: function(event, ui) {
 			$("#suggest_entry").val(ui.item.label);
@@ -304,7 +304,7 @@
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Ok": function() {
-					$.post("ajax/connector.php?module=system&method=copy", {
+					$.post("?name=connector&out=json&module=system&method=copy", {
 						id: currentEntryId,
 						name: $(".modaldialog").find('[name="newentryname"]').val(),
 						allocs: $(".modaldialog").find('[name="allocs"]').attr('checked') ? 1 : 0
@@ -335,7 +335,7 @@
 			buttons: {
 				"Ok": function() {
 					var data = $(this).find("form").serialize();
-					$.post("ajax/connector.php?module="+currentModule+"&method=create", data, function(res) {
+					$.post("?name=connector&out=json&module="+currentModule+"&method=create", data, function(res) {
 						loadEntry(currentModule, "id", res["id"]);
 					});
 					$(this).dialog("close");
@@ -353,7 +353,7 @@
 		if (currentEntryId == 0) return;
 		var data = $("#content").serialize();
 		data = "id=" + currentEntryId + "&" + data;
-		$.post("ajax/connector.php?module="+currentModule+"&method=save", data, function(res) {
+		$.post("?name=connector&out=json&module="+currentModule+"&method=save", data, function(res) {
 			loadEntry(currentModule, "id", currentEntryId);
 			// onCurrentEntryChangedHeader();
 		});
@@ -382,7 +382,7 @@
 			close: function () { $(".modaldialog").dialog("destroy").remove(); },
 			buttons: {
 				"Ok": function() {
-					$.post("ajax/connector.php?module=system&method=delete", { id: currentEntryId }, function() {
+					$.post("?name=connector&out=json&module=system&method=delete", { id: currentEntryId }, function() {
 						loadEntry();
 					});
 					$(this).dialog("close");

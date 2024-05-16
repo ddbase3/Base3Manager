@@ -27,7 +27,7 @@
 
 		$(".sharedialog .step1").hide();
 
-		var url = "ajax/connector.php?module=system&method=uuid&id=<?php echo $this->_['id']; ?>";
+		var url = "?name=connector&out=json&module=system&method=uuid&id=<?php echo $this->_['id']; ?>";
 		$.get(url, function(result) {
 			var link = "http://www.base3.de/base3/viewer/?uuid=" + result.uuid;
 
