@@ -26,7 +26,7 @@
 	var onCurrentEntryChangedHeader = function() {
 		$("#header_name").text(typeof currentEntry["name"] === "undefined" ? "" : currentEntry["name"]);
 
-		$("#preview").css("background-image", "url(ajax/preview.php?id="+currentEntryId+"&sx=200&sy=200)");
+		$("#preview").css("background-image", "url(?name=base3xrmpreviewconnector&id="+currentEntryId+"&sx=200&sy=200)");
 
 		$.get('?name=connector&out=json&module=system&method=info&id='+currentEntryId, function(res) {
 			var entryinfo = "";
