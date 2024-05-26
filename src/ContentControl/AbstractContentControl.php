@@ -21,6 +21,8 @@ abstract class AbstractContentControl implements IOutput {
                 $this->view->setPath($this->getPath());
                 $this->view->setTemplate($this->getTemplate());
 
+		$this->fillView();
+
 		$alias = str_replace(array('/', '.', '?'), '', $_REQUEST['alias']);
 		$this->view->assign('alias', $alias);
 
@@ -36,6 +38,7 @@ abstract class AbstractContentControl implements IOutput {
 
 	// Abstract methods
 
+	protected function fillView() {}
 	abstract protected function getPath(); 
 	abstract protected function getTemplate(); 
 }
