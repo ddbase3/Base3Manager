@@ -56,7 +56,7 @@ class Subnavi implements IOutput {
                         $enabled = 0;
                         if (isset($sub['enabled'])) {
                                 if (is_array($sub['enabled'])) {
-                                        if (isset($sub['enabled']['authenticated']) && $sub['enabled']['authenticated']) $enabled = 1;
+                                        if (isset($sub['enabled']['authenticated']) && $sub['enabled']['authenticated'] && $authenticated) $enabled = 1;
                                 } else {
                                         $enabled = $sub['enabled'];
                                 }

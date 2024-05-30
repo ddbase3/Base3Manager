@@ -48,7 +48,7 @@ class Tabs implements IOutput {
 			$enabled = 0;
 			if (isset($tab['enabled'])) {
 				if (is_array($tab['enabled'])) {
-					if (isset($tab['enabled']['authenticated']) && $tab['enabled']['authenticated']) $enabled = 1;
+					if (isset($tab['enabled']['authenticated']) && $tab['enabled']['authenticated'] && $authenticated) $enabled = 1;
 				} else {
 					$enabled = $tab['enabled'];
 				}

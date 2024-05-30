@@ -73,7 +73,7 @@ var CoolMarker = L.Marker.extend({
 			return this.each(function() {
 				var object = $(this);
 				var coolmap = object.data("coolmap");
-				if (coolmap.markers !== undefined) {
+				if (typeof coolmap.markers !== 'undefined') {
 					coolmap.markers.forEach(marker => coolmap.map.removeLayer(marker));
 					coolmap.markers = [];
 				}

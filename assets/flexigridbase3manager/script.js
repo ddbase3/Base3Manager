@@ -42,7 +42,8 @@
 								title: "Neuer Eintrag",
 								modal: true,
 								open: function () {
-									$(this).load("modules/" + currentModule + "/tabs/" + currentTab + "/create" + opt.subEntryName + ".dialog.php", function() {
+									// $(this).load("modules/" + currentModule + "/tabs/" + currentTab + "/create" + opt.subEntryName + ".dialog.php", function() {
+									$(this).load("?name=attachdialog", function() {
 										modaldialog.find("form").submit(function() { return false; });
 									});
 								},

@@ -26,11 +26,6 @@ class Base3ManagerPlugin implements IPlugin {
 			->set('view', function() { return new \Base3\MvcView; })
 			;
 
-		$this->servicelocator->set('session', new \Session\BasicSession\BasicSession, true);
-
-		// TODO
-		$this->servicelocator->set('accesscontrol', new \Accesscontrol\No\NoAccesscontrol, true);
-
 		$this->servicelocator->set('base3manager', new \Base3Manager\Service\Base3Manager, true);
 	}
 
