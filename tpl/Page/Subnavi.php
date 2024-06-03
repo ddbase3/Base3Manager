@@ -1,5 +1,5 @@
 <ul id="modulesubnavi">
-<?php foreach ($this->_['subnavi'] as $button) { /* modules / <?php echo $alias; ?> / subnavi / <?php echo $buttonalias; ?> / dialog.php */ ?>
+<?php foreach ($this->_['subnavi'] as $button) { ?>
 	<li>
 		<a href="?name=content&alias=<?php echo $this->_['alias']; ?>&subnavialias=<?php echo $button['subnavi']; ?>" rev="<?php echo $button['dialog']['width']."x".$button['dialog']['height']; ?>" title="<?php echo htmlentities($button['name']); ?>">
 			<?php echo htmlentities($button['name']); ?>

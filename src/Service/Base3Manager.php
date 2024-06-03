@@ -100,5 +100,20 @@ class Base3Manager {
 
 		return $typedefinitions;
 	}
+
+	public function getAssets() {
+
+		$assets = array();
+
+		foreach ($this->plugins as $plugin) {
+			$file = DIR_PLUGIN . $plugin . '/local/assets.json';
+			if (!file_exists($file)) continue;
+			$content = file_get_contents($file);
+			$data = json_decode($content, true);
+			$assets = array_merge($assets, $data);
+		}
+
+		return $assets;
+	}
 }
 
