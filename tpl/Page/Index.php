@@ -32,35 +32,25 @@
 		<div id="head">
 
 			<div id="systemnavi">
-
-<?php /*
+<?php if (count($this->_['systemnavi']) > 0) { ?>
 				<ul>
+<?php foreach ($this->_['systemnavi'] as $button1) { ?>
 					<li>
-						<a href="https://account.base3.de/" target="_blank">Benutzerverwaltung</a>
-					</li>
-				</ul>
-
-				<ul>
-					<li>
-						<a href="#">Benutzer</a>
+<?php if (isset($button1["link"])) { ?>
+						<a href="<?php echo $button1["link"]; ?>" target="_blank"><?php echo $button1["name"]; ?></a>
+<?php } ?>
+<?php if (isset($button1["sub"])) { ?>
+						<a href="#"><?php echo $button1["name"]; ?></a>
 						<ul>
-							<li><a href="#">Daten</a></li>
-							<li><a href="#">Passwort</a></li>
-							<li><a href="#">Logout</a></li>
+<?php foreach ($button1["sub"] as $button2) { ?>
+							<li><a href="<?php echo $button2["link"]; ?>" target="_blank"><?php echo $button2["name"]; ?></a></li>
+<?php } ?>
 						</ul>
+<?php } ?>
 					</li>
-					<li>
-						<a href="#">Verwaltung</a>
-					</li>
-					<li>
-						<a href="#">Hilfe</a>
-						<ul>
-							<li><a href="#">Inhalt</a></li>
-							<li><a href="#">Über</a></li>
-						</ul>
-					</li>
+<?php } ?>
 				</ul>
-*/ ?>
+<?php } ?>
 			</div>
 
 			<div id="modulenavi"></div>

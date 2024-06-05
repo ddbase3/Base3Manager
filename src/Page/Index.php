@@ -34,6 +34,7 @@ class Index implements IOutput {
 
 		$view->assign('layout', $cnf['layout']);
 		$view->assign('assets', $this->base3manager->getAssets());
+		$view->assign('systemnavi', $this->base3manager->getSystemNavi());
 
 		return $view->loadTemplate();
 	}

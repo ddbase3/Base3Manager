@@ -115,5 +115,20 @@ class Base3Manager {
 
 		return $assets;
 	}
+
+	public function getSystemNavi() {
+
+		$systemnavi = array();
+
+		foreach ($this->plugins as $plugin) {
+			$file = DIR_PLUGIN . $plugin . '/local/systemnavi.json';
+			if (!file_exists($file)) continue;
+			$content = file_get_contents($file);
+			$data = json_decode($content, true);
+			$systemnavi = array_merge($systemnavi, $data);
+		}
+
+		return $systemnavi;
+	}
 }
 
