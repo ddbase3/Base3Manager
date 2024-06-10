@@ -10,6 +10,14 @@
 
 <div class="control">
 
+
+<?php foreach ($this->_['toolbar'] as $toolgroup) { ?>
+	<span>
+<?php foreach ($toolgroup as $tool) echo $tool; ?>
+	</span>
+<?php } ?>
+
+
 <?php if ($this->_['manager']['controlnewentry']) { ?>
 	<button class="view_mode entry_select entry_empty" id="new_entry" title="Neuer Eintrag">
 		<img border="0" src="plugin/Base3Manager/assets/img/icons/add.png" />

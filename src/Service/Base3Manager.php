@@ -130,5 +130,20 @@ class Base3Manager {
 
 		return $systemnavi;
 	}
+
+	public function getToolbarControls() {
+
+		$controls = array();
+
+		foreach ($this->plugins as $plugin) {
+			$file = DIR_PLUGIN . $plugin . '/local/toolbar.json';
+			if (!file_exists($file)) continue;
+			$content = file_get_contents($file);
+			$data = json_decode($content, true);
+			$controls = array_merge($controls, $data);
+		}
+
+		return $controls;
+	}
 }
 

@@ -8,12 +8,14 @@ class Subnavi implements IOutput {
 
 	private $servicelocator;
 	private $configuration;
+	private $classmap;
 	private $accesscontrol;
 	private $base3manager;
 
 	public function __construct() {
 		$this->servicelocator = \Base3\ServiceLocator::getInstance();
 		$this->configuration = $this->servicelocator->get('configuration');
+		$this->classmap = $this->servicelocator->get('classmap');
 		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
 		$this->base3manager = $this->servicelocator->get('base3manager');
 	}
@@ -45,6 +47,8 @@ class Subnavi implements IOutput {
 		$manager = $this->configuration->get('manager');
                 $view->assign("manager", $manager);
 
+		// subnavi
+
 		$subnavi = isset($module['subnavi']) ? $module['subnavi'] : array();
 		uasort($subnavi, function($a, $b) {
                         if ($a['order'] == $b['order']) return 0;
@@ -65,6 +69,28 @@ class Subnavi implements IOutput {
                 }
 
 		$view->assign("subnavi", $subnavi);
+
+		// toolbar
+
+		$toolbar = array();
+
+		$toolbarcontrols = $this->base3manager->getToolbarControls();
+		if (isset($module['toolbar'])) foreach ($module['toolbar'] as $toolgroup) {
+			$group = array();
+			foreach ($toolgroup as $tool) {
+				foreach ($toolbarcontrols as $control) {
+					if ($control['tool'] != $tool) continue;
+
+					$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $control['control']);
+					if ($instance == null) continue;
+					$instance->setTool($control);
+					$group[] = $instance->getOutput();
+				}
+			}
+			$toolbar[] = $group;
+		}
+
+		$view->assign("toolbar", $toolbar);
 
 		return $view->loadTemplate();
 	}

@@ -12,8 +12,8 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
 
 #content { width:100%; }
 
-#systemnavi ul { position:relative; z-index:20; margin:0 0 0 10px; }
-#systemnavi ul li { position:relative; z-index:21; float:left; }
+#systemnavi ul { position:relative; z-index:30; margin:0 0 0 10px; }
+#systemnavi ul li { position:relative; z-index:31; float:left; }
 
 #modulenavi ul { position:relative; height:45px; white-space:nowrap; }
 #modulenavi ul li { display:inline-block; }
