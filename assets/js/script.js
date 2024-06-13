@@ -86,6 +86,18 @@ var loadModule = function() {
 	var alias = numArgs >= 1 ? arguments[0] : currentModule;
 	var method = numArgs >= 2 ? arguments[1] : "last";
 	var entryId = numArgs >= 3 ? arguments[2] : 0;
+	var tab = numArgs >= 4 ? arguments[3] : "";
+
+	if (!alias.length) return;
+
+/*
+	if (currentScope.length && numArgs >= 1) {
+		var url = "?scope=" + currentScope + "&module=" + alias;
+		if (entryId) url += "&entryid=" + currentEntryId;
+		if (tab.length) url += "&tab=" + tab;
+		history.pushState({}, document.title, url);
+	}
+*/
 
 	$("#modulenavi li").removeClass("active");
 	$('a[rel="' + alias + '"]').parent().addClass("active");
@@ -142,8 +154,12 @@ var loadModule = function() {
 
 	$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
 		initTabs(alias);
-		var tabButton = $('#moduletabs a:first');
-		if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
+		if (tab.length) {
+			loadTab(alias, tab);
+		} else {
+			var tabButton = $('#moduletabs a:first');
+			if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
+		}
 		tabsLoaded = true;
 		fillHeader();
 	});
@@ -175,9 +191,9 @@ var loadScope = function() {
 	currentScope = scope;
 
 	$("#modulenavi").load("?name=modulenavi&scope=" + scope, function() {
+		$('a[rel="' + currentModule + '"]').parent().addClass("active");
 		initModules();
 		if (!reloadContent) return;
-		$("#modulenavi ul").draggable({ axis: "x" });
 		var module = $('#modulenavi a[rel="' + currentModule + '"]').length
 			? currentModule
 			: $("#modulenavi li:first a").attr("rel");
@@ -198,6 +214,7 @@ var initTabs = function(alias) {
 		}
 		var tabalias = $(this).attr("rev");
 		loadTab(alias, tabalias);
+		history.pushState({}, document.title, "?scope=" + currentScope + "&module=" + alias + "&entryid=" + currentEntryId + "&tab=" + tabalias);
 		return false;
 	});
 }
@@ -316,8 +333,22 @@ $(function() {
 
 	/////////////////////////////
 
+	$(window).on("popstate", function(e) {
+		if (e.originalEvent.state !== null) location.reload();
+	});
+
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-	loadScope(urlParams.has('scope') ? urlParams.get('scope') : "");
-	loadModule(urlParams.has('module') ? urlParams.get('module') : "");
+
+	loadScope(urlParams.has('scope') ? urlParams.get('scope') : "", !urlParams.has('module'));
+
+	if (urlParams.has('module') && urlParams.has('entryid') && urlParams.has('tab')) {
+		loadModule(urlParams.get('module'), "id", urlParams.get('entryid'), urlParams.get('tab'));
+	} else if (urlParams.has('module') && urlParams.has('entryid')) {
+		loadModule(urlParams.get('module'), "id", urlParams.get('entryid'));
+	} else if (urlParams.has('module')) {
+		loadModule(urlParams.get('module'));
+	} else {
+		loadModule();
+	}
 });

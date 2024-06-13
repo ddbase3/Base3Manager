@@ -6,14 +6,19 @@ use Api\IOutput;
 
 abstract class AbstractToolbarControl implements IOutput {
 
-        private $view;
+        protected $servicelocator;
+        protected $view;
 
+	protected $alias;
 	protected $tool;
 
         public function __construct() {
-                $servicelocator = \Base3\ServiceLocator::getInstance();
-                $this->view = $servicelocator->get('view');
+                $this->servicelocator = \Base3\ServiceLocator::getInstance();
         }
+
+	public function setAlias($alias) {
+		$this->alias = $alias;
+	}
 
 	public function setTool($tool) {
 		$this->tool = $tool;
@@ -22,10 +27,12 @@ abstract class AbstractToolbarControl implements IOutput {
         // Implementation of IOutput
 
 	public function getOutput($out = "html") {
+                $this->view = $this->servicelocator->get('view');
 		$this->view->setPath($this->getPath());
 		$this->view->setTemplate($this->getTemplate());
+                $this->fillView();
 		$this->view->assign('action', $this->tool['tool']);
-		$this->view->assign('params', $this->tool['params']);
+		$this->view->assign('params', isset($this->tool['params']) ? $this->tool['params'] : array());
 		return $this->view->loadTemplate();
 	}
 
@@ -37,6 +44,7 @@ abstract class AbstractToolbarControl implements IOutput {
 
 	// Abstract methods
 
+        protected function fillView() {}
 	abstract protected function getPath();
 	abstract protected function getTemplate();
 }

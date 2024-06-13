@@ -1,4 +1,4 @@
-	<button class="view_mode entry_select entry_filled" id="<?php echo $this->_['action']; ?>" title="<?php echo $this->_['params']['title']; ?>">
+	<button class="view_mode edit_access entry_select entry_filled" id="<?php echo $this->_['action']; ?>" title="<?php echo $this->_['params']['title']; ?>">
 		<img border="0" src="<?php echo $this->_['params']['icon']; ?>" />
 	</button>
 

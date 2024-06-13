@@ -2,13 +2,13 @@
 
 namespace Base3Manager\ToolbarControl;
 
-class OpenModalToolbarControl extends AbstractToolbarControl {
+class RestoreEntryToolbarControl extends AbstractToolbarControl {
 
         // Implementation of IBase
 
-	public function getName() {
-		return "openmodaltoolbarcontrol";
-	}
+        public function getName() {
+                return "restoreentrytoolbarcontrol";
+        }
 
         // Implementation of AbstractToolbarControl
 
@@ -17,7 +17,7 @@ class OpenModalToolbarControl extends AbstractToolbarControl {
         }
 
         protected function getTemplate() {
-                return 'ToolbarControl/OpenModalToolbarControl.php';
+                return 'ToolbarControl/RestoreEntryToolbarControl.php';
         }
 }
 

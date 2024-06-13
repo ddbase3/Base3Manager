@@ -83,6 +83,7 @@ class Subnavi implements IOutput {
 
 					$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $control['control']);
 					if ($instance == null) continue;
+					$instance->setAlias($alias);
 					$instance->setTool($control);
 					$group[] = $instance->getOutput();
 				}
