@@ -60,7 +60,6 @@
 		</div>
 
 		<form id="content" action="" method="post">
-			<div id="wrap"></div>
 		</form>
 
 	</body>

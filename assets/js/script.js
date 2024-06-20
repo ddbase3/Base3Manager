@@ -225,7 +225,7 @@ var loadTab = function(alias, tabalias) {
 	$('a[rev="' + tabalias + '"]').parent().addClass("active");
 	// onCurrentEntryChangedContent = function() {};
 	$(document).off("currentEntryChanged");
-	$("#wrap").load("?name=content&alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
+	$("#content").load("?name=content&alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
 		$(document).on("currentEntryChanged", onCurrentEntryChangedContent);
 		contentLoaded = true;
 		fillContent();
@@ -260,8 +260,8 @@ var copyToClipboard = function(str) {
 	var set_edit_mode = function() {
 		if (currentEntryAccess != "edit") return;
 		editMode = true;
-		$("#wrap .masterdata").find("input, textarea").not(".readonly").removeAttr(viewModeFieldStatus);
-		$("#wrap .masterdata").find("select").not(".readonly").removeAttr("disabled");
+		$("#content .masterdata").find("input, textarea").not(".readonly").removeAttr(viewModeFieldStatus);
+		$("#content .masterdata").find("select").not(".readonly").removeAttr("disabled");
 		$(".edit_mode").removeAttr("disabled");
 		$(".view_mode").attr("disabled", "disabled");
 		onCurrentModeChanged();
@@ -269,8 +269,8 @@ var copyToClipboard = function(str) {
 
 	var set_view_mode = function() {
 		editMode = false;
-		$("#wrap .masterdata").find("input, textarea").attr(viewModeFieldStatus, viewModeFieldStatus);
-		$("#wrap .masterdata").find("select").attr("disabled", "disabled");
+		$("#content .masterdata").find("input, textarea").attr(viewModeFieldStatus, viewModeFieldStatus);
+		$("#content .masterdata").find("select").attr("disabled", "disabled");
 		$(".edit_mode").attr("disabled", "disabled");
 		$(".view_mode").each(function() {
 			var enabled = !$(this).hasClass("edit_access") || currentEntryAccess == "edit";
@@ -282,10 +282,13 @@ var copyToClipboard = function(str) {
 	}
 
 	var set_nodata_mode = function() {
-		$("#wrap .masterdata").find("input, select, textarea").attr("disabled", "disabled");
+		$("#content .masterdata").find("input, select, textarea").attr("disabled", "disabled");
 		$(".edit_mode, .view_mode").attr("disabled", "disabled");
 	}
 
+	var historyCurrentState = {};
+	var historyPushState = function() {
+	};
 
 //////////////////////////////////////////////////////////////////////////////////
 

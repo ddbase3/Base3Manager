@@ -48,11 +48,10 @@ class ModuleNavi implements IOutput {
                         $enabled = 0;
                         if (isset($module['enabled'])) {
                                 if (is_array($module['enabled'])) {
-                                        if (isset($module['enabled']['authenticated']) && $module['enabled']['authenticated'] && $authenticated) {
-						$enabled = 1;
-						if (isset($module['enabled']['scope']) && !in_array(SCOPE, $module['enabled']['scope'])) $enabled = 0;
-						if (isset($module['enabled']['noscope']) && in_array(SCOPE, $module['enabled']['noscope'])) $enabled = 0;
-					}
+					$enabled = 1;
+                                        if (isset($module['enabled']['authenticated'])) $enabled &= (!!$module['enabled']['authenticated']) == (!!$authenticated);
+					if (isset($module['enabled']['scope'])) $enabled &= in_array(SCOPE, $module['enabled']['scope']);
+					if (isset($module['enabled']['noscope'])) $enabled &= !in_array(SCOPE, $module['enabled']['noscope']);
                                 } else {
                                         $enabled = $module['enabled'];
                                 }
