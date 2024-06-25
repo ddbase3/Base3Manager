@@ -55,7 +55,7 @@ class Subnavi implements IOutput {
                         return ($a['order'] < $b['order']) ? -1 : 1;
                 });
 
-                $authenticated = !!$this->accesscontrol->getUserId();
+                $authenticated = isset($this->accesscontrol) && !!$this->accesscontrol->getUserId();
                 foreach ($subnavi as $key => $sub) {
                         $enabled = 0;
                         if (isset($sub['enabled'])) {
