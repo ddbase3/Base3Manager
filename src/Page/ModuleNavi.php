@@ -43,7 +43,7 @@ class ModuleNavi implements IOutput {
 			return ($ao < $bo) ? -1 : 1;
 		});
 
-                $authenticated = !!$this->accesscontrol->getUserId();
+                $authenticated = isset($this->accesscontrol) && !!$this->accesscontrol->getUserId();
                 foreach ($modules as $key => $module) {
                         $enabled = 0;
                         if (isset($module['enabled'])) {

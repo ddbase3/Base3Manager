@@ -10,22 +10,26 @@ var headerLoaded = false;
 var tabsLoaded = false;
 var contentLoaded = false;
 var loadingEntry = false;
-var editMode = false;
-var isSingleEntryModule = true;
-
-var viewModeFieldStatus = "readonly";  // disabled | readonly
 
 var onCurrentEntryChangedHeader = function() {}
 var onCurrentEntryChangedContent = function() {}
 var onCurrentModeChanged = function() {}
 
+// systemnavi
+
+var initSystemNavi = function() {
+	$("#systemnavi > ul > li")
+		.mouseenter(function() { $(this).children("ul").show(); })
+		.mouseleave(function() { $(this).children("ul").hide(); });
+};
+
 var initModules = function() {
-	$("#modulenavi a").click(function() {
+	$("#modulenavi a").on('click', function() {
 		var alias = $(this).attr("rel");
 		loadModule(alias);
 		return false;
 	});
-}
+};
 
 var loadEntry = function() {
 
@@ -109,8 +113,6 @@ var loadModule = function() {
 	currentEntry = {};
 	entryEmpty = true;
 	entryLoaded = false;
-	headerLoaded = false;
-	tabsLoaded = false;
 	contentLoaded = false;
 	onCurrentEntryChangedHeader = function() {};
 	// onCurrentEntryChangedContent = function() {};
@@ -147,39 +149,8 @@ var loadModule = function() {
 			});
 	});
 
-	$("#modulehead").load("?name=header&alias=" + alias, function() {
-		headerLoaded = true;
-		fillHeader();
-	});
-
-	$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
-		initTabs(alias);
-		if (tab.length) {
-			loadTab(alias, tab);
-		} else {
-			var tabButton = $('#moduletabs a:first');
-			if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
-		}
-		tabsLoaded = true;
-		fillHeader();
-	});
-}
-
-var loadType = function() {
-
-	var numArgs = arguments.length;
-	if (numArgs < 1) return;
-
-	var type = arguments[0];
-	var method = numArgs >= 2 ? arguments[1] : "last";
-	var entryId = numArgs >= 3 ? arguments[2] : 0;
-
-	$.get("?name=typeservice&out=json&type=" + type, function(res) {
-		if (!res.scope || !res.module) return;
-		currentModule = res.module;
-		loadScope(res.scope, false);
-		loadModule(res.module, "id", entryId);
-	});
+	loadHeader(alias);
+	loadTabs(alias, tab);
 }
 
 var loadScope = function() {
@@ -201,13 +172,40 @@ var loadScope = function() {
 	});
 }
 
+// header
+
+var loadHeader = function(alias) {
+	headerLoaded = false;
+	$("#modulehead").load("?name=header&alias=" + alias, function() {
+		headerLoaded = true;
+		fillHeader();
+	});
+};
+
 var fillHeader = function() {
 	if (!entryLoaded || !headerLoaded) return;
 	onCurrentEntryChangedHeader();
-}
+};
+
+// tabs
+
+var loadTabs = function(alias, tab) {
+	tabsLoaded = false;
+	$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
+		initTabs(alias);
+		if (tab.length) {
+			loadTab(alias, tab);
+		} else {
+			var tabButton = $('#moduletabs a:first');
+			if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
+		}
+		tabsLoaded = true;
+		fillHeader();
+	});
+};
 
 var initTabs = function(alias) {
-	$("#moduletabs a").click(function() {
+	$("#moduletabs a").on('click', function() {
 		if (editMode) {
 			alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
 			return;
@@ -217,7 +215,7 @@ var initTabs = function(alias) {
 		history.pushState({}, document.title, "?scope=" + currentScope + "&module=" + alias + "&entryid=" + currentEntryId + "&tab=" + tabalias);
 		return false;
 	});
-}
+};
 
 var loadTab = function(alias, tabalias) {
 	currentTab = tabalias;
@@ -230,109 +228,22 @@ var loadTab = function(alias, tabalias) {
 		contentLoaded = true;
 		fillContent();
 	});
-}
+};
+
+// content
 
 var fillContent = function() {
 	if (!entryLoaded || !contentLoaded) return;
 	// onCurrentEntryChangedContent();
 	$(document).trigger("currentEntryChanged");
 	set_view_mode();
-}
+};
 
-var convertDateSql2Human = function(date) {
-	var expr = /(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})/;
-	expr.exec(date);
-	return RegExp.$3 + "." + RegExp.$2 + "." + RegExp.$1 + " " + RegExp.$4 + ":" + RegExp.$5 + ":" + RegExp.$6;
-}
-
-var copyToClipboard = function(str) {
-	window.prompt("Copy to clipboard: Ctrl+C, Enter", str);
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-// Subnavi
-
-	$.fn.controlEnabled = function(enabled) {
-		if (enabled) $(this).removeAttr("disabled"); else $(this).attr("disabled", "disabled");
-		return $(this);
-	}
-
-	var set_edit_mode = function() {
-		if (currentEntryAccess != "edit") return;
-		editMode = true;
-		$("#content .masterdata").find("input, textarea").not(".readonly").removeAttr(viewModeFieldStatus);
-		$("#content .masterdata").find("select").not(".readonly").removeAttr("disabled");
-		$(".edit_mode").removeAttr("disabled");
-		$(".view_mode").attr("disabled", "disabled");
-		onCurrentModeChanged();
-	}
-
-	var set_view_mode = function() {
-		editMode = false;
-		$("#content .masterdata").find("input, textarea").attr(viewModeFieldStatus, viewModeFieldStatus);
-		$("#content .masterdata").find("select").attr("disabled", "disabled");
-		$(".edit_mode").attr("disabled", "disabled");
-		$(".view_mode").each(function() {
-			var enabled = !$(this).hasClass("edit_access") || currentEntryAccess == "edit";
-			if ($(this).hasClass("entry_select") && !isSingleEntryModule) enabled = false;
-			if ($(this).hasClass("entry_filled") && entryEmpty) enabled = false;
-			$(this).controlEnabled(enabled);
-		});
-		onCurrentModeChanged();
-	}
-
-	var set_nodata_mode = function() {
-		$("#content .masterdata").find("input, select, textarea").attr("disabled", "disabled");
-		$(".edit_mode, .view_mode").attr("disabled", "disabled");
-	}
-
-	var historyCurrentState = {};
-	var historyPushState = function() {
-	};
-
-//////////////////////////////////////////////////////////////////////////////////
+// initialize
 
 $(function() {
 
-	$(document).keyup(function(e) {
-		if (isSingleEntryModule && !editMode && !$("input:focus").length) {
-			switch (e.keyCode) {
-				case 37: // links
-					loadEntry(currentModule, "next");
-					break;
-				case 38: // hoch
-					loadEntry(currentModule, "last");
-					break;
-				case 39: // rechts
-					loadEntry(currentModule, "prev");
-					break;
-				case 40: // unten
-					loadEntry(currentModule, "first");
-					break;
-			}
-		}
-	});
-
-	$.datepicker.regional['de'] = { clearText: 'löschen', clearStatus: 'aktuelles Datum löschen',
-		closeText: 'schließen', closeStatus: 'ohne Änderungen schließen',
-		prevText: '&#x3c;zurück', prevStatus: 'letzten Monat zeigen',
-		nextText: 'Vor&#x3e;', nextStatus: 'nächsten Monat zeigen',
-		currentText: 'heute', currentStatus: '',
-		monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-		monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
-		monthStatus: 'anderen Monat anzeigen', yearStatus: 'anderes Jahr anzeigen',
-		weekHeader: 'Wo', weekStatus: 'Woche des Monats',
-		dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
-		dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
-		dayNamesMin: ['So','Mo','Di','Mi','Do','Fr','Sa'],
-		dayStatus: 'Setze DD als ersten Wochentag', dateStatus: 'Wähle D, M d',
-		dateFormat: 'dd.mm.yy', firstDay: 1,
-		initStatus: 'Wähle ein Datum', isRTL: false };
-	$.datepicker.setDefaults($.datepicker.regional['de']);
-
-	$("#systemnavi > ul > li")
-		.mouseenter(function() { $(this).children("ul").show(); })
-		.mouseleave(function() { $(this).children("ul").hide(); });
+	initSystemNavi();
 
 	/////////////////////////////
 

@@ -36,14 +36,8 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
 @media only screen and (min-width: 600px) {
 	#wrap { padding:10px 20px; }
 }
-#wrap.full, .subnavidialog #wrap { width:auto; padding:0; }
-
-table.datatable th { background:#dddddd; text-align:left; font-weight:bold; }
-table.datatable td { background:#f7f7f7; }
-
-#comments .comment { margin:3px 0; padding:5px 10px; background:#eeeeee; border-radius:8px; }
-#comments .commentname { margin:2px 0; font-weight:bold; }
-#comments .commentdate { margin:2px 0; color:#999999; font-size:9px; font-style:italic; }
-#comments .commenttext { margin:2px 0; }
+#wrap.full { width:auto; padding:0; }
+.subnavidialog #wrap { width:auto; padding:10px 20px; }
 
 .clear { clear:both; }
+

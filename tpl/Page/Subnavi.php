@@ -18,7 +18,3 @@
 
 </div>
 
-<script>
-	isSingleEntryModule = <?php echo $this->_['module']['single'] ? "true" : "false"; ?>;
-</script>
-
