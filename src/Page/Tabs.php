@@ -43,7 +43,7 @@ class Tabs implements IOutput {
 			return ($a['order'] < $b['order']) ? -1 : 1;
 		});
 
-		$authenticated = !!$this->accesscontrol->getUserId();
+		$authenticated = isset($this->accesscontrol) && !!$this->accesscontrol->getUserId();
 		foreach ($tabs as $key => $tab) {
 			$enabled = 0;
 			if (isset($tab['enabled'])) {
