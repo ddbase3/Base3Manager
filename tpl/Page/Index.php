@@ -54,7 +54,8 @@
 			</div>
 
 			<div id="modulenavi"></div>
-			<div id="modulesub"></div>
+			<div id="subnavi"></div>
+			<div id="toolbar"></div>
 			<div id="modulehead"></div>
 			<div id="moduletabs"></div>
 		</div>

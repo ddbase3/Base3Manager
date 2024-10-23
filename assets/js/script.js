@@ -120,7 +120,7 @@ var loadModule = function() {
 
 	loadEntry(alias, method, entryId);
 
-	$("#modulesub").load("?name=subnavi&alias=" + alias, function() {
+	$("#toolbar").load("?name=subnavi&alias=" + alias, function() {
 		set_view_mode();
 		$("#modulesubnavi a")
 			.click(function() {
