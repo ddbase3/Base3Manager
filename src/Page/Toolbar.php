@@ -4,7 +4,7 @@ namespace Base3Manager\Page;
 
 use Api\IOutput;
 
-class Subnavi implements IOutput {
+class Toolbar implements IOutput {
 
 	private $servicelocator;
 	private $configuration;
@@ -23,7 +23,7 @@ class Subnavi implements IOutput {
 	// Implementation of IBase
 
 	public function getName() {
-		return "subnavi";
+		return "toolbar";
 	}
 
 	// Implementation of IOutput
@@ -40,41 +40,41 @@ class Subnavi implements IOutput {
 
                 $view = $this->servicelocator->get('view');
                 $view->setPath(DIR_PLUGIN . 'Base3Manager');
-                $view->setTemplate('Page/Subnavi.php');
+                $view->setTemplate('Page/Toolbar.php');
                 $view->assign("alias", $alias);
 		$view->assign("module", $module);
 
 		$manager = $this->configuration->get('manager');
                 $view->assign("manager", $manager);
 
-		// subnavi
+		// toolbar
 
-		$subnavi = isset($module['subnavi']) ? $module['subnavi'] : array();
-		uasort($subnavi, function($a, $b) {
-                        if ($a['order'] == $b['order']) return 0;
-                        return ($a['order'] < $b['order']) ? -1 : 1;
-                });
+		$toolbar = array();
 
-                $authenticated = isset($this->accesscontrol) && !!$this->accesscontrol->getUserId();
-                foreach ($subnavi as $key => $sub) {
-                        $enabled = 0;
-                        if (isset($sub['enabled'])) {
-                                if (is_array($sub['enabled'])) {
-                                        if (isset($sub['enabled']['authenticated']) && $sub['enabled']['authenticated'] && $authenticated) $enabled = 1;
-                                } else {
-                                        $enabled = $sub['enabled'];
-                                }
-                        }
-                        if (!$enabled) unset($subnavi[$key]);
-                }
+		$toolbarcontrols = $this->base3manager->getToolbarControls();
+		if (isset($module['toolbar'])) foreach ($module['toolbar'] as $toolgroup) {
+			$group = array();
+			foreach ($toolgroup as $tool) {
+				foreach ($toolbarcontrols as $control) {
+					if ($control['tool'] != $tool) continue;
 
-		$view->assign("subnavi", $subnavi);
+					$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $control['control']);
+					if ($instance == null) continue;
+					$instance->setAlias($alias);
+					$instance->setTool($control);
+					$group[] = $instance->getOutput();
+				}
+			}
+			$toolbar[] = $group;
+		}
+
+		$view->assign("toolbar", $toolbar);
 
 		return $view->loadTemplate();
 	}
 
 	public function getHelp() {
-		return 'Help of Subnavi' . "\n";
+		return 'Help of Toolbar' . "\n";
 	}
 
 }

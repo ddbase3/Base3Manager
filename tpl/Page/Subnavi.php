@@ -1,3 +1,4 @@
+<a class="toggle" href='#'></a>
 <ul id="modulesubnavi">
 <?php foreach ($this->_['subnavi'] as $button) { ?>
 	<li>
@@ -7,14 +8,4 @@
 	</li>
 <?php } ?>
 </ul>
-
-<div class="control">
-
-<?php foreach ($this->_['toolbar'] as $toolgroup) { ?>
-	<span>
-<?php foreach ($toolgroup as $tool) echo $tool; ?>
-	</span>
-<?php } ?>
-
-</div>
 

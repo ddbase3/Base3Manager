@@ -21,13 +21,25 @@ var initSystemNavi = function() {
 	$("#systemnavi > ul > li")
 		.mouseenter(function() { $(this).children("ul").show(); })
 		.mouseleave(function() { $(this).children("ul").hide(); });
+	$('#systemnavi > .toggle').on('click', function(e) {
+		e.preventDefault();
+		$(this).siblings('ul').toggleClass('active');
+	});
+	$('#systemnavi a').on('click', function(e) {
+		$(this).parents('ul.active').removeClass('active');
+	});
 };
 
 var initModules = function() {
-	$("#modulenavi a").on('click', function() {
+	$("#modulenavi a").on('click', function(e) {
+		e.preventDefault();
 		var alias = $(this).attr("rel");
 		loadModule(alias);
-		return false;
+		$(this).parents('ul.active').removeClass('active');
+	});
+	$('#modulenavi > .toggle').on('click', function(e) {
+		e.preventDefault();
+		$(this).siblings('ul').toggleClass('active');
 	});
 };
 
@@ -92,7 +104,7 @@ var loadModule = function() {
 	var entryId = numArgs >= 3 ? arguments[2] : 0;
 	var tab = numArgs >= 4 ? arguments[3] : "";
 
-	if (!alias.length) return;
+	if (!alias || !alias.length) return;
 
 /*
 	if (currentScope.length && numArgs >= 1) {
@@ -120,34 +132,40 @@ var loadModule = function() {
 
 	loadEntry(alias, method, entryId);
 
-	$("#toolbar").load("?name=subnavi&alias=" + alias, function() {
+	$("#subnavi").load("?name=subnavi&alias=" + alias, function() {
 		set_view_mode();
-		$("#modulesubnavi a")
-			.click(function() {
-				editMode = true;
-				var url = $(this).attr("href");
-				var size = $(this).attr("rev").split("x");
-				var title = $(this).attr("title");
-				var subnavidialog = $('<div class="subnavidialog" />').appendTo("body").dialog({
-					width: size[0],
-					height: size[1],
-					title: title,
-					modal: true,
-					open: function () {
-						onCurrentEntryChangedContent = function() {};
-						$(this).load(url + "&entryid=" + currentEntryId, function() {
-							onCurrentEntryChangedContent();
-						});
-					},
-					close: function () {
-						$(".subnavidialog").dialog("destroy").remove();
-						editMode = false;
-					},
-					buttons: { "Schließen": function() { $(this).dialog("close"); } }
-				});
-				return false;
+		$('#subnavi ul a').on('click', function(e) {
+			e.preventDefault();
+			editMode = true;
+			var url = $(this).attr("href");
+			var size = $(this).attr("rev").split("x");
+			var title = $(this).attr("title");
+			var subnavidialog = $('<div class="subnavidialog" />').appendTo("body").dialog({
+				width: size[0],
+				height: size[1],
+				title: title,
+				modal: true,
+				open: function () {
+					onCurrentEntryChangedContent = function() {};
+					$(this).load(url + "&entryid=" + currentEntryId, function() {
+						onCurrentEntryChangedContent();
+					});
+				},
+				close: function () {
+					$(".subnavidialog").dialog("destroy").remove();
+					editMode = false;
+				},
+				buttons: { "Schließen": function() { $(this).dialog("close"); } }
 			});
+			$(this).parents('ul.active').removeClass('active');
+		});
+		$('#subnavi > .toggle').on('click', function(e) {
+			e.preventDefault();
+			$(this).siblings('ul').toggleClass('active');
+		});
 	});
+
+	$("#toolbar").load("?name=toolbar&alias=" + alias);
 
 	loadHeader(alias);
 	loadTabs(alias, tab);

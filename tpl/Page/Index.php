@@ -32,6 +32,7 @@
 		<div id="head">
 
 			<div id="systemnavi">
+				<a class="toggle" href='#'></a>
 <?php if (count($this->_['systemnavi']) > 0) { ?>
 				<ul>
 <?php foreach ($this->_['systemnavi'] as $button1) { ?>

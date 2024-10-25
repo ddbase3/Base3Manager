@@ -1,3 +1,4 @@
+<a class="toggle" href='#'></a>
 <ul>
 <?php
 	foreach ($this->_['modules'] as $module) {
