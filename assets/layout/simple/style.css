@@ -42,7 +42,7 @@ legend { position:absolute; left:20px; top:-13px; padding:3px 24px 0; border-top
 #toolbar .control input { width:150px; height:16px; margin:0 0 2px; padding:2px; border:1px solid #bbbbbb; vertical-align:text-top; }
 #toolbar .control button[disabled], #toolbar .control input[disabled] { opacity:.3; }
 
-#moduletabs ul li a { display:block; height:14px; padding:3px 3px; border:1px solid #999999; border-top-left-radius:8px; border-top-right-radius:8px; -moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.7); -webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.7); box-shadow: 3px 3px 3px rgba(0,0,0,0.7); background:rgba(116, 116, 116, .5); color:#333333; font-weight:bold; text-align:center; text-decoration:none; }
+#moduletabs ul li a { display:block; height:14px; padding:3px 8px; border:1px solid #999999; border-top-left-radius:5px; border-top-right-radius:5px; /* -moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.7); -webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.7); box-shadow: 3px 3px 3px rgba(0,0,0,0.7); */ background:rgba(116, 116, 116, .5); color:#333333; font-weight:bold; text-align:center; text-decoration:none; }
 #moduletabs ul li.active a { height:15px; border-bottom:none; background:#f7f7f7; }
 
 
