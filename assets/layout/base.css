@@ -15,16 +15,16 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
 	#content { top:180px; }
 }
 
-#systemnavi { position:absolute; z-index:60; right:0; top:0; }
-#systemnavi .toggle { position:absolute; z-index:20; right:2px; top:0; width:24px; height:24px; text-decoration:none; background:url(../img/navi.png) no-repeat center; background-size:16px 16px; }
-#systemnavi > ul { display:none; position:absolute; z-index:58; right:0; top:0; width:180px; padding-top:24px; background:#f7f7f7; }
-#systemnavi > ul.active { display:block; }
+.systemnavi { position:absolute; z-index:60; right:0; top:0; }
+.systemnavi .toggle { position:absolute; z-index:20; right:2px; top:0; width:24px; height:24px; text-decoration:none; background:url(../img/navi.png) no-repeat center; background-size:16px 16px; }
+.systemnavi > ul { display:none; position:absolute; z-index:58; right:0; top:0; width:180px; padding-top:24px; background:#f7f7f7; }
+.systemnavi > ul.active { display:block; }
 @media only screen and (min-width: 600px) {
-	#systemnavi { position:relative; }
-	#systemnavi .toggle { display:none; }
-	#systemnavi > ul { display:block; width:auto; padding:0; background:transparent; }
-	#systemnavi ul { position:relative; z-index:30; margin:0 0 0 10px; }
-	#systemnavi ul li { position:relative; z-index:31; float:left; }
+	.systemnavi { position:relative; }
+	.systemnavi .toggle { display:none; }
+	.systemnavi > ul { display:block; width:auto; padding:0; background:transparent; }
+	.systemnavi ul { position:relative; z-index:30; margin:0 0 0 10px; }
+	.systemnavi ul li { position:relative; z-index:31; float:left; }
 }
 
 #modulenavi { position:absolute; z-index:50; left:0; top:0; }

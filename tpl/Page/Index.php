@@ -27,11 +27,11 @@
 		<meta name="generator" content="BASE3 XRM" />
 
 	</head>
-	<body>
+	<body id="base3manager">
 
 		<div id="head">
 
-			<div id="systemnavi">
+			<div class="systemnavi">
 				<a class="toggle" href='#'></a>
 <?php if (count($this->_['systemnavi']) > 0) { ?>
 				<ul>

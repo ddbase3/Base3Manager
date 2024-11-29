@@ -1,286 +1,361 @@
-var currentScope = "";
-var currentModule = "";
-var currentEntryId = 0;
-var currentEntryAccess = "";
-var currentEntry = {};
-var currentTab = "";
-var entryLoaded = false;
-var entryEmpty = true;
-var headerLoaded = false;
-var tabsLoaded = false;
-var contentLoaded = false;
-var loadingEntry = false;
+(function($, window) {
 
-var onCurrentEntryChangedHeader = function() {}
-var onCurrentEntryChangedContent = function() {}
-var onCurrentModeChanged = function() {}
+	var methods = {
 
-// systemnavi
+		b3m: null,
 
-var initSystemNavi = function() {
-	$("#systemnavi > ul > li")
-		.mouseenter(function() { $(this).children("ul").show(); })
-		.mouseleave(function() { $(this).children("ul").hide(); });
-	$('#systemnavi > .toggle').on('click', function(e) {
-		e.preventDefault();
-		$(this).siblings('ul').toggleClass('active');
-	});
-	$('#systemnavi a').on('click', function(e) {
-		$(this).parents('ul.active').removeClass('active');
-	});
-};
+		init: function(options) {
+			return this.each(function() {
+				var opt = $.extend({
+					data: {}
+				}, options);
 
-var initModules = function() {
-	$("#modulenavi a").on('click', function(e) {
-		e.preventDefault();
-		var alias = $(this).attr("rel");
-		loadModule(alias);
-		$(this).parents('ul.active').removeClass('active');
-	});
-	$('#modulenavi > .toggle').on('click', function(e) {
-		e.preventDefault();
-		$(this).siblings('ul').toggleClass('active');
-	});
-};
+				methods.b3m = $(this);
+				methods.b3m.addClass('base3manager');
 
-var loadEntry = function() {
+				// TODO refactoring
+				$(window).on("popstate", function(e) {
+					if (e.originalEvent.state !== null) location.reload();
+				});
 
-	var numArgs = arguments.length;
-	var alias = numArgs >= 1 ? arguments[0] : currentModule;
-	var method = numArgs >= 2 ? arguments[1] : "last";
-	var entryId = numArgs >= 3 ? arguments[2] : 0;
+				methods._initSystemNavi(base3manager);
 
-	if (loadingEntry == true) return;
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
 
-	if (method == "empty") {
-		currentEntryId = 0;
-		currentEntryAccess = "";
-		currentEntry = {};
-		entryEmpty = true;
-		entryLoaded = true;
-		fillHeader();
-		fillContent();
-		return;
-	}
+				methods.loadScope(urlParams.has('scope') ? urlParams.get('scope') : "", !urlParams.has('module'))
 
-	id = method == "prev" || method == "next" ? currentEntryId : entryId;
-	var url = "?name=connector&out=json&module=" + alias + "&method=" + method + "&id=" + id;
+				// TODO refactoring
+				if (urlParams.has('module') && urlParams.has('entryid') && urlParams.has('tab')) {
+					methods.loadModule(urlParams.get('module'), { method: 'id', entryid: urlParams.get('entryid') }, urlParams.get('tab'));
+				} else if (urlParams.has('module') && urlParams.has('entryid')) {
+					methods.loadModule(urlParams.get('module'), { method: 'id', entryid: urlParams.get('entryid') });
+				} else if (urlParams.has('module')) {
+					methods.loadModule(urlParams.get('module'));
+				} else {
+					methods.loadModule();
+				}
 
-	var oldEntryId = currentEntryId;
-	var oldEntryAccess = currentEntryAccess;
-	var oldEntry = currentEntry;
-	currentEntryId = 0;
-	currentEntryAccess = "";
-	currentEntry = {};
-	entryLoaded = false;
+			});
+		},
 
-	loadingEntry = true;
-	$.getJSON(url, function(result) {
-		loadingEntry = false;
-		entryLoaded = true;
-		if (result == null || typeof result[0] === "undefined") {
-			if (method == "prev" || method == "next") {
-				currentEntryId = oldEntryId;
-				currentEntryAccess = oldEntryAccess;
-				currentEntry = oldEntry;
-			}
-		} else {
-			currentEntryId = parseInt(result[0]["id"]);
-			currentEntryAccess = result[0]["access"];
-			currentEntry = result[0];
-		}
-		entryEmpty = typeof currentEntry["data"] === "undefined";
-		fillHeader();
-		fillContent();
-		set_view_mode();
-	});
-}
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// system navi
 
-var loadModule = function() {
+		_initSystemNavi: function(base3manager) {
+			$(".systemnavi > ul > li", base3manager)
+				.mouseenter(function() { $(this).children("ul").show(); })
+				.mouseleave(function() { $(this).children("ul").hide(); });
+			$('.systemnavi > .toggle', base3manager).on('click', function(e) {
+				e.preventDefault();
+				$(this).siblings('ul').toggleClass('active');
+			});
+			$('.systemnavi a', base3manager).on('click', function(e) {
+				$(this).parents('ul.active').removeClass('active');
+			});
+		},
 
-	var numArgs = arguments.length;
-	var alias = numArgs >= 1 ? arguments[0] : currentModule;
-	var method = numArgs >= 2 ? arguments[1] : "last";
-	var entryId = numArgs >= 3 ? arguments[2] : 0;
-	var tab = numArgs >= 4 ? arguments[3] : "";
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// data
 
-	if (!alias || !alias.length) return;
+		getContext: function() {
+			return methods.b3m.data('context');
+		},
+
+		setContext: function(context) {
+			methods.b3m.data('context', context);
+		},
+
+		getLocked: function() {
+			return methods.b3m.data('locked') > 0;
+		},
+
+		setLocked: function(locked) {
+			methods.b3m.data('locked', locked ? 1 : 0);
+		},
+
+		getDataLoading: function() {
+			return methods.b3m.data('dataLoading') > 0;
+		},
+
+		setDataLoading: function(dataLoading) {
+			methods.b3m.data('dataLoading', dataLoading ? 1 : 0);
+		},
+
+		getDataLoaded: function() {
+			return methods.b3m.data('dataLoaded') > 0;
+		},
+
+		setDataLoaded: function(dataLoaded) {
+			methods.b3m.data('dataLoaded', dataLoaded ? 1 : 0);
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// scope
+
+		getScope: function() {
+			return methods.b3m.data('scope');
+		},
+
+		_setScope: function(scope) {
+			methods.b3m.data('scope', scope);
+		},
+
+		loadScope: function() {
+
+			var numArgs = arguments.length;
+			var scope = numArgs >= 1 ? arguments[0] : "";
+			var reloadContent = numArgs >= 2 ? arguments[1] : true;
+
+			methods._setScope(scope);
+
+			$("#modulenavi").load("?name=modulenavi&scope=" + scope, function() {
+				var module = methods.getModule();
+				$('a[rel="' + module + '"]').parent().addClass("active");
+				methods._initModules();
+				if (!reloadContent) return;
+				var module = $('#modulenavi a[rel="' + module + '"]').length
+					? module
+					: $("#modulenavi li:first a").attr("rel");
+				methods.loadModule(module);
+			});
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// module
+
+		getModule: function() {
+			return methods.b3m.data('module');
+		},
+
+		setModule: function(module) {
+			methods.b3m.data('module', module);
+		},
+
+		_initModules: function() {
+			$("#modulenavi a").on('click', function(e) {
+				e.preventDefault();
+				var module = $(this).attr("rel");
+				methods.loadModule(module);
+				$(this).parents('ul.active').removeClass('active');
+			});
+			$('#modulenavi > .toggle').on('click', function(e) {
+				e.preventDefault();
+				$(this).siblings('ul').toggleClass('active');
+			});
+		},
+
+		loadModule: function() {
+
+			var numArgs = arguments.length;
+			var module = numArgs >= 1 ? arguments[0] : methods.getModule();
+			var context = numArgs >= 2 ? arguments[1] : null;
+			var tab = numArgs >= 3 ? arguments[2] : '';
+
+			if (!module || !module.length) return;
 
 /*
-	if (currentScope.length && numArgs >= 1) {
-		var url = "?scope=" + currentScope + "&module=" + alias;
-		if (entryId) url += "&entryid=" + currentEntryId;
-		if (tab.length) url += "&tab=" + tab;
-		history.pushState({}, document.title, url);
-	}
+			// TODO
+			var scope = $('#base3manager').base3manager('getScope');
+			if (scope.length && numArgs >= 1) {
+				var url = "?scope=" + scope + "&module=" + module;
+				if (entryId) url += "&entryid=" + currentEntryId;
+				if (tab.length) url += "&tab=" + tab;
+				history.pushState({}, document.title, url);
+			}
 */
 
-	$("#modulenavi li").removeClass("active");
-	$('a[rel="' + alias + '"]').parent().addClass("active");
+			$("#modulenavi li").removeClass("active");
+			$('a[rel="' + module + '"]').parent().addClass("active");
 
-	loadingEntry = false;
-	currentModule = alias;
-	currentEntryId = 0;
-	currentEntryAccess = "";
-	currentEntry = {};
-	entryEmpty = true;
-	entryLoaded = false;
-	contentLoaded = false;
-	onCurrentEntryChangedHeader = function() {};
-	// onCurrentEntryChangedContent = function() {};
-	onCurrentModeChanged = function() {};
+			methods.setModule(module);
+			methods.setDataLoaded(false);
 
-	loadEntry(alias, method, entryId);
+			methods.b3m.trigger('loadData', [ module, context ]);
 
-	$("#subnavi").load("?name=subnavi&alias=" + alias, function() {
-		set_view_mode();
-		$('#subnavi ul a').on('click', function(e) {
-			e.preventDefault();
-			editMode = true;
-			var url = $(this).attr("href");
-			var size = $(this).attr("rev").split("x");
-			var title = $(this).attr("title");
+			methods.loadSubnavi(module);
+			methods.loadToolbar(module);
+			methods.loadHeader(module);
+			methods.loadTabs(module, tab);
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// header
+
+		getHeaderLoaded: function() {
+			return methods.b3m.data('headerLoaded') > 0;
+		},
+
+		_setHeaderLoaded: function(headerLoaded) {
+			methods.b3m.data('headerLoaded', headerLoaded ? 1 : 0);
+		},
+
+		loadHeader: function(alias) {
+			methods.b3m.trigger('destroyHeader', []);
+			$('#modulehead').trigger('destroyContent');
+			methods._setHeaderLoaded(false);
+			$('#modulehead').load('?name=header&alias=' + alias, methods.getContext(), function() {
+				methods._setHeaderLoaded(true);
+				methods.initHeader();
+			});
+		},
+
+		initHeader: function() {
+			if (!methods.b3m.base3manager('getDataLoaded') || !methods.b3m.base3manager('getHeaderLoaded')) return;
+			methods.b3m.trigger('headerLoaded', []);
+			$('#modulehead').trigger('contentLoaded');
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// subnavi
+
+		loadSubnavi: function(module) {
+			$("#subnavi").load("?name=subnavi&alias=" + module, function() {
+				$('#subnavi ul a').on('click', function(e) {
+					e.preventDefault();
+					methods.setLocked(true);
+					var url = $(this).attr("href");
+					var size = $(this).attr("rev").split("x");
+					var title = $(this).attr("title");
+					methods.showSubNaviDialog(url, title, size[0], size[1]);
+					$(this).parents('ul.active').removeClass('active');
+				});
+				$('#subnavi > .toggle').on('click', function(e) {
+					e.preventDefault();
+					$(this).siblings('ul').toggleClass('active');
+				});
+			});
+		},
+
+		showSubNaviDialog: function(url, title, w, h) {
+			methods.setLocked(true);
 			var subnavidialog = $('<div class="subnavidialog" />').appendTo("body").dialog({
-				width: size[0],
-				height: size[1],
 				title: title,
+				width: w,
+				height: h,
 				modal: true,
 				open: function () {
-					onCurrentEntryChangedContent = function() {};
-					$(this).load(url + "&entryid=" + currentEntryId, function() {
-						onCurrentEntryChangedContent();
+					$(this).load(url, methods.getContext(), function() {
+						methods.b3m.trigger("contentLoaded");
+						$(this).trigger('contentLoaded');
 					});
 				},
 				close: function () {
+					methods.b3m.trigger('destroyDialogContent', []);
+					$(this).trigger('destroyContent');
 					$(".subnavidialog").dialog("destroy").remove();
-					editMode = false;
+					$('#base3manager').base3manager('setLocked', false);
 				},
 				buttons: { "Schließen": function() { $(this).dialog("close"); } }
 			});
-			$(this).parents('ul.active').removeClass('active');
-		});
-		$('#subnavi > .toggle').on('click', function(e) {
-			e.preventDefault();
-			$(this).siblings('ul').toggleClass('active');
-		});
-	});
+		},
 
-	$("#toolbar").load("?name=toolbar&alias=" + alias);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// toolbar
 
-	loadHeader(alias);
-	loadTabs(alias, tab);
-}
+		loadToolbar: function(alias) {
+			$("#toolbar").load("?name=toolbar&alias=" + alias);
+		},
 
-var loadScope = function() {
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// tab
 
-	var numArgs = arguments.length;
-	var scope = numArgs >= 1 ? arguments[0] : "";
-	var reloadContent = numArgs >= 2 ? arguments[1] : true;
+		getTab: function() {
+			return methods.b3m.data('tab');
+		},
 
-	currentScope = scope;
+		setTab: function(tab) {
+			methods.b3m.data('tab', tab);
+		},
 
-	$("#modulenavi").load("?name=modulenavi&scope=" + scope, function() {
-		$('a[rel="' + currentModule + '"]').parent().addClass("active");
-		initModules();
-		if (!reloadContent) return;
-		var module = $('#modulenavi a[rel="' + currentModule + '"]').length
-			? currentModule
-			: $("#modulenavi li:first a").attr("rel");
-		loadModule(module);
-	});
-}
+		getTabsLoaded: function() {
+			return methods.b3m.data('tabsLoaded') > 0;
+		},
 
-// header
+		setTabsLoaded: function(tabsLoaded) {
+			methods.b3m.data('tabsLoaded', tabsLoaded ? 1 : 0);
+		},
 
-var loadHeader = function(alias) {
-	headerLoaded = false;
-	$("#modulehead").load("?name=header&alias=" + alias, function() {
-		headerLoaded = true;
-		fillHeader();
-	});
-};
+		loadTabs: function(alias, tab) {
+			methods.setTabsLoaded(false);
+			methods.setContentLoaded(false);
 
-var fillHeader = function() {
-	if (!entryLoaded || !headerLoaded) return;
-	onCurrentEntryChangedHeader();
-};
+			$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
+				$("#moduletabs a").on('click', function() {
+					if (methods.getLocked()) {
+						alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
+						return;
+					}
+					var tabalias = $(this).attr("rev");
+					methods.loadTab(alias, tabalias);
+					var scope = methods.getScope();
 
-// tabs
+					// TODO refactoring
+					history.pushState({}, document.title, "?scope=" + scope + "&module=" + alias + "&entryid=" + currentEntryId + "&tab=" + tabalias);
 
-var loadTabs = function(alias, tab) {
-	tabsLoaded = false;
-	$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
-		initTabs(alias);
-		if (tab.length) {
-			loadTab(alias, tab);
+					return false;
+				});
+				if (tab.length) {
+					methods.loadTab(alias, tab);
+				} else {
+					var tabButton = $('#moduletabs a:first');
+					if (tabButton.length) methods.loadTab(alias, tabButton.attr("rev"));
+				}
+				methods.setTabsLoaded(true);
+			});
+		},
+
+		loadTab: function(alias, tabalias) {
+			methods.setTab(tabalias)
+
+			$("#moduletabs li").removeClass("active");
+			$('a[rev="' + tabalias + '"]').parent().addClass("active");
+
+			methods._loadContent(alias, tabalias);
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// content
+
+		getContentLoaded: function() {
+			return methods.b3m.data('contentLoaded') > 0;
+		},
+
+		setContentLoaded: function(contentLoaded) {
+			methods.b3m.data('contentLoaded', contentLoaded ? 1 : 0);
+		},
+
+		_loadContent: function(alias, tabalias) {
+			methods.b3m.trigger('destroyContent', []);
+			$('#content').trigger('destroyContent');
+			$("#content").load("?name=content&alias=" + alias + "&tabalias=" + tabalias, methods.getContext(), function() {
+				methods.setContentLoaded(true);
+				methods.initContent();
+			});
+		},
+
+		initContent: function() {
+			if (!methods.b3m.base3manager('getDataLoaded') || !methods.b3m.base3manager('getContentLoaded')) return;
+			methods.b3m.trigger("contentLoaded");
+			$("#content").trigger('contentLoaded');
+		}
+	};
+
+	$.fn.base3manager = function(method) {
+
+		if ( methods[method] ) {
+			return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return methods.init.apply( this, arguments );
 		} else {
-			var tabButton = $('#moduletabs a:first');
-			if (tabButton.length) loadTab(alias, tabButton.attr("rev"));
-		}
-		tabsLoaded = true;
-		fillHeader();
-	});
-};
+			$.error( 'Method ' +  method + ' does not exist on jQuery.base3manager' );
+		}    
 
-var initTabs = function(alias) {
-	$("#moduletabs a").on('click', function() {
-		if (editMode) {
-			alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
-			return;
-		}
-		var tabalias = $(this).attr("rev");
-		loadTab(alias, tabalias);
-		history.pushState({}, document.title, "?scope=" + currentScope + "&module=" + alias + "&entryid=" + currentEntryId + "&tab=" + tabalias);
-		return false;
-	});
-};
+	};
 
-var loadTab = function(alias, tabalias) {
-	currentTab = tabalias;
-	$("#moduletabs li").removeClass("active");
-	$('a[rev="' + tabalias + '"]').parent().addClass("active");
-	// onCurrentEntryChangedContent = function() {};
-	$(document).off("currentEntryChanged");
-	$("#content").load("?name=content&alias=" + alias + "&tabalias=" + tabalias + "&entryid=" + currentEntryId, function() {
-		$(document).on("currentEntryChanged", onCurrentEntryChangedContent);
-		contentLoaded = true;
-		fillContent();
-	});
-};
-
-// content
-
-var fillContent = function() {
-	if (!entryLoaded || !contentLoaded) return;
-	// onCurrentEntryChangedContent();
-	$(document).trigger("currentEntryChanged");
-	set_view_mode();
-};
-
-// initialize
+})(jQuery, window);
 
 $(function() {
-
-	initSystemNavi();
-
-	/////////////////////////////
-
-	$(window).on("popstate", function(e) {
-		if (e.originalEvent.state !== null) location.reload();
-	});
-
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-
-	loadScope(urlParams.has('scope') ? urlParams.get('scope') : "", !urlParams.has('module'));
-
-	if (urlParams.has('module') && urlParams.has('entryid') && urlParams.has('tab')) {
-		loadModule(urlParams.get('module'), "id", urlParams.get('entryid'), urlParams.get('tab'));
-	} else if (urlParams.has('module') && urlParams.has('entryid')) {
-		loadModule(urlParams.get('module'), "id", urlParams.get('entryid'));
-	} else if (urlParams.has('module')) {
-		loadModule(urlParams.get('module'));
-	} else {
-		loadModule();
-	}
+	$('#base3manager').base3manager();
 });
+
