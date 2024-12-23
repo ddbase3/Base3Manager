@@ -171,6 +171,7 @@
 			methods.setModule(module);
 			methods.setDataLoaded(false);
 
+console.log({ "trigger": 'loadData', "payload": [ module, context ] });
 			methods.b3m.trigger('loadData', [ module, context ]);
 
 			methods.loadSubnavi(module);
@@ -191,7 +192,9 @@
 		},
 
 		loadHeader: function(alias) {
+console.log({ "trigger": 'destroyHeader', "payload": [] });
 			methods.b3m.trigger('destroyHeader', []);
+console.log({ "trigger": 'destroyContent', "payload": null });
 			$('#modulehead').trigger('destroyContent');
 			methods._setHeaderLoaded(false);
 			$('#modulehead').load('?name=header&alias=' + alias, methods.getContext(), function() {
@@ -202,7 +205,9 @@
 
 		initHeader: function() {
 			if (!methods.b3m.base3manager('getDataLoaded') || !methods.b3m.base3manager('getHeaderLoaded')) return;
+console.log({ "trigger": 'headerLoaded', "payload": [] });
 			methods.b3m.trigger('headerLoaded', []);
+console.log({ "trigger": 'contentLoaded', "payload": null });
 			$('#modulehead').trigger('contentLoaded');
 		},
 
@@ -236,12 +241,16 @@
 				modal: true,
 				open: function () {
 					$(this).load(url, methods.getContext(), function() {
+console.log({ "trigger": 'contentLoaded1', "payload": null });
 						methods.b3m.trigger("contentLoaded");
+console.log({ "trigger": 'contentLoaded2', "payload": null });
 						$(this).trigger('contentLoaded');
 					});
 				},
 				close: function () {
+console.log({ "trigger": 'destroyDialogContent', "payload": [] });
 					methods.b3m.trigger('destroyDialogContent', []);
+console.log({ "trigger": 'destroyContent', "payload": null });
 					$(this).trigger('destroyContent');
 					$(".subnavidialog").dialog("destroy").remove();
 					$('#base3manager').base3manager('setLocked', false);
@@ -326,7 +335,9 @@
 		},
 
 		_loadContent: function(alias, tabalias) {
+console.log({ "trigger": 'destroyContent1', "payload": [] });
 			methods.b3m.trigger('destroyContent', []);
+console.log({ "trigger": 'destroyContent2', "payload": null });
 			$('#content').trigger('destroyContent');
 			$("#content").load("?name=content&alias=" + alias + "&tabalias=" + tabalias, methods.getContext(), function() {
 				methods.setContentLoaded(true);
@@ -336,7 +347,9 @@
 
 		initContent: function() {
 			if (!methods.b3m.base3manager('getDataLoaded') || !methods.b3m.base3manager('getContentLoaded')) return;
+console.log({ "trigger": 'contentLoaded1', "payload": null });
 			methods.b3m.trigger("contentLoaded");
+console.log({ "trigger": 'contentLoaded2', "payload": null });
 			$("#content").trigger('contentLoaded');
 		}
 	};
