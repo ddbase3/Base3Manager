@@ -38,7 +38,14 @@ class Base3ManagerPlugin implements IPlugin {
 			->set(
 				'base3manager',
 				new \Base3Manager\Service\Base3Manager,
-				ServiceLocator::SHARED);
+				ServiceLocator::SHARED)
+
+			->set(
+				'base3managerchecks',
+				array(
+                                	function() { return new \Base3\Check; }
+                         	));
+  
 	}
 
 }
