@@ -3,16 +3,18 @@
 namespace Base3Manager\ContentControl;
 
 use Api\IOutput;
+use Base3\ServiceLocator;
 
 abstract class AbstractContentControl implements IOutput {
 
+        protected $servicelocator;
         protected $view;
 	protected $base3manager;
 
         public function __construct() {
-                $servicelocator = \Base3\ServiceLocator::getInstance();
-                $this->view = $servicelocator->get('view');
-		$this->base3manager = $servicelocator->get('base3manager');
+                $this->servicelocator = ServiceLocator::getInstance();
+                $this->view = $this->servicelocator->get('view');
+		$this->base3manager = $this->servicelocator->get('base3manager');
         }
 
         // Implementation of IOutput

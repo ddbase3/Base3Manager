@@ -3,17 +3,21 @@
 namespace Base3Manager\Page;
 
 use Api\IOutput;
+use Base3\ServiceLocator;
 
 class Index implements IOutput {
 
-	private $servicelocator;
 	private $configuration;
+	private $language;
 	private $base3manager;
+	private $view;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
-		$this->configuration = $this->servicelocator->get('configuration');
-		$this->base3manager = $this->servicelocator->get('base3manager');
+		$servicelocator = ServiceLocator::getInstance();
+		$this->configuration = $servicelocator->get('configuration');
+		$this->language = $servicelocator->get('language');
+		$this->base3manager = $servicelocator->get('base3manager');
+		$this->view = $servicelocator->get('view');
 	}
 
 	// Implementation of IBase
@@ -28,15 +32,15 @@ class Index implements IOutput {
 
 		$cnf = $this->configuration->get('manager');
 
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'Base3Manager');
-		$view->setTemplate('Page/Index.php');
+		$this->view->setPath(DIR_PLUGIN . 'Base3Manager');
+		$this->view->setTemplate('Page/Index.php');
 
-		$view->assign('layout', $cnf['layout']);
-		$view->assign('assets', $this->base3manager->getAssets());
-		$view->assign('systemnavi', $this->base3manager->getSystemNavi());
+		$this->view->assign('layout', $cnf['layout']);
+		$this->view->assign('language', $this->language->getLanguage());
+		$this->view->assign('assets', $this->base3manager->getAssets());
+		$this->view->assign('systemnavi', $this->base3manager->getSystemNavi());
 
-		return $view->loadTemplate();
+		return $this->view->loadTemplate();
 	}
 
 	public function getHelp() {

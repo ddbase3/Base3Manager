@@ -29,6 +29,18 @@ class Base3ManagerPlugin implements IPlugin {
 				$this,
 				ServiceLocator::SHARED)
 
+                        ->set(
+                                'serviceselector',
+                                \ServiceSelector\LangBased\LangBasedServiceSelector::getInstance(),
+                                ServiceLocator::SHARED)
+
+			->set(
+				'language',
+				function() {
+					return new \Language\MultiLang\MultiLang;
+				},
+				ServiceLocator::SHARED)
+
 			->set(
 				'view',
 				function() {
