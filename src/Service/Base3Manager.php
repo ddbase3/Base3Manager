@@ -27,7 +27,9 @@ class Base3Manager {
 			foreach ($files as $file) {
 				if (substr($file, -5) != '.json') continue;
 				$content = file_get_contents($path . $file);
-				$modules[] = json_decode($content, true);
+				$data = json_decode($content, true);
+				$data['plugin'] = $plugin;
+				$modules[] = $data;
 			}
 		}
 		return $modules;
@@ -39,7 +41,9 @@ class Base3Manager {
 			$file = DIR_PLUGIN . $plugin . "/local/Module/" . $module . ".json";
 			if (!file_exists($file)) continue;
 			$content = file_get_contents($file);
-			return json_decode($content, true);
+			$data = json_decode($content, true);
+			$data['plugin'] = $plugin;
+			return $data;
 		}
 
 		return null;	

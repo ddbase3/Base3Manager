@@ -26,16 +26,17 @@ class Tabs implements IOutput {
 
 	public function getOutput($out = "html") {
 
-		if (!isset($_REQUEST["alias"])) die();
-		$alias = str_replace("/", "", $_REQUEST["alias"]);
+		if (!isset($_REQUEST['alias'])) die();
+		$alias = str_replace('/', '', $_REQUEST['alias']);
 
 		$module = $this->base3manager->getModule($alias);
-		if (!$module || !isset($module["tabs"])) return '';
+		if (!$module || !isset($module['tabs'])) return '';
 
 		$view = $this->servicelocator->get('view');
 		$view->setPath(DIR_PLUGIN . 'Base3Manager');
 		$view->setTemplate('Page/Tabs.php');
-		$view->assign("alias", $alias);
+		$view->assign('alias', $alias);
+		$view->assign('plugin', $module['plugin']);
 
 		$tabs = $module['tabs'];
 		uasort($tabs, function($a, $b) {
@@ -56,7 +57,7 @@ class Tabs implements IOutput {
 			if (!$enabled) unset($tabs[$key]);
 		}
 
-		$view->assign("tabs", $tabs);
+		$view->assign('tabs', $tabs);
 
 		return $view->loadTemplate();
 	}

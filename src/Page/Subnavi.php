@@ -43,6 +43,7 @@ class Subnavi implements IOutput {
                 $view->setTemplate('Page/Subnavi.php');
                 $view->assign("alias", $alias);
 		$view->assign("module", $module);
+                $view->assign('plugin', $module['plugin']);
 
 		$manager = $this->configuration->get('manager');
                 $view->assign("manager", $manager);
