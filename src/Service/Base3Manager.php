@@ -129,7 +129,11 @@ class Base3Manager {
 			if (!file_exists($file)) continue;
 			$content = file_get_contents($file);
 			$data = json_decode($content, true);
-			$systemnavi = array_merge($systemnavi, $data);
+			$navi = array(
+				'plugin' => $plugin,
+				'data' => $data
+			);
+			$systemnavi[] = $navi;
 		}
 
 		return $systemnavi;

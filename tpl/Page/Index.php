@@ -33,25 +33,44 @@
 
 			<div class="systemnavi">
 				<a class="toggle" href='#'></a>
-<?php if (count($this->_['systemnavi']) > 0) { ?>
 				<ul>
-<?php foreach ($this->_['systemnavi'] as $button1) { ?>
+<?php
+	foreach ($this->_['systemnavi'] as $navi) {
+		$this->setPath(DIR_PLUGIN . $navi['plugin']);
+		foreach ($navi['data'] as $button1) {
+	                $name = $button1['name'];
+	                if (isset($button1['translate']) && $button1['translate'] == 1) {
+	                        $this->loadBricks('Bricks');
+	                        $name = $this->_['bricks']['bricks'][$button1['name']];
+	                }
+?>
 					<li>
 <?php if (isset($button1["link"])) { ?>
-						<a href="<?php echo $button1["link"]; ?>" target="_blank"><?php echo $button1["name"]; ?></a>
+						<a href="<?php echo $button1["link"]; ?>" target="_blank"><?php echo $name; ?></a>
 <?php } ?>
 <?php if (isset($button1["sub"])) { ?>
-						<a href="#"><?php echo $button1["name"]; ?></a>
+						<a href="#"><?php echo $name; ?></a>
 						<ul>
-<?php foreach ($button1["sub"] as $button2) { ?>
-							<li><a href="<?php echo $button2["link"]; ?>" target="_blank"><?php echo $button2["name"]; ?></a></li>
-<?php } ?>
+<?php
+	foreach ($button1["sub"] as $button2) {
+		$name = $button2['name'];
+		if (isset($button2['translate']) && $button2['translate'] == 1) {
+			$this->loadBricks('Bricks');
+			$name = $this->_['bricks']['bricks'][$button2['name']];
+		}
+?>
+							<li><a href="<?php echo $button2["link"]; ?>" target="_blank"><?php echo $name; ?></a></li>
+<?php
+	}
+?>
 						</ul>
 <?php } ?>
 					</li>
-<?php } ?>
+<?php
+		}
+	}
+?>
 				</ul>
-<?php } ?>
 			</div>
 
 			<div id="modulenavi"></div>
