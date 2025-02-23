@@ -39,6 +39,11 @@
 			});
 		},
 
+		_updateClasses: function() {
+			var classStr = 'base3manager ' + methods.b3m.data('scope') + ' ' + methods.b3m.data('module');
+			methods.b3m.attr('class', classStr);
+		},
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// system navi
 
@@ -119,6 +124,9 @@
 					: $("#modulenavi li:first a").attr("rel");
 				methods.loadModule(module);
 			});
+
+			methods.b3m.data("scope", scope);
+			methods._updateClasses();
 		},
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,6 +186,9 @@ console.log({ "trigger": 'loadData', "payload": [ module, context ] });
 			methods.loadToolbar(module);
 			methods.loadHeader(module);
 			methods.loadTabs(module, tab);
+
+			methods.b3m.data("module", module);
+			methods._updateClasses();
 		},
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
