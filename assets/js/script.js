@@ -224,7 +224,6 @@
 			$("#subnavi").load("?name=subnavi&alias=" + module, function() {
 				$('#subnavi ul a').on('click', function(e) {
 					e.preventDefault();
-					methods.setLocked(true);
 					var url = $(this).attr("href");
 					var size = $(this).attr("rev").split("x");
 					var title = $(this).attr("title");
@@ -247,7 +246,8 @@
 				modal: true,
 				open: function () {
 					$(this).load(url, methods.getContext(), function() {
-						methods.b3m.trigger("contentLoaded");
+						// methods.b3m.trigger("contentLoaded");
+						methods.b3m.trigger("dialogLoaded");
 						$(this).trigger('contentLoaded');
 					});
 				},
@@ -255,7 +255,7 @@
 					methods.b3m.trigger('destroyDialogContent', []);
 					$(this).trigger('destroyContent');
 					$(".subnavidialog").dialog("destroy").remove();
-					$('#base3manager').base3manager('setLocked', false);
+					methods.setLocked(false);
 				},
 				buttons: { "Schließen": function() { $(this).dialog("close"); } }
 			});
