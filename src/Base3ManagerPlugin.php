@@ -2,22 +2,10 @@
 
 namespace Base3Manager;
 
-use Base3\Api\IPlugin;
 use Base3\Core\ServiceLocator;
+use Base3Manager\Plugin\AbstractPlugin;
 
-class Base3ManagerPlugin implements IPlugin {
-
-	private $servicelocator;
-
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
-	}
-
-	// Implementation of IBase
-
-	public function getName() {
-		return "base3managerplugin";
-	}
+class Base3ManagerPlugin extends AbstractPlugin {
 
 	// Implementation of IPlugin
 
@@ -57,7 +45,5 @@ class Base3ManagerPlugin implements IPlugin {
 				array(
                                 	function() { return new \Base3\Core\Check; }
                          	));
-  
 	}
-
 }
