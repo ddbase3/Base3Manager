@@ -78,7 +78,11 @@ class Base3Manager {
 			$file = DIR_PLUGIN . $plugin . '/local/scopes.json';
 			if (!file_exists($file)) continue;
 			$content = file_get_contents($file);
-			$scopes = array_merge($scopes, json_decode($content, true));
+			$scps = json_decode($content, true);
+			foreach ($scps as $s) {
+				if (!isset($s['active']) || !$s['active']) continue;
+				$scopes[] = $s;
+			}
 		}
 
 		usort($scopes, function($a, $b) {
