@@ -2,7 +2,8 @@
 
 namespace Base3Manager\Page;
 
-use Api\IOutput;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 class Toolbar implements IOutput {
 
@@ -13,7 +14,7 @@ class Toolbar implements IOutput {
 	private $base3manager;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 		$this->configuration = $this->servicelocator->get('configuration');
 		$this->classmap = $this->servicelocator->get('classmap');
 		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
@@ -58,7 +59,7 @@ class Toolbar implements IOutput {
 				foreach ($toolbarcontrols as $control) {
 					if ($control['tool'] != $tool) continue;
 
-					$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $control['control']);
+					$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Api\IOutput::class, $control['control']);
 					if ($instance == null) continue;
 					$instance->setAlias($alias);
 					$instance->setTool($control);

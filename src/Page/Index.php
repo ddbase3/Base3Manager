@@ -2,8 +2,8 @@
 
 namespace Base3Manager\Page;
 
-use Api\IOutput;
-use Base3\ServiceLocator;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 class Index implements IOutput {
 

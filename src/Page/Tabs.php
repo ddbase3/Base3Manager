@@ -2,7 +2,8 @@
 
 namespace Base3Manager\Page;
 
-use Api\IOutput;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 class Tabs implements IOutput {
 
@@ -11,7 +12,7 @@ class Tabs implements IOutput {
 	private $base3manager;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
 		$this->base3manager = $this->servicelocator->get('base3manager');
 	}

@@ -2,7 +2,8 @@
 
 namespace Base3Manager\ToolbarControl;
 
-use Api\IOutput;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 abstract class AbstractToolbarControl implements IOutput {
 
@@ -13,7 +14,7 @@ abstract class AbstractToolbarControl implements IOutput {
 	protected $tool;
 
         public function __construct() {
-                $this->servicelocator = \Base3\ServiceLocator::getInstance();
+                $this->servicelocator = ServiceLocator::getInstance();
         }
 
 	public function setAlias($alias) {

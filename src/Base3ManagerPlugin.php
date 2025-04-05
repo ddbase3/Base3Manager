@@ -2,8 +2,8 @@
 
 namespace Base3Manager;
 
-use Api\IPlugin;
-use Base3\ServiceLocator;
+use Base3\Api\IPlugin;
+use Base3\Core\ServiceLocator;
 
 class Base3ManagerPlugin implements IPlugin {
 
@@ -31,20 +31,20 @@ class Base3ManagerPlugin implements IPlugin {
 
                         ->set(
                                 'serviceselector',
-                                \ServiceSelector\LangBased\LangBasedServiceSelector::getInstance(),
+                                \Base3\ServiceSelector\LangBased\LangBasedServiceSelector::getInstance(),
                                 ServiceLocator::SHARED)
 
 			->set(
 				'language',
 				function() {
-					return new \Language\MultiLang\MultiLang;
+					return new \Base3\Language\MultiLang\MultiLang;
 				},
 				ServiceLocator::SHARED)
 
 			->set(
 				'view',
 				function() {
-					return new \Base3\MvcView;
+					return new \Base3\Core\MvcView;
 				})
 
 			->set(
@@ -55,7 +55,7 @@ class Base3ManagerPlugin implements IPlugin {
 			->set(
 				'base3managerchecks',
 				array(
-                                	function() { return new \Base3\Check; }
+                                	function() { return new \Base3\Core\Check; }
                          	));
   
 	}

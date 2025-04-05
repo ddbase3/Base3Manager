@@ -2,7 +2,8 @@
 
 namespace Base3Manager\Page;
 
-use Api\IOutput;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 class Header implements IOutput {
 
@@ -10,7 +11,7 @@ class Header implements IOutput {
 	private $base3manager;
 
 	public function __construct() {
-		$servicelocator = \Base3\ServiceLocator::getInstance();
+		$servicelocator = ServiceLocator::getInstance();
 		$this->classmap = $servicelocator->get('classmap');
 		$this->base3manager = $servicelocator->get('base3manager');
 	}
@@ -31,7 +32,7 @@ class Header implements IOutput {
 		$module = $this->base3manager->getModule($alias);
 		if (!$module || !$module["header"]) return '';
 
-		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module["header"]);
+		$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Api\IOutput::class, $module["header"]);
 		return $instance->getOutput();
 	}
 

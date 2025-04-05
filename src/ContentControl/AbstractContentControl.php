@@ -2,8 +2,8 @@
 
 namespace Base3Manager\ContentControl;
 
-use Api\IOutput;
-use Base3\ServiceLocator;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 abstract class AbstractContentControl implements IOutput {
 

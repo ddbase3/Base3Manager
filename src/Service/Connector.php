@@ -2,7 +2,8 @@
 
 namespace Base3Manager\Service;
 
-use Api\IOutput;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 class Connector implements IOutput {
 
@@ -11,7 +12,7 @@ class Connector implements IOutput {
 	private $base3manager;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 		$this->classmap = $this->servicelocator->get('classmap');
 		$this->base3manager = $this->servicelocator->get('base3manager');
 	}
@@ -32,7 +33,7 @@ class Connector implements IOutput {
 
 		if (!isset($module['connector'])) die('No connector defined for module ' . $_REQUEST["module"]);
 
-		$instance = $this->classmap->getInstanceByInterfaceName("Api\\IOutput", $module['connector']);
+		$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Api\IOutput::class, $module['connector']);
 		if ($instance == null) die('Connector not found.');
 
 		return $instance->getOutput($out);

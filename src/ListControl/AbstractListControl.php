@@ -2,14 +2,15 @@
 
 namespace Base3Manager\ListControl;
 
-use Api\IOutput;
+use Base3\Api\IOutput;
+use Base3\Core\ServiceLocator;
 
 abstract class AbstractListControl implements IOutput {
 
         private $view;
 
         public function __construct() {
-                $servicelocator = \Base3\ServiceLocator::getInstance();
+                $servicelocator = ServiceLocator::getInstance();
                 $this->view = $servicelocator->get('view');
         }
 

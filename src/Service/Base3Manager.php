@@ -2,6 +2,8 @@
 
 namespace Base3Manager\Service;
 
+use Base3\Core\ServiceLocator;
+
 class Base3Manager {
 
 	private $servicelocator;
@@ -10,7 +12,7 @@ class Base3Manager {
 	private $plugins;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 		$this->classmap = $this->servicelocator->get('classmap');
 
 		$this->plugins = $this->classmap->getPlugins();
