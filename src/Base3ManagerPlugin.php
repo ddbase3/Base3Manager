@@ -2,7 +2,7 @@
 
 namespace Base3Manager;
 
-use Base3\Core\ServiceLocator;
+use Base3\Api\IContainer;
 use Base3Manager\Plugin\AbstractPlugin;
 
 class Base3ManagerPlugin extends AbstractPlugin {
@@ -10,24 +10,24 @@ class Base3ManagerPlugin extends AbstractPlugin {
 	// Implementation of IPlugin
 
 	public function init() {
-		$this->servicelocator
+		$this->container
 
 			->set(
 				$this->getName(),
 				$this,
-				ServiceLocator::SHARED)
+				IContainer::SHARED)
 
                         ->set(
                                 'serviceselector',
                                 \Base3\ServiceSelector\LangBased\LangBasedServiceSelector::getInstance(),
-                                ServiceLocator::SHARED)
+                                IContainer::SHARED)
 
 			->set(
 				'language',
 				function() {
 					return new \Base3\Language\MultiLang\MultiLang;
 				},
-				ServiceLocator::SHARED)
+				IContainer::SHARED)
 
 			->set(
 				'view',
@@ -38,7 +38,7 @@ class Base3ManagerPlugin extends AbstractPlugin {
 			->set(
 				'base3manager',
 				new \Base3Manager\Service\Base3Manager,
-				ServiceLocator::SHARED)
+				IContainer::SHARED)
 
 			->set(
 				'base3managerchecks',
