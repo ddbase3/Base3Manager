@@ -2,14 +2,19 @@
 
 namespace Base3Manager;
 
-use Base3\Api\IContainer;
 use Base3Manager\Plugin\AbstractPlugin;
+use Base3\Api\IContainer;
+use Base3\Api\IConfiguration;
+use Base3\Session\Api\ISession;
+use Base3\Api\IClassMap;
+use Base3\Language\MultiLang\MultiLang;
 
 class Base3ManagerPlugin extends AbstractPlugin {
 
 	// Implementation of IPlugin
 
 	public function init() {
+
 		$this->container
 
 			->set(
@@ -25,8 +30,12 @@ class Base3ManagerPlugin extends AbstractPlugin {
 			->set(
 				'language',
 				function() {
-					return new \Base3\Language\MultiLang\MultiLang(
-						$this->container->get(\Base3\Api\IConfiguration::class));
+/*
+					$configuration = $this->container->get(IConfiguration::class);
+					$session = $this->container->get(ISession::class);
+					return new MultiLang($configuration, $session);
+*/
+					return $this->container->get(IClassMap::class)->instantiate(MultiLang::class);
 				},
 				IContainer::SHARED)
 
