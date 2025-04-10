@@ -25,7 +25,8 @@ class Base3ManagerPlugin extends AbstractPlugin {
 			->set(
 				'language',
 				function() {
-					return new \Base3\Language\MultiLang\MultiLang;
+					return new \Base3\Language\MultiLang\MultiLang(
+						$this->container->get(\Base3\Api\IConfiguration::class));
 				},
 				IContainer::SHARED)
 
@@ -43,7 +44,7 @@ class Base3ManagerPlugin extends AbstractPlugin {
 			->set(
 				'base3managerchecks',
 				array(
-                                	function() { return new \Base3\Core\Check; }
+                                	function() { return new \Base3\Core\Check($this->container); }
                          	));
 	}
 }
