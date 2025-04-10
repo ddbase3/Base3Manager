@@ -3,15 +3,15 @@
 namespace Base3Manager\Plugin;
 
 use Base3\Api\IPlugin;
+use Base3\Api\IContainer;
 use Base3\Api\ICheck;
-use Base3\Core\ServiceLocator;
 
 abstract class AbstractPlugin implements IPlugin, ICheck {
 
-	protected $servicelocator;
+	protected $container;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
+	public function __construct(IContainer $container) {
+		$this->container = $container;
 	}
 
 	// Implementation of IBase
@@ -21,6 +21,7 @@ abstract class AbstractPlugin implements IPlugin, ICheck {
 	}
 
 	// Implementation of ICheck
+	// TODO remove, implement in extension only if necessary
 
 	public function checkDependencies(): array {
 		return [];
