@@ -46,9 +46,19 @@ class Base3ManagerPlugin extends AbstractPlugin {
 				})
 
 			->set(
+				\Base3\Api\IMvcView::class,
+				'view',
+				IContainer::ALIAS)
+
+			->set(
 				'base3manager',
 				new \Base3Manager\Service\Base3Manager,
 				IContainer::SHARED)
+
+			->set(
+				\Base3Manager\Service\Base3Manager::class,
+				'base3manager',
+				IContainer::ALIAS)
 
 			->set(
 				'base3managerchecks',
