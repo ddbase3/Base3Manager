@@ -81,6 +81,7 @@
 		</div>
 
 		<form id="content" action="" method="post">
+			<noscript>Please activate JavaScript</noscript>
 		</form>
 
 	</body>
