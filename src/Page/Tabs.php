@@ -2,19 +2,25 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
+use Base3\Accesscontrol\Api\IAccesscontrol;
+use Base3Manager\Service\Base3Manager;
 
 class Tabs implements IOutput {
 
-	private $servicelocator;
 	private $accesscontrol;
 	private $base3manager;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
-		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
-		$this->base3manager = $this->servicelocator->get('base3manager');
+	public function __construct(
+		IAccesscontrol $accesscontrol,
+		Base3Manager $base3manager,
+		IMvcView $view
+	) {
+		$this->accesscontrol = $accesscontrol;
+		$this->base3manager = $base3manager;
+		$this->view = $view;
 	}
 
 	// Implementation of IBase
@@ -33,11 +39,10 @@ class Tabs implements IOutput {
 		$module = $this->base3manager->getModule($alias);
 		if (!$module || !isset($module['tabs'])) return '';
 
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'Base3Manager');
-		$view->setTemplate('Page/Tabs.php');
-		$view->assign('alias', $alias);
-		$view->assign('plugin', $module['plugin']);
+		$this->view->setPath(DIR_PLUGIN . 'Base3Manager');
+		$this->view->setTemplate('Page/Tabs.php');
+		$this->view->assign('alias', $alias);
+		$this->view->assign('plugin', $module['plugin']);
 
 		$tabs = $module['tabs'];
 		uasort($tabs, function($a, $b) {
@@ -58,9 +63,9 @@ class Tabs implements IOutput {
 			if (!$enabled) unset($tabs[$key]);
 		}
 
-		$view->assign('tabs', $tabs);
+		$this->view->assign('tabs', $tabs);
 
-		return $view->loadTemplate();
+		return $this->view->loadTemplate();
 	}
 
 	public function getHelp() {

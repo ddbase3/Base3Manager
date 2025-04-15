@@ -2,21 +2,29 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
+use Base3\Accesscontrol\Api\IAccesscontrol;
+use Base3\Configuration\Api\IConfiguration;
+use Base3Manager\Service\Base3Manager;
 
 class ModuleNavi implements IOutput {
 
-	private $servicelocator;
 	private $configuration;
 	private $accesscontrol;
 	private $base3manager;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
-		$this->configuration = $this->servicelocator->get('configuration');
-		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
-		$this->base3manager = $this->servicelocator->get('base3manager');
+	public function __construct(
+		IConfiguration $configuration,
+		IAccesscontrol $accesscontrol,
+		Base3Manager $base3manager,
+		IMvcView $view
+	) {
+		$this->configuration = $configuration;
+		$this->accesscontrol = $accesscontrol;
+		$this->base3manager = $base3manager;
+		$this->view = $view;
 	}
 
 	// Implementation of IBase
@@ -30,11 +38,10 @@ class ModuleNavi implements IOutput {
 	public function getOutput($out = "html") {
 
 		$cnf = $this->configuration->get('manager');
-		define("SCOPE", isset($_REQUEST["scope"]) ? $_REQUEST["scope"] : $cnf['stdscope']);
+		define("SCOPE", isset($_REQUEST["scope"]) && strlen($_REQUEST["scope"]) ? $_REQUEST["scope"] : $cnf['stdscope']);
 
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'Base3Manager');
-		$view->setTemplate('Page/ModuleNavi.php');
+		$this->view->setPath(DIR_PLUGIN . 'Base3Manager');
+		$this->view->setTemplate('Page/ModuleNavi.php');
 
 		$modules = $this->base3manager->getModules();
 		uasort($modules, function($a, $b) {
@@ -60,9 +67,9 @@ class ModuleNavi implements IOutput {
                         if (!$enabled) unset($modules[$key]);
                 }
 
-		$view->assign("modules", $modules);
+		$this->view->assign("modules", $modules);
 
-		return $view->loadTemplate();
+		return $this->view->loadTemplate();
 	}
 
 	public function getHelp() {

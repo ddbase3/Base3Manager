@@ -2,8 +2,11 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
+use Base3\Configuration\Api\IConfiguration;
+use Base3\Language\Api\ILanguage;
+use Base3Manager\Service\Base3Manager;
 
 class Index implements IOutput {
 
@@ -12,12 +15,16 @@ class Index implements IOutput {
 	private $base3manager;
 	private $view;
 
-	public function __construct() {
-		$servicelocator = ServiceLocator::getInstance();
-		$this->configuration = $servicelocator->get('configuration');
-		$this->language = $servicelocator->get('language');
-		$this->base3manager = $servicelocator->get('base3manager');
-		$this->view = $servicelocator->get('view');
+	public function __construct(
+		IConfiguration $configuration,
+		ILanguage $language,
+		Base3Manager $base3manager,
+		IMvcView $view
+	) {
+		$this->configuration = $configuration;
+		$this->language = $language;
+		$this->base3manager = $base3manager;
+		$this->view = $view;
 	}
 
 	// Implementation of IBase

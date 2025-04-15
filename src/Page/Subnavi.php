@@ -2,23 +2,33 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IClassMap;
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
+use Base3\Accesscontrol\Api\IAccesscontrol;
+use Base3\Configuration\Api\IConfiguration;
+use Base3Manager\Service\Base3Manager;
 
 class Subnavi implements IOutput {
 
-	private $servicelocator;
 	private $configuration;
 	private $classmap;
 	private $accesscontrol;
 	private $base3manager;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
-		$this->configuration = $this->servicelocator->get('configuration');
-		$this->classmap = $this->servicelocator->get('classmap');
-		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
-		$this->base3manager = $this->servicelocator->get('base3manager');
+	public function __construct(
+		IConfiguration $configuration,
+		IClassMap $classmap,
+		IAccesscontrol $accesscontrol,
+		Base3Manager $base3manager,
+		IMvcView $view
+	) {
+		$this->configuration = $configuration;
+		$this->classmap = $classmap;
+		$this->accesscontrol = $accesscontrol;
+		$this->base3manager = $base3manager;
+		$this->view = $view;
 	}
 
 	// Implementation of IBase
@@ -39,15 +49,14 @@ class Subnavi implements IOutput {
 
 		if (!isset($module['list'])) $module['list'] = 'standardlistcontrol';
 
-                $view = $this->servicelocator->get('view');
-                $view->setPath(DIR_PLUGIN . 'Base3Manager');
-                $view->setTemplate('Page/Subnavi.php');
-                $view->assign("alias", $alias);
-		$view->assign("module", $module);
-                $view->assign('plugin', $module['plugin']);
+                $this->view->setPath(DIR_PLUGIN . 'Base3Manager');
+                $this->view->setTemplate('Page/Subnavi.php');
+                $this->view->assign("alias", $alias);
+		$this->view->assign("module", $module);
+                $this->view->assign('plugin', $module['plugin']);
 
 		$manager = $this->configuration->get('manager');
-                $view->assign("manager", $manager);
+                $this->view->assign("manager", $manager);
 
 		// subnavi
 
@@ -70,14 +79,13 @@ class Subnavi implements IOutput {
                         if (!$enabled) unset($subnavi[$key]);
                 }
 
-		$view->assign("subnavi", $subnavi);
+		$this->view->assign("subnavi", $subnavi);
 
-		return $view->loadTemplate();
+		return $this->view->loadTemplate();
 	}
 
 	public function getHelp() {
 		return 'Help of Subnavi' . "\n";
 	}
-
 }
 

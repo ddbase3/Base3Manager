@@ -2,18 +2,16 @@
 
 namespace Base3Manager\Service;
 
-use Base3\Core\ServiceLocator;
+use Base3\Api\IClassMap;
 
 class Base3Manager {
 
-	private $servicelocator;
 	private $classmap;
 
 	private $plugins;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
-		$this->classmap = $this->servicelocator->get('classmap');
+	public function __construct(IClassMap $classmap) {
+		$this->classmap = $classmap;
 
 		$this->plugins = $this->classmap->getPlugins();
 	}

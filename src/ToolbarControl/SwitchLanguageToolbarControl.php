@@ -2,13 +2,16 @@
 
 namespace Base3Manager\ToolbarControl;
 
+use Base3\Api\IMvcView;
+use Base3\Language\Api\ILanguage;
+
 class SwitchLanguageToolbarControl extends AbstractToolbarControl {
 
 	protected $language;
 
-	public function __construct() {
-		parent::__construct();
-		$this->language = $this->servicelocator->get('language');
+	public function __construct(IMvcView $view, ILanguage $language) {
+		parent::__construct($view);
+		$this->language = $language;
 	}
 
         // Implementation of IBase

@@ -2,19 +2,18 @@
 
 namespace Base3Manager\ToolbarControl;
 
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
 
 abstract class AbstractToolbarControl implements IOutput {
 
-        protected $servicelocator;
         protected $view;
 
 	protected $alias;
 	protected $tool;
 
-        public function __construct() {
-                $this->servicelocator = ServiceLocator::getInstance();
+        public function __construct(IMvcView $view) {
+		$this->view = $view;
         }
 
 	public function setAlias($alias) {
@@ -28,7 +27,6 @@ abstract class AbstractToolbarControl implements IOutput {
         // Implementation of IOutput
 
 	public function getOutput($out = "html") {
-                $this->view = $this->servicelocator->get('view');
 		$this->view->setPath($this->getPath());
 		$this->view->setTemplate($this->getTemplate());
                 $this->fillView();

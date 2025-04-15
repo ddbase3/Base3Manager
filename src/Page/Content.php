@@ -2,19 +2,21 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IClassMap;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
+use Base3Manager\Service\Base3Manager;
 
 class Content implements IOutput {
 
-        private $servicelocator;
         private $classmap;
         private $base3manager;
 
-        public function __construct() {
-                $this->servicelocator = ServiceLocator::getInstance();
-                $this->classmap = $this->servicelocator->get('classmap');
-                $this->base3manager = $this->servicelocator->get('base3manager');
+        public function __construct(
+		IClassmap $classmap,
+		Base3Manager $base3manager
+	) {
+                $this->classmap = $classmap;
+                $this->base3manager = $base3manager;
         }
 
 	// Implementation of IBase
@@ -88,7 +90,7 @@ class Content implements IOutput {
 			ob_end_clean();
 		} else {
 			if ($control == null) die();
-			$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Api\IOutput::class, $control);
+			$instance = $this->classmap->getInstanceByInterfaceName(IOutput::class, $control);
 			if ($instance == null) die();
 			return $instance->getOutput();
 		}

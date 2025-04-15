@@ -2,12 +2,19 @@
 
 namespace Base3Manager;
 
-use Base3Manager\Plugin\AbstractPlugin;
-use Base3\Api\IContainer;
-use Base3\Api\IConfiguration;
-use Base3\Session\Api\ISession;
 use Base3\Api\IClassMap;
+use Base3\Api\IContainer;
+use Base3\Api\IMvcView;
+use Base3\Configuration\Api\IConfiguration;
+use Base3\Core\Check;
+use Base3\Core\MvcView;
+use Base3\Language\Api\ILanguage;
 use Base3\Language\MultiLang\MultiLang;
+use Base3\ServiceSelector\Api\IServiceSelector;
+use Base3\ServiceSelector\LangBased\LangBasedServiceSelector;
+use Base3\Session\Api\ISession;
+use Base3Manager\Plugin\AbstractPlugin;
+use Base3Manager\Service\Base3Manager;
 
 class Base3ManagerPlugin extends AbstractPlugin {
 
@@ -15,55 +22,35 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 	public function init() {
 
+		$classmap = $this->container->get(IClassMap::class);
+
 		$this->container
 
-			->set(
-				$this->getName(),
-				$this,
-				IContainer::SHARED)
+			->set($this->getName(), $this, IContainer::SHARED)
 
-                        ->set(
-                                'serviceselector',
-                                \Base3\ServiceSelector\LangBased\LangBasedServiceSelector::getInstance(),
-                                IContainer::SHARED)
+                        ->set('serviceselector', LangBasedServiceSelector::getInstance(), IContainer::SHARED)
+			->set(IServiceSelector::class, 'serviceselector', IContainer::ALIAS)
 
 			->set(
 				'language',
 				function() {
-/*
 					$configuration = $this->container->get(IConfiguration::class);
 					$session = $this->container->get(ISession::class);
 					return new MultiLang($configuration, $session);
-*/
-					return $this->container->get(IClassMap::class)->instantiate(MultiLang::class);
 				},
 				IContainer::SHARED)
+			->set(ILanguage::class, 'language', IContainer::ALIAS)
 
-			->set(
-				'view',
-				function() {
-					return new \Base3\Core\MvcView;
-				})
+			->set('view', function() { return new MvcView; })
+			->set(IMvcView::class, 'view', IContainer::ALIAS)
 
-			->set(
-				\Base3\Api\IMvcView::class,
-				'view',
-				IContainer::ALIAS)
-
-			->set(
-				'base3manager',
-				new \Base3Manager\Service\Base3Manager,
-				IContainer::SHARED)
-
-			->set(
-				\Base3Manager\Service\Base3Manager::class,
-				'base3manager',
-				IContainer::ALIAS)
+			->set('base3manager', new Base3Manager($classmap), IContainer::SHARED)
+			->set(Base3Manager::class, 'base3manager', IContainer::ALIAS)
 
 			->set(
 				'base3managerchecks',
 				array(
-                                	function() { return new \Base3\Core\Check($this->container); }
+                                	function() { return new Check($this->container); }
                          	));
 	}
 }

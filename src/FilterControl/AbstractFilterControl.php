@@ -2,16 +2,15 @@
 
 namespace Base3Manager\FilterControl;
 
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
 
 abstract class AbstractFilterControl implements IOutput {
 
         private $view;
 
-        public function __construct() {
-                $servicelocator = ServiceLocator::getInstance();
-                $this->view = $servicelocator->get('view');
+        public function __construct(IMvcView $view) {
+                $this->view = $view;
         }
 
         // Implementation of IOutput

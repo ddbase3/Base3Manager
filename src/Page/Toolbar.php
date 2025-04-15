@@ -2,23 +2,33 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IClassMap;
+use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
-use Base3\Core\ServiceLocator;
+use Base3\Accesscontrol\Api\IAccesscontrol;
+use Base3\Configuration\Api\IConfiguration;
+use Base3Manager\Service\Base3Manager;
 
 class Toolbar implements IOutput {
 
-	private $servicelocator;
 	private $configuration;
 	private $classmap;
 	private $accesscontrol;
 	private $base3manager;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
-		$this->configuration = $this->servicelocator->get('configuration');
-		$this->classmap = $this->servicelocator->get('classmap');
-		$this->accesscontrol = $this->servicelocator->get('accesscontrol');
-		$this->base3manager = $this->servicelocator->get('base3manager');
+	public function __construct(
+		IConfiguration $configuration,
+		IClassMap $classmap,
+		IAccesscontrol $accesscontrol,
+		Base3Manager $base3manager,
+		IMvcView $view
+	) {
+		$this->configuration = $configuration;
+		$this->classmap = $classmap;
+		$this->accesscontrol = $accesscontrol;
+		$this->base3manager = $base3manager;
+		$this->view = $view;
 	}
 
 	// Implementation of IBase
@@ -39,14 +49,13 @@ class Toolbar implements IOutput {
 
 		if (!isset($module['list'])) $module['list'] = 'standardlistcontrol';
 
-                $view = $this->servicelocator->get('view');
-                $view->setPath(DIR_PLUGIN . 'Base3Manager');
-                $view->setTemplate('Page/Toolbar.php');
-                $view->assign("alias", $alias);
-		$view->assign("module", $module);
+                $this->view->setPath(DIR_PLUGIN . 'Base3Manager');
+                $this->view->setTemplate('Page/Toolbar.php');
+                $this->view->assign("alias", $alias);
+		$this->view->assign("module", $module);
 
 		$manager = $this->configuration->get('manager');
-                $view->assign("manager", $manager);
+                $this->view->assign("manager", $manager);
 
 		// toolbar
 
@@ -59,7 +68,7 @@ class Toolbar implements IOutput {
 				foreach ($toolbarcontrols as $control) {
 					if ($control['tool'] != $tool) continue;
 
-					$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Api\IOutput::class, $control['control']);
+					$instance = $this->classmap->getInstanceByInterfaceName(IOutput::class, $control['control']);
 					if ($instance == null) continue;
 					$instance->setAlias($alias);
 					$instance->setTool($control);
@@ -69,9 +78,9 @@ class Toolbar implements IOutput {
 			$toolbar[] = $group;
 		}
 
-		$view->assign("toolbar", $toolbar);
+		$this->view->assign("toolbar", $toolbar);
 
-		return $view->loadTemplate();
+		return $this->view->loadTemplate();
 	}
 
 	public function getHelp() {
