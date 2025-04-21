@@ -47,6 +47,9 @@ class Base3ManagerPlugin extends AbstractPlugin {
 			->set('base3manager', new Base3Manager($classmap), IContainer::SHARED)
 			->set(Base3Manager::class, 'base3manager', IContainer::ALIAS)
 
+			// for check only
+			->set('delegateworker', function() { return new \Base3\Worker\DelegateWorker; })
+
 			->set(
 				'base3managerchecks',
 				array(

@@ -68,25 +68,27 @@ class Base3Manager {
 		return $functionalities;
 	}
 
-	public function getScopes() {
+	public function getScopes(): array {
 
-		$scopes = array();
+		$scopes = [];
 
 		foreach ($this->plugins as $plugin) {
 			$file = DIR_PLUGIN . $plugin . '/local/scopes.json';
 			if (!file_exists($file)) continue;
+
 			$content = file_get_contents($file);
-			$scps = json_decode($content, true);
-			foreach ($scps as $s) {
-				if (!isset($s['active']) || !$s['active']) continue;
-				$scopes[] = $s;
+			$decoded = json_decode($content, true);
+
+			if (!is_array($decoded)) continue;
+
+			foreach ($decoded as $s) {
+				if (empty($s['active']) || !isset($s['scope'])) continue;
+				if (!isset($scopes[$s['scope']])) $scopes[$s['scope']] = $s;
 			}
 		}
 
-		usort($scopes, function($a, $b) {
-			if ($a['order'] == $b['order']) return 0;
-			return ($a['order'] < $b['order']) ? -1 : 1;
-		});
+		$scopes = array_values($scopes);
+		usort($scopes, fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
 
 		return $scopes;
 	}
