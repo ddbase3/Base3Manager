@@ -22,6 +22,8 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 	public function init() {
 
+		$configuration = $this->container->get(IConfiguration::class);
+		$session = $this->container->get(ISession::class);
 		$classmap = $this->container->get(IClassMap::class);
 
 		$this->container
@@ -31,29 +33,18 @@ class Base3ManagerPlugin extends AbstractPlugin {
                         ->set('serviceselector', LangBasedServiceSelector::getInstance(), IContainer::SHARED)
 			->set(IServiceSelector::class, 'serviceselector', IContainer::ALIAS)
 
-			->set(
-				'language',
-				function() {
-					$configuration = $this->container->get(IConfiguration::class);
-					$session = $this->container->get(ISession::class);
-					return new MultiLang($configuration, $session);
-				},
-				IContainer::SHARED)
+			->set('language', fn() => new MultiLang($configuration, $session), IContainer::SHARED)
 			->set(ILanguage::class, 'language', IContainer::ALIAS)
 
-			->set('view', function() { return new MvcView; })
+			->set('view', fn() => new MvcView)
 			->set(IMvcView::class, 'view', IContainer::ALIAS)
 
 			->set('base3manager', new Base3Manager($classmap), IContainer::SHARED)
 			->set(Base3Manager::class, 'base3manager', IContainer::ALIAS)
 
 			// for check only
-			->set('delegateworker', function() { return new \Base3\Worker\DelegateWorker; })
+			->set('delegateworker', fn() => new \Base3\Worker\DelegateWorker)
 
-			->set(
-				'base3managerchecks',
-				array(
-                                	function() { return new Check($this->container); }
-                         	));
+			->set('base3managerchecks', [ fn() => new Check($this->container) ]);
 	}
 }

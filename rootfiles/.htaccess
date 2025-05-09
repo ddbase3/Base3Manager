@@ -1,0 +1,20 @@
+<files *.ini>
+order deny,allow
+deny from all
+</files>
+
+RewriteEngine On
+RewriteRule ^assets/ - [L]
+RewriteRule ^plugin/(.*)/assets/ - [L]
+RewriteRule ^tpl/ - [L]
+RewriteRule ^userfiles/ - [L]
+RewriteRule ^favicon.ico - [L]
+RewriteRule ^robots.txt - [L]
+
+RewriteRule ^$ index.php
+
+RewriteRule ^(.+)/(.+)\.(.+) index.php?data=$1&name=$2&out=$3 [L,QSA]
+RewriteRule ^(.+)\.(.+) index.php?name=$1&out=$2 [L,QSA]
+
+#RewriteRule ^(.+)/(.+)\.(.+) index.php?app=$1&name=$2&out=$3 [L,QSA]
+#RewriteRule ^(.+)\.(.+) index.php?app=&name=$1&out=$2 [L,QSA]
