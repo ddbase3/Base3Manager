@@ -22,10 +22,6 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 	public function init() {
 
-		$configuration = $this->container->get(IConfiguration::class);
-		$session = $this->container->get(ISession::class);
-		$classmap = $this->container->get(IClassMap::class);
-
 		$this->container
 
 			->set($this->getName(), $this, IContainer::SHARED)
@@ -33,13 +29,17 @@ class Base3ManagerPlugin extends AbstractPlugin {
                         ->set('serviceselector', LangBasedServiceSelector::getInstance(), IContainer::SHARED)
 			->set(IServiceSelector::class, 'serviceselector', IContainer::ALIAS)
 
-			->set('language', fn() => new MultiLang($configuration, $session), IContainer::SHARED)
+			->set('language',
+				fn() => new MultiLang(
+					$this->container->get(IConfiguration::class),
+					$this->container->get(ISession::class)
+				), IContainer::SHARED)
 			->set(ILanguage::class, 'language', IContainer::ALIAS)
 
 			->set('view', fn() => new MvcView)
 			->set(IMvcView::class, 'view', IContainer::ALIAS)
 
-			->set('base3manager', new Base3Manager($classmap), IContainer::SHARED)
+			->set('base3manager', new Base3Manager($this->container->get(IClassMap::class)), IContainer::SHARED)
 			->set(Base3Manager::class, 'base3manager', IContainer::ALIAS)
 
 			// for check only
