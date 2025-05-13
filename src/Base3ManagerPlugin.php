@@ -13,6 +13,7 @@ use Base3\Language\MultiLang\MultiLang;
 use Base3\ServiceSelector\Api\IServiceSelector;
 use Base3\ServiceSelector\LangBased\LangBasedServiceSelector;
 use Base3\Session\Api\ISession;
+use Base3\Session\NoSession\NoSession;
 use Base3Manager\Plugin\AbstractPlugin;
 use Base3Manager\Service\Base3Manager;
 
@@ -28,6 +29,9 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
                         ->set('serviceselector', LangBasedServiceSelector::getInstance(), IContainer::SHARED)
 			->set(IServiceSelector::class, 'serviceselector', IContainer::ALIAS)
+
+			// overwrite with plugins
+			->set(ISession::class, new NoSession, IContainer::SHARED | IContainer::NOOVERWRITE)
 
 			->set('language',
 				fn() => new MultiLang(
