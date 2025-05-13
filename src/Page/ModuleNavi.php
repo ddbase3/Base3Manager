@@ -2,6 +2,7 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IAssetResolver;
 use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
 use Base3\Accesscontrol\Api\IAccesscontrol;
@@ -10,22 +11,13 @@ use Base3Manager\Service\Base3Manager;
 
 class ModuleNavi implements IOutput {
 
-	private $configuration;
-	private $accesscontrol;
-	private $base3manager;
-	private $view;
-
 	public function __construct(
-		IConfiguration $configuration,
-		IAccesscontrol $accesscontrol,
-		Base3Manager $base3manager,
-		IMvcView $view
-	) {
-		$this->configuration = $configuration;
-		$this->accesscontrol = $accesscontrol;
-		$this->base3manager = $base3manager;
-		$this->view = $view;
-	}
+		private readonly IConfiguration $configuration,
+		private readonly IAccesscontrol $accesscontrol,
+		private readonly Base3Manager $base3manager,
+		private readonly IMvcView $view,
+		private readonly IAssetResolver $assetresolver
+	) {}
 
 	// Implementation of IBase
 
@@ -67,7 +59,9 @@ class ModuleNavi implements IOutput {
                         if (!$enabled) unset($modules[$key]);
                 }
 
-		$this->view->assign("modules", $modules);
+		$this->view->assign('modules', $modules);
+
+		$this->view->assign('resolve', fn($src) => $this->assetresolver->resolve($src));
 
 		return $this->view->loadTemplate();
 	}
