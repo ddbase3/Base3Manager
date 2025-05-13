@@ -24,7 +24,7 @@
 		<link type="text/css" rel="stylesheet" href="<?php echo $this->_['resolve']('plugin/Base3Manager/assets/layout/' . $this->_['layout'] . '/style.css'); ?>" />
 		<script type="text/javascript" src="<?php echo $this->_['resolve']('plugin/Base3Manager/assets/js/script.js'); ?>"></script>
 
-		<meta name="generator" content="BASE3 XRM" />
+		<meta name="generator" content="BASE3 Framework" />
 
 	</head>
 	<body id="base3manager">
