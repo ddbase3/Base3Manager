@@ -1,5 +1,36 @@
 (function($, window) {
 
+	$.base3 = $.base3 || {};
+
+	$.base3.buildUrl = function(relativeUrl) {
+		const base = $.base3.endpoint || '';
+		if (!relativeUrl) return base;
+
+		if (relativeUrl.startsWith('?')) {
+			return base.includes('?') ? base + '&' + relativeUrl.slice(1) : base + relativeUrl;
+		}
+
+		return relativeUrl;
+	};
+
+	$.b3get = function(url, data, success, dataType) {
+		return $.get($.base3.buildUrl(url), data, success, dataType);
+	};
+
+	$.b3post = function(url, data, success, dataType) {
+		return $.post($.base3.buildUrl(url), data, success, dataType);
+	};
+
+	$.b3ajax = function(options) {
+		const newOptions = $.extend({}, options);
+		newOptions.url = $.base3.buildUrl(options.url);
+		return $.ajax(newOptions);
+	};
+
+	$.fn.b3load = function(url, data, callback) {
+		return this.load($.base3.buildUrl(url), data, callback);
+	};
+
 	var methods = {
 
 		b3m: null,
@@ -7,11 +38,14 @@
 		init: function(options) {
 			return this.each(function() {
 				var opt = $.extend({
+					endpoint: '',
 					data: {}
 				}, options);
 
 				methods.b3m = $(this);
 				methods.b3m.addClass('base3manager');
+				methods.b3m.data('opt', opt);
+				$.base3.endpoint = opt.endpoint;
 
 				// TODO refactoring
 				$(window).on("popstate", function(e) {
@@ -114,7 +148,7 @@
 
 			methods._setScope(scope);
 
-			$("#modulenavi").load("?name=modulenavi&scope=" + scope, function() {
+			$("#modulenavi").b3load("?name=modulenavi&scope=" + scope, function() {
 				var module = methods.getModule();
 				$('a[rel="' + module + '"]').parent().addClass("active");
 				methods._initModules();
@@ -205,7 +239,7 @@
 			methods.b3m.trigger('destroyHeader', []);
 			$('#modulehead').trigger('destroyContent');
 			methods._setHeaderLoaded(false);
-			$('#modulehead').load('?name=header&alias=' + alias, methods.getContext(), function() {
+			$('#modulehead').b3load('?name=header&alias=' + alias, methods.getContext(), function() {
 				methods._setHeaderLoaded(true);
 				methods.initHeader();
 			});
@@ -221,7 +255,7 @@
 		// subnavi
 
 		loadSubnavi: function(module) {
-			$("#subnavi").load("?name=subnavi&alias=" + module, function() {
+			$("#subnavi").b3load("?name=subnavi&alias=" + module, function() {
 				$('#subnavi ul a').on('click', function(e) {
 					e.preventDefault();
 					var url = $(this).attr("href");
@@ -245,7 +279,7 @@
 				height: h,
 				modal: true,
 				open: function () {
-					$(this).load(url, methods.getContext(), function() {
+					$(this).b3load(url, methods.getContext(), function() {
 						// methods.b3m.trigger("contentLoaded");
 						methods.b3m.trigger("dialogLoaded");
 						$(this).trigger('contentLoaded');
@@ -265,7 +299,7 @@
 		// toolbar
 
 		loadToolbar: function(alias) {
-			$("#toolbar").load("?name=toolbar&alias=" + alias);
+			$("#toolbar").b3load("?name=toolbar&alias=" + alias);
 		},
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,7 +325,7 @@
 			methods.setTabsLoaded(false);
 			methods.setContentLoaded(false);
 
-			$("#moduletabs").load("?name=tabs&alias=" + alias, function() {
+			$("#moduletabs").b3load("?name=tabs&alias=" + alias, function() {
 				$("#moduletabs a").on('click', function() {
 					if (methods.getLocked()) {
 						alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
@@ -339,7 +373,7 @@
 		_loadContent: function(alias, tabalias) {
 			methods.b3m.trigger('destroyContent', []);
 			$('#content').trigger('destroyContent');
-			$("#content").load("?name=content&alias=" + alias + "&tabalias=" + tabalias, methods.getContext(), function() {
+			$("#content").b3load("?name=content&alias=" + alias + "&tabalias=" + tabalias, methods.getContext(), function() {
 				methods.setContentLoaded(true);
 				methods.initContent();
 			});
@@ -365,8 +399,3 @@
 	};
 
 })(jQuery, window);
-
-$(function() {
-	$('#base3manager').base3manager();
-});
-
