@@ -2,10 +2,12 @@
 
 namespace Base3Manager;
 
+use Base3\Api\IAssetResolver;
 use Base3\Api\IClassMap;
 use Base3\Api\IContainer;
 use Base3\Api\IMvcView;
 use Base3\Configuration\Api\IConfiguration;
+use Base3\Core\BaseAssetResolver;
 use Base3\Core\Check;
 use Base3\Core\MvcView;
 use Base3\Language\Api\ILanguage;
@@ -45,6 +47,8 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 			->set('base3manager', new Base3Manager($this->container->get(IClassMap::class)), IContainer::SHARED)
 			->set(Base3Manager::class, 'base3manager', IContainer::ALIAS)
+
+			->set(IAssetResolver::class, fn() => new BaseAssetResolver, IContainer::SHARED | IContainer::NOOVERWRITE)
 
 			// for check only
 			->set('delegateworker', fn() => new \Base3\Worker\DelegateWorker)

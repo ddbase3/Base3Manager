@@ -2,6 +2,7 @@
 
 namespace Base3Manager\Page;
 
+use Base3\Api\IAssetResolver;
 use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
 use Base3\Configuration\Api\IConfiguration;
@@ -10,22 +11,13 @@ use Base3Manager\Service\Base3Manager;
 
 class Index implements IOutput {
 
-	private $configuration;
-	private $language;
-	private $base3manager;
-	private $view;
-
 	public function __construct(
-		IConfiguration $configuration,
-		ILanguage $language,
-		Base3Manager $base3manager,
-		IMvcView $view
-	) {
-		$this->configuration = $configuration;
-		$this->language = $language;
-		$this->base3manager = $base3manager;
-		$this->view = $view;
-	}
+		private readonly IConfiguration $configuration,
+		private readonly ILanguage $language,
+		private readonly Base3Manager $base3manager,
+		private readonly IMvcView $view,
+		private readonly IAssetResolver $assetResolver
+	) {}
 
 	// Implementation of IBase
 
@@ -46,6 +38,8 @@ class Index implements IOutput {
 		$this->view->assign('language', $this->language->getLanguage());
 		$this->view->assign('assets', $this->base3manager->getAssets());
 		$this->view->assign('systemnavi', $this->base3manager->getSystemNavi());
+
+		$this->view->assign('resolve', fn($src) => $this->assetResolver->resolve($src));
 
 		return $this->view->loadTemplate();
 	}

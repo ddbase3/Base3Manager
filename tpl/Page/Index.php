@@ -12,17 +12,17 @@
 <?php foreach ($this->_['assets'] as $asset) { ?>
 <?php foreach ($asset as $file) { ?>
 <?php if ($file['type'] == 'js') { ?>
-		<script src="<?php echo $file['src']; ?>"></script>
+		<script src="<?php echo $this->_['resolve']($file['src']); ?>"></script>
 <?php } ?>
 <?php if ($file['type'] == 'css') { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo $file['src']; ?>" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->_['resolve']($file['src']); ?>" />
 <?php } ?>
 <?php } ?>
 
 <?php } ?>
-		<link type="text/css" rel="stylesheet" href="plugin/Base3Manager/assets/layout/base.css" />
-		<link type="text/css" rel="stylesheet" href="plugin/Base3Manager/assets/layout/<?php echo $this->_['layout']; ?>/style.css" />
-		<script type="text/javascript" src="plugin/Base3Manager/assets/js/script.js"></script>
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->_['resolve']('plugin/Base3Manager/assets/layout/base.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->_['resolve']('plugin/Base3Manager/assets/layout/' . $this->_['layout'] . '/style.css'); ?>" />
+		<script type="text/javascript" src="<?php echo $this->_['resolve']('plugin/Base3Manager/assets/js/script.js'); ?>"></script>
 
 		<meta name="generator" content="BASE3 XRM" />
 
