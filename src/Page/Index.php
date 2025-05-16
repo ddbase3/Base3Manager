@@ -34,7 +34,6 @@ class Index implements IOutput {
 		$this->view->setPath(DIR_PLUGIN . 'Base3Manager');
 		$this->view->setTemplate('Page/Index.php');
 
-		$this->view->assign('endpoint', $cnf['endpoint']);
 		$this->view->assign('layout', $cnf['layout']);
 		$this->view->assign('language', $this->language->getLanguage());
 		$this->view->assign('assets', $this->base3manager->getAssets());
