@@ -21,7 +21,7 @@ class Content implements IOutput {
 
 	// Implementation of IBase
 
-	public function getName() {
+	public static function getName(): string {
 		return "content";
 	}
 

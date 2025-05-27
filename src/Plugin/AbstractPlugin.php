@@ -16,8 +16,10 @@ abstract class AbstractPlugin implements IPlugin, ICheck {
 
 	// Implementation of IBase
 
-	public function getName(): string {
-		return strtolower($this->getClassName());
+	public static function getName(): string {
+		$fullClass = static::class;
+		$parts = explode('\\', $fullClass);
+		return strtolower(end($parts));
 	}
 
 	// Implementation of ICheck
