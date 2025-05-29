@@ -27,7 +27,7 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 		$this->container
 
-			->set($this->getName(), $this, IContainer::SHARED)
+			->set(self::getName(), $this, IContainer::SHARED)
 
                         ->set('serviceselector', LangBasedServiceSelector::getInstance(), IContainer::SHARED)
 			->set(IServiceSelector::class, 'serviceselector', IContainer::ALIAS)
