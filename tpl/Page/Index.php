@@ -5,9 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>BASE3 Manager</title>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="<?php echo $this->_['resolve']('plugin/ClientStack/assets/assetloader/assetloader.min.js'); ?>"></script>
+		<script src="<?php echo $this->_['resolve']('plugin/ClientStack/assets/jquery/jquery.js'); ?>"></script>
+		<link rel="stylesheet" href="<?php echo $this->_['resolve']('plugin/ClientStack/assets/jqueryui/jquery-ui.css'); ?>">
+		<script src="<?php echo $this->_['resolve']('plugin/ClientStack/assets/jqueryui/jquery-ui.js'); ?>"></script>
 
 <?php foreach ($this->_['assets'] as $asset) { ?>
 <?php foreach ($asset as $file) { ?>

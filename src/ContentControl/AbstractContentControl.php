@@ -8,16 +8,10 @@ use Base3Manager\Service\Base3Manager;
 
 abstract class AbstractContentControl implements IOutput {
 
-        protected $view;
-	protected $base3manager;
-
         public function __construct(
-		IMvcView $view,
-		Base3Manager $base3manager
-	) {
-                $this->view = $view;
-		$this->base3manager = $base3manager;
-        }
+		protected IMvcView $view,
+		protected Base3Manager $base3manager
+	) {}
 
         // Implementation of IOutput
 
