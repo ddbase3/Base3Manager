@@ -16,6 +16,8 @@ use Base3\ServiceSelector\Api\IServiceSelector;
 use Base3\ServiceSelector\LangBased\LangBasedServiceSelector;
 use Base3\Session\Api\ISession;
 use Base3\Session\NoSession\NoSession;
+use Base3\State\Api\IStateStore;
+use Base3\State\No\NoStateStore;
 use Base3Manager\Plugin\AbstractPlugin;
 use Base3Manager\Service\Base3Manager;
 
@@ -34,6 +36,8 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 			// overwrite with plugins
 			->set(ISession::class, fn() => new NoSession(), IContainer::SHARED | IContainer::NOOVERWRITE)
+
+			->set(IStateStore::class, fn() => new NoStateStore(), IContainer::SHARED | IContainer::NOOVERWRITE)
 
 			->set('language', fn($c) => new MultiLang($c->get(IConfiguration::class), $c->get(ISession::class)), IContainer::SHARED)
 			->set(ILanguage::class, 'language', IContainer::ALIAS)
