@@ -31,22 +31,22 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 			->set(self::getName(), $this, IContainer::SHARED)
 
-                        ->set('serviceselector', fn($c) => new LangBasedServiceSelector($c), IContainer::SHARED)
-			->set(IServiceSelector::class, 'serviceselector', IContainer::ALIAS)
+                        ->set(IServiceSelector::class, fn($c) => new LangBasedServiceSelector($c), IContainer::SHARED)
+			->set('serviceselector', IServiceSelector::class, IContainer::ALIAS)
 
 			// overwrite with plugins
 			->set(ISession::class, fn() => new NoSession(), IContainer::SHARED | IContainer::NOOVERWRITE)
 
 			->set(IStateStore::class, fn() => new NoStateStore(), IContainer::SHARED | IContainer::NOOVERWRITE)
 
-			->set('language', fn($c) => new MultiLang($c->get(IConfiguration::class), $c->get(ISession::class)), IContainer::SHARED)
-			->set(ILanguage::class, 'language', IContainer::ALIAS)
+			->set(ILanguage::class, fn($c) => new MultiLang($c->get(IConfiguration::class), $c->get(ISession::class)), IContainer::SHARED)
+			->set('language', ILanguage::class, IContainer::ALIAS)
 
-			->set('view', fn() => new MvcView())
-			->set(IMvcView::class, 'view', IContainer::ALIAS)
+			->set(IMvcView::class, fn($c) => new MvcView($c->get(ILanguage::class)))
+			->set('view', IMvcView::class, IContainer::ALIAS)
 
-			->set('base3manager', fn($c) => new Base3Manager($c->get(IClassMap::class)), IContainer::SHARED)
-			->set(Base3Manager::class, 'base3manager', IContainer::ALIAS)
+			->set(Base3Manager::class, fn($c) => new Base3Manager($c->get(IClassMap::class)), IContainer::SHARED)
+			->set('base3manager', Base3Manager::class, IContainer::ALIAS)
 
 			->set(IAssetResolver::class, fn() => new BaseAssetResolver(), IContainer::SHARED | IContainer::NOOVERWRITE)
 

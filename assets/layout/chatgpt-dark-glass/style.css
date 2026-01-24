@@ -1,0 +1,464 @@
+/* =========================================
+   BASE3 Manager – Skin "Dark Glass Neon"
+   (Basis-Skin bleibt, dieser Skin wird ausgetauscht)
+   ========================================= */
+
+:root{
+  /* Core */
+  --bg: #070A12;                 /* fast schwarz mit blauem Stich */
+  --glass: rgba(17, 24, 39, .58);
+  --glass2: rgba(17, 24, 39, .40);
+  --panel: rgba(255,255,255,.06);
+  --panel2: rgba(255,255,255,.09);
+
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.65);
+
+  --border: rgba(255,255,255,.10);
+  --border2: rgba(255,255,255,.16);
+
+  /* Neon accent (anders als “calm blue”) */
+  --accent: #8B5CF6;            /* violet */
+  --accent2: #22D3EE;           /* cyan */
+  --accentGlow: 0 0 0 4px rgba(139,92,246,.18), 0 0 24px rgba(34,211,238,.18);
+
+  --shadow: 0 18px 55px rgba(0,0,0,.55);
+  --shadow-sm: 0 2px 10px rgba(0,0,0,.35);
+
+  --radius: 14px;
+  --radius-lg: 18px;
+
+  /* Heights: passend zu Basis (mobile 134 / desktop 180) */
+  --h-system: 30px;
+  --h-module: 52px;
+  --h-toolbar: 38px;
+  --h-head: 66px;
+  --h-tabs: 32px;
+
+  --header-h: 180px;
+}
+
+/* ---- Global ---- */
+body{
+  margin:0;
+  padding:0;
+  background:
+    radial-gradient(900px 500px at 18% 10%, rgba(139,92,246,.18), transparent 60%),
+    radial-gradient(900px 500px at 82% 18%, rgba(34,211,238,.16), transparent 60%),
+    linear-gradient(180deg, #050813, #070A12 40%, #070A12);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a{ color: var(--accent2); text-decoration:none; }
+a:hover{ text-decoration: underline; }
+th{ color: var(--muted); }
+
+/* Basis Content position bleibt */
+#content{ top: 134px; }
+@media only screen and (min-width: 600px){
+  #content{ top: var(--header-h); }
+}
+
+/* ---- Head background ---- */
+#head{ background: transparent; }
+
+/* ---- Glass bars: System / Toolbar / Head / Tabs ---- */
+.systemnavi,
+#toolbar,
+#modulehead,
+#moduletabs{
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* heights */
+.systemnavi{ height: var(--h-system); }
+#toolbar{ height: var(--h-toolbar); margin-top: var(--h-system); }
+#modulehead{ height: var(--h-head); }
+#moduletabs{ height: var(--h-tabs); }
+
+/* ---- Module Navi: Dock-Style (wirklich anders) ---- */
+#modulenavi{
+  height: var(--h-module);
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: var(--shadow);
+}
+
+/* Dock spacing */
+#modulenavi ul{
+  height: var(--h-module);
+  display:flex;
+  align-items:center;
+  gap: 4px;
+  padding: 0 8px;
+}
+
+/* each item becomes a floating tile, not a bar segment */
+#modulenavi ul li{
+  display:inline-block;
+  height: var(--h-module);
+  border-right: none; /* Basis hat border-right oft im Skin – hier bewusst weg */
+}
+
+/* Link tile */
+#modulenavi ul li a{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+
+  width: 78px;
+  height: calc(var(--h-module) - 10px);
+  margin: 5px 0 0;
+
+  border-radius: 14px;
+  text-decoration:none;
+  color: rgba(255,255,255,.90);
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+#modulenavi ul li a img{
+  display:block;
+  margin: 0 auto 2px;
+  opacity: .92;
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,.55));
+}
+
+/* hover lifts like a dock */
+#modulenavi ul li a:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(34,211,238,.35);
+  box-shadow: 0 16px 34px rgba(0,0,0,.45);
+}
+
+/* active: neon outline */
+#modulenavi ul li.active a{
+  background: linear-gradient(180deg, rgba(139,92,246,.20), rgba(34,211,238,.12));
+  border-color: rgba(139,92,246,.45);
+  box-shadow: 0 18px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(34,211,238,.25) inset;
+}
+
+/* ---- Systemnavi: slim, right aligned ---- */
+.systemnavi ul{
+  height: var(--h-system);
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap: 4px;
+  padding: 0 8px;
+}
+.systemnavi ul li a{
+  display:flex;
+  align-items:center;
+  height: calc(var(--h-system) - 6px);
+  margin: 3px 0;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: rgba(255,255,255,.88);
+}
+.systemnavi ul li a:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* dropdown */
+.systemnavi ul li ul{
+  border: 1px solid var(--border);
+  background: rgba(8,12,22,.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.systemnavi ul li ul li a{
+  padding: 9px 12px;
+  border-radius: 0;
+}
+
+/* ---- Subnavi: floating chips on desktop ---- */
+@media only screen and (min-width: 600px){
+  #subnavi{
+    background: transparent;
+    border-bottom: none;
+  }
+  #subnavi ul{
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    margin-left: 10px;
+    padding: 8px 0;
+  }
+}
+
+#subnavi ul li a{
+  display:flex;
+  align-items:center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  color: rgba(255,255,255,.86);
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+#subnavi ul li a:hover{
+  border-color: rgba(34,211,238,.35);
+  background: rgba(255,255,255,.10);
+}
+
+/* ---- Toolbar: “command strip” ---- */
+#toolbar .control{
+  right: 10px;
+  top: 6px;
+  width: auto;
+  height: auto;
+  padding: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+#toolbar .control button{
+  width: 30px;
+  height: 28px;
+  margin: 0 2px;
+  padding: 0;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.12) !important;
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+
+  transition: transform .08s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+#toolbar .control button:hover{
+  transform: translateY(-1px);
+  border-color: rgba(139,92,246,.40) !important;
+  background: rgba(255,255,255,.10);
+  box-shadow: 0 16px 34px rgba(0,0,0,.45);
+}
+#toolbar .control button[disabled]{ opacity:.45; filter: grayscale(1); }
+
+#toolbar .control input{
+  height: 28px;
+  margin: 0 4px 0 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.07) !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  color: rgba(255,255,255,.92);
+}
+#toolbar .control input:focus{
+  box-shadow: var(--accentGlow);
+  border-color: rgba(34,211,238,.45) !important;
+}
+
+/* ---- Modulehead: big glass plate with glow edge ---- */
+#modulehead{
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)),
+    var(--glass);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+#modulehead::after{
+  content:"";
+  position:absolute;
+  left: 14px; right: 14px; bottom: 8px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34,211,238,.55), rgba(139,92,246,.55), transparent);
+  opacity: .55;
+}
+
+#StandardHeaderControl{ width: 100%; padding: 12px 12px; }
+
+#entryname .entryname{
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: rgba(255,255,255,.95);
+}
+
+#entryinfo{ color: rgba(255,255,255,.70); line-height: 1.45; }
+
+#preview{
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 16px 40px rgba(0,0,0,.45);
+}
+
+/* ---- Tabs: floating neon pills (anders als vorher) ---- */
+#moduletabs ul{
+  margin: 0 0 0 10px;
+  padding-top: 6px;
+  display:flex;
+  align-items:center;
+  gap: 6px;
+  letter-spacing: 0;
+}
+
+#moduletabs ul li a{
+  display:block;
+  padding: 6px 12px 5px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+
+  color: rgba(255,255,255,.78);
+  font-weight: 800;
+  text-decoration:none;
+
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease, transform .08s ease;
+}
+#moduletabs ul li a:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(34,211,238,.30);
+}
+#moduletabs ul li.active a{
+  color: rgba(255,255,255,.92);
+  border-color: rgba(139,92,246,.50);
+  background: linear-gradient(180deg, rgba(139,92,246,.22), rgba(34,211,238,.12));
+  box-shadow: 0 0 0 1px rgba(34,211,238,.18) inset, 0 14px 30px rgba(0,0,0,.45);
+}
+
+/* ---- Wrap / Panels ---- */
+#wrap{ background: transparent; }
+
+/* Fieldsets: dark glass cards */
+fieldset{
+  position: relative;
+  margin: 12px 10px;
+  padding: 14px 12px 12px;
+
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 0 16px 40px rgba(0,0,0,.40);
+}
+legend{
+  position:absolute;
+  left: 14px;
+  top: -11px;
+  padding: 2px 10px;
+  font-weight: 800;
+  color: rgba(255,255,255,.70);
+
+  background: rgba(8,12,22,.80);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+}
+
+/* ---- Inputs: dark translucent ---- */
+input, textarea, select, button{ font: inherit; }
+
+input[type="text"], input[type="password"], textarea, select{
+  background: rgba(255,255,255,.07) !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  color: rgba(255,255,255,.92);
+  border-radius: 12px;
+  padding: 6px 8px !important;
+  outline: none;
+  box-shadow: 0 1px 0 rgba(0,0,0,.20);
+  transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+textarea{ line-height: 1.35; }
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus{
+  border-color: rgba(34,211,238,.45) !important;
+  box-shadow: var(--accentGlow);
+  background: rgba(255,255,255,.10) !important;
+}
+
+input[disabled], textarea[disabled], select[disabled]{
+  background: rgba(255,255,255,.04) !important;
+  color: rgba(255,255,255,.45) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+input[readonly], textarea[readonly], select[readonly]{
+  background: rgba(255,255,255,.05) !important;
+  color: rgba(255,255,255,.65) !important;
+  border-color: rgba(255,255,255,.10) !important;
+}
+
+/* ---- Cards (Customer / Contact) ---- */
+.customer, .contact{
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: 0 18px 44px rgba(0,0,0,.45) !important;
+}
+.customer:hover, .contact:hover{
+  border-color: rgba(34,211,238,.30) !important;
+  box-shadow: 0 26px 60px rgba(0,0,0,.55) !important;
+}
+
+/* ---- jQuery UI Dialogs (dark glass) ---- */
+.ui-widget{
+  border-radius: 16px;
+  font-size: 1em;
+}
+.ui-dialog{
+  border: 1px solid rgba(255,255,255,.12) !important;
+  box-shadow: 0 28px 80px rgba(0,0,0,.65) !important;
+  overflow: hidden;
+  background: rgba(8,12,22,.92);
+}
+.ui-widget-header{
+  padding: 10px 12px;
+  border: none;
+  background: linear-gradient(180deg, rgba(139,92,246,.30), rgba(17,24,39,.92));
+}
+.ui-widget-header, .ui-widget-header *{ color:#fff; }
+.ui-dialog-content{ background: transparent; color: rgba(255,255,255,.92); }
+
+.ui-dialog-buttonpane{
+  background: rgba(255,255,255,.04);
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+.ui-dialog-buttonpane .ui-button{
+  padding: 7px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  background: rgba(255,255,255,.07) !important;
+  color: rgba(255,255,255,.92) !important;
+}
+.ui-dialog-buttonpane .ui-button:hover{
+  border-color: rgba(34,211,238,.35) !important;
+  box-shadow: var(--accentGlow);
+}
+
+/* ---- Scrollbars ---- */
+*{
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.22) transparent;
+}
+*::-webkit-scrollbar{ width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover{
+  background: rgba(255,255,255,.28);
+  background-clip: content-box;
+}

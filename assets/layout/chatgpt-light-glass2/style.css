@@ -1,0 +1,388 @@
+/* =========================================
+   BASE3 Manager – Modern UI Skin (Light Glass)
+   Skin wird ausgetauscht, Basis bleibt
+   ========================================= */
+
+/* ---- Design Tokens ---- */
+:root{
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --panel2: #fbfcff;
+
+  --text: #111827;
+  --muted: #6b7280;
+
+  --border: rgba(17,24,39,.12);
+  --border2: rgba(17,24,39,.18);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md: 0 10px 28px rgba(17,24,39,.12);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+
+  --accent: #2563eb;
+
+  /* Heights */
+  --h-system: 34px;   /* mehr Platz */
+  --h-module: 50px;
+  --h-toolbar: 38px;
+  --h-head: 64px;     /* mehr Platz */
+  --h-tabs: 32px;
+
+  --header-h: 180px;  /* Desktop: muss zu #content top=180 passen */
+}
+
+/* ---- Global ---- */
+body{
+  margin:0;
+  padding:0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a{ color: var(--accent); text-decoration:none; }
+a:hover{ text-decoration: underline; }
+th{ color: var(--muted); }
+
+/* Content position: Basis setzt 134/180 – wir lassen das so */
+#content{ top: 134px; }
+@media only screen and (min-width: 600px){
+  #content{ top: var(--header-h); }
+}
+
+/* ---- Glass Bars ---- */
+.systemnavi,
+#toolbar,
+#modulehead,
+#moduletabs,
+#subnavi{
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---- Head (nur optisch; Layout übernimmt HTML/Basis) ---- */
+#head{ background: transparent; }
+
+/* Heights / spacing */
+.systemnavi{ height: var(--h-system); }
+#modulenavi{ height: var(--h-module); }
+#toolbar{ height: var(--h-toolbar); margin-top: var(--h-system); }
+#modulehead{ height: var(--h-head); }
+#moduletabs{ height: var(--h-tabs); }
+
+/* Modulenavi dark */
+#modulenavi{
+  background: linear-gradient(180deg, #111827, #0b1220);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* Desktop: Subnavi liegt laut Basis bei top:70px.
+   Wir geben ihm optisch wieder einen eigenen Streifen. */
+@media only screen and (min-width: 600px){
+  #subnavi{
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+  #subnavi > ul{ padding: 0; }
+}
+
+/* ---- Systemnavi (mehr Luft) ---- */
+.systemnavi ul{
+  height: var(--h-system);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px;
+}
+.systemnavi ul li{ height: var(--h-system); }
+.systemnavi ul li a{
+  display:flex;
+  align-items:center;
+  height: calc(var(--h-system) - 6px);
+  margin: 3px 2px;
+  padding: 0 10px;
+  color: var(--text);
+  border-radius: 10px;
+}
+.systemnavi ul li a:hover{ background: rgba(37,99,235,.08); }
+
+/* Dropdown */
+.systemnavi ul li ul{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.96);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.systemnavi ul li ul li a{
+  display:block;
+  height:auto;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 0;
+}
+
+/* ---- Modulenavi ---- */
+#modulenavi ul{ height: var(--h-module); }
+#modulenavi ul li{
+  height: var(--h-module);
+  border-right: 1px solid rgba(255,255,255,.07);
+}
+#modulenavi ul li a{
+  display:block;
+  height: calc(var(--h-module) - 12px);
+  margin: 6px 6px 0;
+  padding: 6px 6px 0;
+  color: rgba(255,255,255,.92);
+  text-decoration:none;
+  text-align:center;
+  border-radius: 12px;
+}
+#modulenavi ul li a:hover{ background: rgba(255,255,255,.10); }
+#modulenavi ul li.active a{
+  background: rgba(37,99,235,.28);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+}
+#modulenavi ul li a img{
+  display:block;
+  margin: 0 auto 2px;
+  opacity: .95;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.35));
+}
+
+/* ---- Subnavi pills ---- */
+#subnavi ul{
+  display:flex;
+  align-items:center;
+  gap: 2px;
+}
+#subnavi ul li a{
+  display:flex;
+  align-items:center;
+  padding: 7px 10px;
+  color: var(--text);
+  font-weight: 650;
+  border-radius: 999px;
+}
+#subnavi ul li a:hover{ background: rgba(37,99,235,.08); }
+
+/* ---- Toolbar ---- */
+#toolbar .control{
+  right: 10px;
+  top: 6px;
+  height: auto;
+  width: auto;
+  padding: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+#toolbar .control button{
+  width: 28px;
+  height: 28px;
+  margin: 0 2px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+  vertical-align: middle;
+  transition: transform .06s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+#toolbar .control button:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(37,99,235,.28) !important;
+}
+#toolbar .control button:active{ transform: translateY(0); }
+#toolbar .control button[disabled]{ opacity:.45; filter: grayscale(1); }
+
+#toolbar .control input{
+  height: 28px;
+  margin: 0 4px 0 6px;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* ---- Modulehead (mehr Platz / wirkt “gläserner”) ---- */
+#modulehead{
+  display:flex;
+  align-items:center;
+  background: rgba(255,255,255,.70); /* etwas transparenter für mehr “Glass” */
+}
+
+#StandardHeaderControl{
+  width: 100%;
+  padding: 12px 12px; /* mehr Luft */
+}
+
+#entryname .entryname{
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: .2px;
+}
+
+#preview{
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+#entryinfo{
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* Inline edit field */
+#entryname input.newentryname{
+  border-radius: 12px !important;
+  padding: 6px 10px !important;
+  border: 1px solid rgba(37,99,235,.25) !important;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+}
+
+/* ---- Tabs ---- */
+#moduletabs ul{
+  margin: 0 0 0 10px;
+  padding-top: 6px;
+  display:flex;
+  align-items:center;
+  gap: 4px;
+  letter-spacing: 0;
+}
+#moduletabs ul li a{
+  display:block;
+  padding: 6px 12px 5px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.72);
+  color: var(--muted);
+  font-weight: 650;
+  text-decoration:none;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+}
+#moduletabs ul li a:hover{
+  color: var(--text);
+  border-color: rgba(37,99,235,.25);
+  background: rgba(37,99,235,.06);
+}
+#moduletabs ul li.active a{
+  color: #fff;
+  border-color: rgba(37,99,235,.35);
+  background: linear-gradient(180deg, rgba(37,99,235,.95), rgba(29,78,216,.92));
+  box-shadow: 0 6px 16px rgba(37,99,235,.25);
+}
+
+/* ---- Wrap / Panels ---- */
+#wrap{ background: transparent; }
+
+fieldset{
+  position: relative;
+  margin: 12px 10px;
+  padding: 14px 12px 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+legend{
+  position:absolute;
+  left: 14px;
+  top: -11px;
+  padding: 2px 10px;
+  font-weight: 650;
+  color: var(--muted);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+}
+
+/* ---- Inputs ---- */
+input, textarea, select, button{ font: inherit; }
+
+input[type="text"], input[type="password"], textarea, select{
+  background: #fff !important;
+  border: 1px solid var(--border2) !important;
+  border-radius: 10px;
+  padding: 6px 8px !important;
+  outline: none;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+textarea{ line-height: 1.35; }
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus{
+  border-color: rgba(37,99,235,.45) !important;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+}
+
+/* ---- Cards (Customer / Contact) ---- */
+.customer, .contact{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.customer:hover, .contact:hover{
+  border-color: rgba(37,99,235,.25) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ---- jQuery UI Dialogs (vorsichtig) ---- */
+.ui-widget{
+  border-radius: var(--radius-lg);
+  font-size: 1em;
+}
+.ui-dialog{
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-md) !important;
+  overflow: hidden;
+}
+.ui-widget-header{
+  padding: 10px 12px;
+  border: none;
+  background: linear-gradient(180deg, rgba(17,24,39,.92), rgba(17,24,39,.84));
+}
+.ui-widget-header, .ui-widget-header *{ color:#fff; }
+
+.ui-dialog-content{ background: var(--panel); }
+.ui-dialog-buttonpane{
+  background: rgba(246,247,251,.92);
+  border-top: 1px solid var(--border);
+}
+.ui-dialog-buttonpane .ui-button{
+  padding: 7px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border) !important;
+  background: #fff !important;
+  box-shadow: var(--shadow-sm);
+}
+.ui-dialog-buttonpane .ui-button:hover{
+  border-color: rgba(37,99,235,.25) !important;
+  box-shadow: var(--shadow-md);
+}
+
+/* ---- Scrollbars (optional) ---- */
+*{
+  scrollbar-width: thin;
+  scrollbar-color: rgba(17,24,39,.25) transparent;
+}
+*::-webkit-scrollbar{ width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb{
+  background: rgba(17,24,39,.22);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover{
+  background: rgba(17,24,39,.32);
+  background-clip: content-box;
+}
