@@ -39,7 +39,7 @@ class Subnavi implements IOutput {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
                 if (!isset($_REQUEST["alias"])) die();
                 $alias = str_replace("/", "", $_REQUEST["alias"]);
@@ -84,8 +84,7 @@ class Subnavi implements IOutput {
 		return $this->view->loadTemplate();
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Help of Subnavi' . "\n";
 	}
 }
-

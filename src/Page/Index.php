@@ -27,7 +27,7 @@ class Index implements IOutput {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
 		$cnf = $this->configuration->get('manager');
 
@@ -44,8 +44,7 @@ class Index implements IOutput {
 		return $this->view->loadTemplate();
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Help of Index' . "\n";
 	}
-
 }

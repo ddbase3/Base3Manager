@@ -27,7 +27,7 @@ class ModuleNavi implements IOutput {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
 		$cnf = $this->configuration->get('manager');
 		define("SCOPE", isset($_REQUEST["scope"]) && strlen($_REQUEST["scope"]) ? $_REQUEST["scope"] : $cnf['stdscope']);
@@ -66,8 +66,7 @@ class ModuleNavi implements IOutput {
 		return $this->view->loadTemplate();
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Help of ModuleNavi' . "\n";
 	}
-
 }

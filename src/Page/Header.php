@@ -27,7 +27,7 @@ class Header implements IOutput {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
 		if (!isset($_REQUEST["alias"])) die();
 		$alias = str_replace("/", "", $_REQUEST["alias"]);
@@ -39,8 +39,7 @@ class Header implements IOutput {
 		return $instance->getOutput();
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Help of Header' . "\n";
 	}
-
 }

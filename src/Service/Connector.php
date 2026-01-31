@@ -27,7 +27,7 @@ class Connector implements IOutput {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
 		if (!isset($_REQUEST["module"])) die('No module defined.');
 
@@ -41,8 +41,7 @@ class Connector implements IOutput {
 		return $instance->getOutput($out);
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Help of Connector' . "\n";
 	}
-
 }

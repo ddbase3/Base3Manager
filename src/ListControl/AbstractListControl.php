@@ -15,7 +15,7 @@ abstract class AbstractListControl implements IOutput {
 
         // Implementation of IOutput
 
-        public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
 		if (!isset($_REQUEST["alias"])) die();
 		$alias = str_replace("/", "", $_REQUEST["alias"]);
@@ -26,7 +26,7 @@ abstract class AbstractListControl implements IOutput {
                 return $this->view->loadTemplate();
         }
 
-        public function getHelp() {
+        public function getHelp(): string {
                 return 'Help of ' . $this->getTemplate() . "\n";
         }
 
@@ -35,4 +35,3 @@ abstract class AbstractListControl implements IOutput {
 	abstract protected function getPath(); 
 	abstract protected function getTemplate(); 
 }
-
