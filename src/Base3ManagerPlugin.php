@@ -12,6 +12,8 @@ use Base3\Core\Check;
 use Base3\Core\MvcView;
 use Base3\Language\Api\ILanguage;
 use Base3\Language\MultiLang\MultiLang;
+use Base3\LinkTarget\Api\ILinkTargetService;
+use Base3\LinkTarget\Standard\StandardLinkTargetService;
 use Base3\ServiceSelector\Api\IServiceSelector;
 use Base3\ServiceSelector\LangBased\LangBasedServiceSelector;
 use Base3\Session\Api\ISession;
@@ -33,6 +35,8 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
                         ->set(IServiceSelector::class, fn($c) => new LangBasedServiceSelector($c), IContainer::SHARED)
 			->set('serviceselector', IServiceSelector::class, IContainer::ALIAS)
+
+			->set(ILinkTargetService::class, fn() => new StandardLinkTargetService(), IContainer::SHARED | IContainer::NOOVERWRITE)
 
 			// overwrite with plugins
 			->set(ISession::class, fn() => new NoSession(), IContainer::SHARED | IContainer::NOOVERWRITE)
