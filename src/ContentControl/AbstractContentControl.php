@@ -4,20 +4,26 @@ namespace Base3Manager\ContentControl;
 
 use Base3\Api\IMvcView;
 use Base3\Api\IOutput;
+use Base3\LinkTarget\Api\ILinkTargetService;
 use Base3Manager\Service\Base3Manager;
 
 abstract class AbstractContentControl implements IOutput {
 
-        public function __construct(
+	public function __construct(
 		protected IMvcView $view,
-		protected Base3Manager $base3manager
+		protected Base3Manager $base3manager,
+		protected ILinkTargetService $linktargetservice
 	) {}
 
-        // Implementation of IOutput
+	// Implementation of IOutput
 
 	public function getOutput(string $out = 'html', bool $final = false): string {
-                $this->view->setPath($this->getPath());
-                $this->view->setTemplate($this->getTemplate());
+		$this->view->setPath($this->getPath());
+		$this->view->setTemplate($this->getTemplate());
+
+		$this->view->assign('getLink', function(array $target, array $params = []): string {
+			return $this->linktargetservice->getLink($target, $params);
+		});
 
 		$this->fillView();
 
@@ -25,19 +31,18 @@ abstract class AbstractContentControl implements IOutput {
 		$this->view->assign('alias', $alias);
 
 		$module = $this->base3manager->getModule($alias);
-                $this->view->assign('module', $module);
+		$this->view->assign('module', $module);
 
-                return $this->view->loadTemplate();
-        }
+		return $this->view->loadTemplate();
+	}
 
-        public function getHelp(): string {
-                return 'Help of ' . $this->getTemplate() . "\n";
-        }
+	public function getHelp(): string {
+		return 'Help of ' . $this->getTemplate() . "\n";
+	}
 
 	// Abstract methods
 
 	protected function fillView() {}
-	abstract protected function getPath(); 
-	abstract protected function getTemplate(); 
+	abstract protected function getPath();
+	abstract protected function getTemplate();
 }
-
