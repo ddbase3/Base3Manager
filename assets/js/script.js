@@ -31,10 +31,12 @@
 				methods.setTabsLoaded(false);
 				methods.setContentLoaded(false);
 
+				methods._replaceHistoryState(methods._parseHistoryState(window.location.search));
+
 				$(window)
 					.off('popstate' + methods._eventNs)
-					.on('popstate' + methods._eventNs, function(e) {
-						if (e.originalEvent.state !== null) location.reload();
+					.on('popstate' + methods._eventNs, function() {
+						methods._applyHistoryState(methods._parseHistoryState(window.location.search));
 					});
 
 				methods._initSystemNavi(methods.b3m);
@@ -42,16 +44,60 @@
 				const queryString = window.location.search;
 				const urlParams = new URLSearchParams(queryString);
 
-				methods.loadScope(urlParams.has('scope') ? urlParams.get('scope') : "", !urlParams.has('module'));
+				methods.loadScope(
+					urlParams.has('scope') ? urlParams.get('scope') : "",
+					!urlParams.has('module'),
+					{ historyMode: 'skip' }
+				);
 
 				if (urlParams.has('module') && urlParams.has('entryid') && urlParams.has('tab')) {
-					methods.loadModule(urlParams.get('module'), { method: 'id', entryid: urlParams.get('entryid') }, urlParams.get('tab'));
+					methods.loadModule(
+						urlParams.get('module'),
+						{ method: 'id', entryid: urlParams.get('entryid') },
+						urlParams.get('tab'),
+						{
+							historyMode: 'skip',
+							entryHistoryMode: 'skip',
+							explicitTabHistoryMode: 'skip',
+							defaultTabHistoryMode: 'skip'
+						}
+					);
 				} else if (urlParams.has('module') && urlParams.has('entryid')) {
-					methods.loadModule(urlParams.get('module'), { method: 'id', entryid: urlParams.get('entryid') });
+					methods.loadModule(
+						urlParams.get('module'),
+						{ method: 'id', entryid: urlParams.get('entryid') },
+						'',
+						{
+							historyMode: 'skip',
+							entryHistoryMode: 'skip',
+							explicitTabHistoryMode: 'skip',
+							defaultTabHistoryMode: 'skip'
+						}
+					);
 				} else if (urlParams.has('module')) {
-					methods.loadModule(urlParams.get('module'));
+					methods.loadModule(
+						urlParams.get('module'),
+						null,
+						'',
+						{
+							historyMode: 'skip',
+							entryHistoryMode: 'skip',
+							explicitTabHistoryMode: 'skip',
+							defaultTabHistoryMode: 'skip'
+						}
+					);
 				} else {
-					methods.loadModule();
+					methods.loadModule(
+						null,
+						null,
+						'',
+						{
+							historyMode: 'skip',
+							entryHistoryMode: 'skip',
+							explicitTabHistoryMode: 'skip',
+							defaultTabHistoryMode: 'skip'
+						}
+					);
 				}
 			});
 		},
@@ -59,6 +105,148 @@
 		_updateClasses: function() {
 			var classStr = 'base3manager ' + methods.b3m.data('scope') + ' ' + methods.b3m.data('module');
 			methods.b3m.attr('class', classStr);
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// history
+
+		_normalizeHistoryState: function(state) {
+			var normalized = $.extend({
+				scope: '',
+				module: '',
+				tab: '',
+				entryid: 0
+			}, state || {});
+
+			normalized.scope = normalized.scope ? String(normalized.scope) : '';
+			normalized.module = normalized.module ? String(normalized.module) : '';
+			normalized.tab = normalized.tab ? String(normalized.tab) : '';
+			normalized.entryid = parseInt(normalized.entryid, 10);
+			normalized.entryid = isNaN(normalized.entryid) || normalized.entryid < 1 ? 0 : normalized.entryid;
+
+			if (!normalized.module.length) {
+				normalized.tab = '';
+				normalized.entryid = 0;
+			}
+
+			return normalized;
+		},
+
+		_parseHistoryState: function(search) {
+			var query = typeof search === 'string' ? search : window.location.search;
+			var urlParams = new URLSearchParams(query);
+
+			return methods._normalizeHistoryState({
+				scope: urlParams.has('scope') ? urlParams.get('scope') : '',
+				module: urlParams.has('module') ? urlParams.get('module') : '',
+				tab: urlParams.has('tab') ? urlParams.get('tab') : '',
+				entryid: urlParams.has('entryid') ? urlParams.get('entryid') : 0
+			});
+		},
+
+		_getCurrentHistoryState: function() {
+			var entryId = 0;
+
+			if (typeof window.currentEntryId !== 'undefined') {
+				entryId = parseInt(window.currentEntryId, 10);
+				entryId = isNaN(entryId) || entryId < 1 ? 0 : entryId;
+			}
+
+			return methods._normalizeHistoryState({
+				scope: methods.getScope(),
+				module: methods.getModule(),
+				tab: methods.getTab(),
+				entryid: entryId
+			});
+		},
+
+		_buildHistoryUrl: function(state) {
+			var normalized = methods._normalizeHistoryState(state);
+			var params = new URLSearchParams();
+
+			if (normalized.scope.length) params.set('scope', normalized.scope);
+			if (normalized.module.length) params.set('module', normalized.module);
+			if (normalized.entryid > 0) params.set('entryid', normalized.entryid);
+			if (normalized.tab.length) params.set('tab', normalized.tab);
+
+			var query = params.toString();
+
+			return window.location.pathname + (query.length ? '?' + query : '');
+		},
+
+		_replaceHistoryState: function(state) {
+			if (!window.history || !window.history.replaceState) return;
+
+			var normalized = methods._normalizeHistoryState(state);
+			var url = methods._buildHistoryUrl(normalized);
+
+			window.history.replaceState(normalized, document.title, url);
+		},
+
+		updateHistory: function(values, historyMode) {
+			var mode = historyMode || 'push';
+			var state;
+			var url;
+			var currentUrl;
+
+			if (mode == 'skip') return;
+			if (!window.history || !window.history.pushState) return;
+
+			state = methods._normalizeHistoryState($.extend({}, methods._getCurrentHistoryState(), values || {}));
+			url = methods._buildHistoryUrl(state);
+			currentUrl = window.location.pathname + window.location.search;
+
+			if (url == currentUrl) {
+				if (mode == 'replace' && window.history.replaceState) {
+					window.history.replaceState(state, document.title, url);
+				}
+				return;
+			}
+
+			if (mode == 'replace' && window.history.replaceState) {
+				window.history.replaceState(state, document.title, url);
+				return;
+			}
+
+			window.history.pushState(state, document.title, url);
+		},
+
+		_applyHistoryState: function(state) {
+			var normalized = methods._normalizeHistoryState(state);
+			var context = normalized.entryid > 0
+				? { method: 'id', entryid: normalized.entryid }
+				: null;
+
+			if (normalized.scope != methods.getScope()) {
+				methods.loadScope(normalized.scope, !normalized.module.length, {
+					historyMode: 'skip',
+					onLoaded: function() {
+						if (!normalized.module.length) return;
+
+						methods.loadModule(normalized.module, context, normalized.tab, {
+							historyMode: 'skip',
+							entryHistoryMode: 'skip',
+							explicitTabHistoryMode: 'skip',
+							defaultTabHistoryMode: 'skip'
+						});
+					}
+				});
+				return;
+			}
+
+			if (normalized.module.length) {
+				methods.loadModule(normalized.module, context, normalized.tab, {
+					historyMode: 'skip',
+					entryHistoryMode: 'skip',
+					explicitTabHistoryMode: 'skip',
+					defaultTabHistoryMode: 'skip'
+				});
+				return;
+			}
+
+			methods.loadScope(normalized.scope, true, {
+				historyMode: 'skip'
+			});
 		},
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,8 +322,17 @@
 			var numArgs = arguments.length;
 			var scope = numArgs >= 1 ? arguments[0] : "";
 			var reloadContent = numArgs >= 2 ? arguments[1] : true;
+			var options = numArgs >= 3 ? arguments[2] : {};
+			var historyMode = options.historyMode || 'push';
 
 			methods._setScope(scope);
+
+			methods.updateHistory({
+				scope: scope,
+				module: '',
+				tab: '',
+				entryid: 0
+			}, historyMode);
 
 			$("#modulenavi").load("?name=modulenavi&scope=" + scope, function(responseText, textStatus) {
 				var currentModule;
@@ -148,13 +345,22 @@
 
 				methods._initModules();
 
-				if (!reloadContent) return;
+				if (reloadContent) {
+					targetModule = $('#modulenavi a[rel="' + currentModule + '"]').length
+						? currentModule
+						: $("#modulenavi li:first a").attr("rel");
 
-				targetModule = $('#modulenavi a[rel="' + currentModule + '"]').length
-					? currentModule
-					: $("#modulenavi li:first a").attr("rel");
+					if (targetModule && targetModule.length) {
+						methods.loadModule(targetModule, null, '', {
+							historyMode: historyMode == 'skip' ? 'skip' : 'replace',
+							entryHistoryMode: historyMode == 'skip' ? 'skip' : 'replace',
+							explicitTabHistoryMode: historyMode == 'skip' ? 'skip' : 'replace',
+							defaultTabHistoryMode: historyMode == 'skip' ? 'skip' : 'replace'
+						});
+					}
+				}
 
-				if (targetModule && targetModule.length) methods.loadModule(targetModule);
+				if ($.isFunction(options.onLoaded)) options.onLoaded();
 			});
 
 			methods.b3m.data("scope", scope);
@@ -197,6 +403,17 @@
 			var module = numArgs >= 1 ? arguments[0] : methods.getModule();
 			var context = numArgs >= 2 ? arguments[1] : null;
 			var tab = numArgs >= 3 ? arguments[2] : '';
+			var options = numArgs >= 4 ? arguments[3] : {};
+			var historyMode = options.historyMode || 'push';
+			var entryHistoryMode = typeof options.entryHistoryMode !== 'undefined'
+				? options.entryHistoryMode
+				: (historyMode == 'skip' ? 'skip' : 'replace');
+			var explicitTabHistoryMode = typeof options.explicitTabHistoryMode !== 'undefined'
+				? options.explicitTabHistoryMode
+				: historyMode;
+			var defaultTabHistoryMode = typeof options.defaultTabHistoryMode !== 'undefined'
+				? options.defaultTabHistoryMode
+				: (historyMode == 'skip' ? 'skip' : 'replace');
 			var previousModule = methods.getModule();
 
 			if (!module || !module.length) return;
@@ -205,17 +422,27 @@
 			$('a[rel="' + module + '"]').parent().addClass("active");
 
 			methods.setModule(module);
+			methods.setTab('');
 			methods.setDataLoaded(false);
 			methods._setHeaderLoaded(false);
 			methods.setTabsLoaded(false);
 			methods.setContentLoaded(false);
 
-			methods.b3m.trigger('loadData', [ module, context, previousModule ]);
+			methods.updateHistory({
+				module: module,
+				tab: '',
+				entryid: 0
+			}, historyMode);
+
+			methods.b3m.trigger('loadData', [ module, context, previousModule, entryHistoryMode ]);
 
 			methods.loadSubnavi(module);
 			methods.loadToolbar(module);
 			methods.loadHeader(module);
-			methods.loadTabs(module, tab);
+			methods.loadTabs(module, tab, {
+				explicitTabHistoryMode: explicitTabHistoryMode,
+				defaultTabHistoryMode: defaultTabHistoryMode
+			});
 
 			methods.b3m.data("module", module);
 			methods._updateClasses();
@@ -343,7 +570,17 @@
 			methods.b3m.data('tabsLoaded', tabsLoaded ? 1 : 0);
 		},
 
-		loadTabs: function(alias, tab) {
+		loadTabs: function() {
+			var numArgs = arguments.length;
+			var alias = numArgs >= 1 ? arguments[0] : '';
+			var tab = numArgs >= 2 ? arguments[1] : '';
+			var options = numArgs >= 3 ? arguments[2] : {};
+			var explicitTabHistoryMode = typeof options.explicitTabHistoryMode !== 'undefined'
+				? options.explicitTabHistoryMode
+				: 'push';
+			var defaultTabHistoryMode = typeof options.defaultTabHistoryMode !== 'undefined'
+				? options.defaultTabHistoryMode
+				: 'replace';
 			var requestId = ++methods._tabsRequestId;
 
 			methods.setTabsLoaded(false);
@@ -360,31 +597,33 @@
 					}
 
 					var tabalias = $(this).attr("rev");
-					var scope = methods.getScope();
-
-					methods.loadTab(alias, tabalias);
-
-					history.pushState({}, document.title, "?scope=" + scope + "&module=" + alias + "&entryid=" + currentEntryId + "&tab=" + tabalias);
+					methods.loadTab(alias, tabalias, explicitTabHistoryMode);
 
 					return false;
 				});
 
 				if (tab.length) {
-					methods.loadTab(alias, tab);
+					methods.loadTab(alias, tab, explicitTabHistoryMode);
 				} else {
 					var tabButton = $('#moduletabs a:first');
-					if (tabButton.length) methods.loadTab(alias, tabButton.attr("rev"));
+					if (tabButton.length) methods.loadTab(alias, tabButton.attr("rev"), defaultTabHistoryMode);
 				}
 
 				methods.setTabsLoaded(true);
 			});
 		},
 
-		loadTab: function(alias, tabalias) {
+		loadTab: function(alias, tabalias, historyMode) {
+			var mode = historyMode || 'push';
+
 			methods.setTab(tabalias);
 
 			$("#moduletabs li").removeClass("active");
 			$('a[rev="' + tabalias + '"]').parent().addClass("active");
+
+			methods.updateHistory({
+				tab: tabalias
+			}, mode);
 
 			methods._loadContent(alias, tabalias);
 		},
