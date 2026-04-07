@@ -39,6 +39,12 @@
 						methods._applyHistoryState(methods._parseHistoryState(window.location.search));
 					});
 
+				$(document)
+					.off('keydown' + methods._eventNs)
+					.on('keydown' + methods._eventNs, function(e) {
+						methods._handleKeydown(e);
+					});
+
 				methods._initSystemNavi(methods.b3m);
 
 				const queryString = window.location.search;
@@ -250,6 +256,65 @@
 		},
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// hotkeys
+
+		_hasOpenDialog: function() {
+			return $('.ui-dialog:visible').length > 0 || $('.ui-widget-overlay:visible').length > 0;
+		},
+
+		_isEditableTarget: function(target) {
+			var element = $(target);
+
+			if (!element.length) return false;
+			if (element.is('input, textarea, select')) return true;
+			if (element.prop('isContentEditable')) return true;
+			if (element.closest('[contenteditable="true"]').length) return true;
+
+			return false;
+		},
+
+		_normalizeKey: function(e) {
+			var key = e.key || '';
+
+			if (key == 'Esc') key = 'Escape';
+			if (key == 'Del') key = 'Delete';
+			if (key.length == 1) key = key.toLowerCase();
+
+			return key;
+		},
+
+		_handleKeydown: function(e) {
+			var key = methods._normalizeKey(e);
+			var editableTarget = methods._isEditableTarget(e.target);
+			var handled = false;
+
+			if (!methods.b3m || !methods.b3m.length) return;
+			if (!methods.getModule() || !methods.getModule().length) return;
+			if (e.repeat) return;
+			if (methods.getDataLoading()) return;
+			if (methods._hasOpenDialog()) return;
+			if (editableTarget) return;
+			if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+			if (key == 't') {
+				handled = e.shiftKey
+					? methods.loadPrevTab()
+					: methods.loadNextTab();
+
+				if (handled) e.preventDefault();
+				return;
+			}
+
+			if (key == 'm') {
+				handled = e.shiftKey
+					? methods.loadPrevModule()
+					: methods.loadNextModule();
+
+				if (handled) e.preventDefault();
+			}
+		},
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// system navi
 
 		_initSystemNavi: function(base3manager) {
@@ -378,6 +443,35 @@
 			methods.b3m.data('module', module);
 		},
 
+		_getModuleButtons: function() {
+			return $("#modulenavi a[rel]:visible");
+		},
+
+		_getRelativeModuleAlias: function(step) {
+			var moduleButtons = methods._getModuleButtons();
+			var currentModule = methods.getModule();
+			var currentIndex = -1;
+			var targetIndex;
+
+			if (!moduleButtons.length) return '';
+
+			moduleButtons.each(function(i) {
+				if ($(this).attr("rel") == currentModule) {
+					currentIndex = i;
+					return false;
+				}
+			});
+
+			if (currentIndex < 0) currentIndex = 0;
+
+			targetIndex = currentIndex + step;
+
+			if (targetIndex < 0) targetIndex = moduleButtons.length - 1;
+			if (targetIndex >= moduleButtons.length) targetIndex = 0;
+
+			return moduleButtons.eq(targetIndex).attr("rel") || '';
+		},
+
 		_initModules: function() {
 			var modulenavi = $("#modulenavi");
 
@@ -396,6 +490,40 @@
 					e.preventDefault();
 					$(this).siblings('ul').toggleClass('active');
 				});
+		},
+
+		loadNextModule: function(historyMode) {
+			var targetModule;
+
+			if (methods.getLocked()) {
+				alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
+				return false;
+			}
+
+			targetModule = methods._getRelativeModuleAlias(1);
+			if (!targetModule.length) return false;
+
+			methods.loadModule(targetModule, null, '', {
+				historyMode: historyMode || 'push'
+			});
+			return true;
+		},
+
+		loadPrevModule: function(historyMode) {
+			var targetModule;
+
+			if (methods.getLocked()) {
+				alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
+				return false;
+			}
+
+			targetModule = methods._getRelativeModuleAlias(-1);
+			if (!targetModule.length) return false;
+
+			methods.loadModule(targetModule, null, '', {
+				historyMode: historyMode || 'push'
+			});
+			return true;
 		},
 
 		loadModule: function() {
@@ -568,6 +696,69 @@
 
 		setTabsLoaded: function(tabsLoaded) {
 			methods.b3m.data('tabsLoaded', tabsLoaded ? 1 : 0);
+		},
+
+		_getTabButtons: function() {
+			return $("#moduletabs a");
+		},
+
+		_getRelativeTabAlias: function(step) {
+			var tabButtons = methods._getTabButtons();
+			var currentTab = methods.getTab();
+			var currentIndex = -1;
+			var targetIndex;
+
+			if (!tabButtons.length) return '';
+
+			tabButtons.each(function(i) {
+				if ($(this).attr("rev") == currentTab) {
+					currentIndex = i;
+					return false;
+				}
+			});
+
+			if (currentIndex < 0) currentIndex = 0;
+
+			targetIndex = currentIndex + step;
+
+			if (targetIndex < 0) targetIndex = tabButtons.length - 1;
+			if (targetIndex >= tabButtons.length) targetIndex = 0;
+
+			return tabButtons.eq(targetIndex).attr("rev") || '';
+		},
+
+		loadNextTab: function(historyMode) {
+			var module = methods.getModule();
+			var targetTab;
+
+			if (!module || !module.length) return false;
+			if (methods.getLocked()) {
+				alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
+				return false;
+			}
+
+			targetTab = methods._getRelativeTabAlias(1);
+			if (!targetTab.length) return false;
+
+			methods.loadTab(module, targetTab, historyMode || 'push');
+			return true;
+		},
+
+		loadPrevTab: function(historyMode) {
+			var module = methods.getModule();
+			var targetTab;
+
+			if (!module || !module.length) return false;
+			if (methods.getLocked()) {
+				alert("Bitte zuerst den Bearbeitungsmodus verlassen.");
+				return false;
+			}
+
+			targetTab = methods._getRelativeTabAlias(-1);
+			if (!targetTab.length) return false;
+
+			methods.loadTab(module, targetTab, historyMode || 'push');
+			return true;
 		},
 
 		loadTabs: function() {
