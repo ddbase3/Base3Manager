@@ -10,6 +10,8 @@ use Base3\Configuration\Api\IConfiguration;
 use Base3\Core\BaseAssetResolver;
 use Base3\Core\Check;
 use Base3\Core\MvcView;
+use Base3\Event\Api\IEventManager;
+use Base3\Event\EventManager;
 use Base3\Language\Api\ILanguage;
 use Base3\Language\MultiLang\MultiLang;
 use Base3\LinkTarget\Api\ILinkTargetService;
@@ -40,6 +42,8 @@ class Base3ManagerPlugin extends AbstractPlugin {
 
 			// overwrite with plugins
 			->set(ISession::class, fn() => new NoSession(), IContainer::SHARED | IContainer::NOOVERWRITE)
+
+			->set(IEventManager::class, fn() => new EventManager(), IContainer::SHARED)
 
 			->set(IStateStore::class, fn() => new NoStateStore(), IContainer::SHARED | IContainer::NOOVERWRITE)
 
