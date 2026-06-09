@@ -73,6 +73,9 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
 #wrap.full { width:auto; padding:0; }
 .subnavidialog #wrap { width:auto; padding:10px 20px; }
 
+#base3manager #modulenavi a { height:33px !important; box-sizing:content-box; }
+#base3manager #moduletabs * { line-height:22px; height:22px; padding:0; }
+
 .clear { clear:both; }
 
 
