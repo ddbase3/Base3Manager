@@ -10,7 +10,12 @@ ul { margin:0; padding:0; list-style:none; }
 li { margin:0; padding:0; }
 th { text-align:right; padding-right:10px; font-weight:normal; }
 
-#content { position:absolute; left:0; right:0; top:134px; bottom:0; }
+#head { position:relative; z-index:100; }
+
+#content { position:absolute; z-index:0; left:0; right:0; top:134px; bottom:0; }
+
+#overlayroot { position:relative; z-index:1000; }
+
 @media only screen and (min-width: 600px) {
 	#content { top:180px; }
 }
@@ -27,7 +32,7 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
 	.systemnavi ul li { position:relative; z-index:31; float:left; }
 }
 
-#modulenavi { position:absolute; z-index:50; left:0; top:0; }
+#modulenavi { position:absolute; z-index:80; left:0; top:0; }
 #modulenavi .toggle { position:absolute; z-index:40; left:2px; top:0; width:24px; height:24px; text-decoration:none; background:url(../img/module.png) no-repeat center; background-size:16px 16px; }
 #modulenavi > ul { display:none; position:absolute; z-index:38; left:0; top:0; width:180px; padding-top:24px; background:#999; }
 #modulenavi > ul.active { display:block; }
@@ -66,7 +71,7 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
 	#moduletabs ul li { width:110px; }
 }
 
-#wrap { position:absolute; z-index:20; top:0; bottom:0; left:0; right:0; padding:5px 0; overflow:auto; background:#f7f7f7; }
+#wrap { position:absolute; top:0; bottom:0; left:0; right:0; padding:5px 0; overflow:auto; background:#f7f7f7; }
 @media only screen and (min-width: 600px) {
 	#wrap { padding:10px 20px; }
 }
