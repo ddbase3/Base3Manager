@@ -3,6 +3,7 @@
 namespace Base3Manager\Page;
 
 use Base3\Api\IClassMap;
+use Base3\Api\IDisplay;
 use Base3\Api\IOutput;
 use Base3Manager\Service\Base3Manager;
 
@@ -35,12 +36,20 @@ class Content implements IOutput {
 		$oldstyle = 0;
 		$content_include_file = "";  // TODO remove old style
 		$control = null;
+		$displayData = null;
+		$hasDisplayData = false;
 		$module = $this->base3manager->getModule($alias);
 		if (isset($_REQUEST["tabalias"]) && isset($module['tabs'])) {
 			foreach ($module['tabs'] as $tab) {
 				if ($tab['tab'] != $_REQUEST["tabalias"]) continue;
 				if (isset($tab['content'])) {
 					$control = $tab['content'];
+					$displayData = null;
+					$hasDisplayData = false;
+					if (array_key_exists('data', $tab)) {
+						$displayData = $tab['data'];
+						$hasDisplayData = true;
+					}
 				} else {
 					// TODO remove old style
 					$oldstyle = 1;
@@ -55,6 +64,12 @@ class Content implements IOutput {
 				if ($subnavi['subnavi'] != $_REQUEST["subnavialias"]) continue;
 				if (isset($subnavi['content'])) {
 					$control = $subnavi['content'];
+					$displayData = null;
+					$hasDisplayData = false;
+					if (array_key_exists('data', $subnavi)) {
+						$displayData = $subnavi['data'];
+						$hasDisplayData = true;
+					}
 				} else {
 					// TODO remove old style
 					$oldstyle = 1;
@@ -90,8 +105,12 @@ class Content implements IOutput {
 			ob_end_clean();
 		} else {
 			if ($control == null) die();
-			$instance = $this->classmap->getInstanceByInterfaceName(IOutput::class, $control);
+			$interface = $hasDisplayData ? IDisplay::class : IOutput::class;
+			$instance = $this->classmap->getInstanceByInterfaceName($interface, $control);
 			if ($instance == null) die();
+			if ($hasDisplayData) {
+				$instance->setData($displayData);
+			}
 			return $instance->getOutput();
 		}
 

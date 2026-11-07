@@ -35,3 +35,13 @@ those language files contain static UI text, not user records. Layout changes
 do not change access rights or persistence. Keyboard accessibility, focus
 management, and screen reader announcements follow the shared ClientStack
 launcher, which requires browser-level verification in the deployed Manager.
+
+## Static tab data
+
+Project-owned module JSON may now supply constant values directly to installed
+`IDisplay` instances. This does not add a Manager-owned store, a new outbound
+request path or new permission decisions. Personal data processed by an
+embedded display remains owned by its installed plugin and backend. Static
+Manager configuration may include service endpoint URLs but must not contain
+personal access tokens or credentials. Authorization remains server-side in
+the owning display and action endpoint.

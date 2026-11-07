@@ -31,14 +31,17 @@ The installed `Base3Backend` plugin owns the shared `ITranslation` registration.
 plugin-owned language sets remain in their respective plugins. The manager
 requires `Base3Backend` for this binding.
 
-## Settings integration
+## Configured display data
 
-The existing `?scope=web&module=manageai&tab=administration` URL remains valid.
-`ManageAiAdministrationContentControl` renders `SettingsDisplay`. A scoped
-`history_url` value is handed to ClientStack's existing TabControlDisplay so
-browser history records Manager URLs, not the internal AJAX content URL.
-Other host integrations preserve their existing history behavior when no
-`history_url` is supplied.
+Manager tabs and subnavigation entries may declare `data` alongside `content`
+in their `local/Module/*.json` files. If present, `Page\Content` resolves the
+target through the existing `IDisplay` class map and invokes `setData()` once
+before `getOutput()`. Without `data`, the existing `IOutput` lookup remains
+unchanged. The configuration is trusted project-authored JSON, not request
+input. The selected `tabalias` must still match the configured module tab.
 
-Deployment and validation steps: see `ManageAi/README.md` for the canonical
-`chatbot/default` instance and private managed-file storage prerequisites.
+The Manager owns only navigation and dispatch. Display behavior, settings
+storage, server endpoints and authorization stay with existing plugins.
+`ManageSettings` supplies static settings modules. The former embedded
+`SettingsDisplay` under `ManageAi` is no longer used in Manager navigation.
+The existing overview module remains the first module.
