@@ -16,3 +16,22 @@ retention, recipients, transfers, security controls and deletion procedures
 must be established from the deployed services; the supplied code does not
 verify these operational details. Protect administration routes and enforce
 rights on every server-side operation.
+
+## Global launcher integration
+
+The Manager page now emits locally served ClientStack launcher assets only when
+the active XRM authority explicitly permits its feature. The floating launcher
+loads chatbot HTML from a separate Manager endpoint, which repeats exactly
+the same host authorization decision. The active host identity is evaluated by
+the XRM-backed authorization service; ManagerChatbot does not read the local
+user identity independently. The launcher persists selected
+window preferences in browser storage according to the shared ClientStack
+implementation. Chat conversations and any upstream processing follow the
+existing Chatbot, agent runtime and configured provider services. Do not infer
+retention, transfer destinations, or deletion from the launcher alone.
+
+The Manager integrates plugin-owned translations through the module registry;
+those language files contain static UI text, not user records. Layout changes
+do not change access rights or persistence. Keyboard accessibility, focus
+management, and screen reader announcements follow the shared ClientStack
+launcher, which requires browser-level verification in the deployed Manager.

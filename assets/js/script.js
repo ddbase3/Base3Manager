@@ -110,6 +110,8 @@
 
 		_updateClasses: function() {
 			var classStr = 'base3manager ' + methods.b3m.data('scope') + ' ' + methods.b3m.data('module');
+			// Preserve the canonical ClientStack dock state across Manager navigation.
+			if (methods.b3m.hasClass('base3-chatbot-docked')) classStr += ' base3-chatbot-docked';
 			methods.b3m.attr('class', classStr);
 		},
 
@@ -175,6 +177,14 @@
 			if (normalized.entryid > 0) params.set('entryid', normalized.entryid);
 			if (normalized.tab.length) params.set('tab', normalized.tab);
 
+			// Preserve an active embedded tab only while the parent Manager route stays unchanged.
+			var current = new URLSearchParams(window.location.search);
+			if (normalized.scope == (current.get('scope') || '') &&
+				normalized.module == (current.get('module') || '') &&
+				normalized.tab == (current.get('tab') || '') && current.has('base3_tab')) {
+				params.set('base3_tab', current.get('base3_tab'));
+			}
+
 			var query = params.toString();
 
 			return window.location.pathname + (query.length ? '?' + query : '');
@@ -219,6 +229,11 @@
 
 		_applyHistoryState: function(state) {
 			var normalized = methods._normalizeHistoryState(state);
+			var current = methods._getCurrentHistoryState();
+			// The embedded TabControl owns navigation between its subtabs.
+			if (normalized.scope == current.scope && normalized.module == current.module &&
+				normalized.tab == current.tab && normalized.entryid == current.entryid &&
+				document.querySelector('#content [data-base3-tab-control]')) return;
 			var context = normalized.entryid > 0
 				? { method: 'id', entryid: normalized.entryid }
 				: null;
@@ -837,7 +852,10 @@
 			methods.b3m.trigger('destroyContent', []);
 			$('#content').trigger('destroyContent');
 
-			$("#content").load("?name=content&alias=" + alias + "&tabalias=" + tabalias, methods.getContext(), function(responseText, textStatus) {
+			var contentUrl = "?name=content&alias=" + encodeURIComponent(alias) + "&tabalias=" + encodeURIComponent(tabalias);
+			var activeSettingsTab = new URLSearchParams(window.location.search).get('base3_tab');
+			if (activeSettingsTab) contentUrl += "&base3_tab=" + encodeURIComponent(activeSettingsTab);
+			$("#content").load(contentUrl, methods.getContext(), function(responseText, textStatus) {
 				if (requestId != methods._contentRequestId) return;
 				if (textStatus != 'success') return;
 

@@ -81,9 +81,11 @@
 			<div id="moduletabs"></div>
 		</div>
 
-		<form id="content" action="" method="post">
+		<div id="content">
 			<noscript>Please activate JavaScript</noscript>
-		</form>
+		</div>
+
+		<?php echo $this->_['globalChatbotLauncher']; ?>
 
 	</body>
 </html>

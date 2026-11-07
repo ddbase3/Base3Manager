@@ -8,6 +8,9 @@ use Base3\Api\IOutput;
 use Base3\Configuration\Api\IConfiguration;
 use Base3\Language\Api\ILanguage;
 use Base3Manager\Service\Base3Manager;
+use Base3\Authorization\Api\IAuthorizationService;
+use Base3\LinkTarget\Api\ILinkTargetService;
+use ClientStack\GlobalChatbotLauncher\GlobalChatbotLauncherBootstrap;
 
 class Index implements IOutput {
 
@@ -16,7 +19,10 @@ class Index implements IOutput {
 		private readonly ILanguage $language,
 		private readonly Base3Manager $base3manager,
 		private readonly IMvcView $view,
-		private readonly IAssetResolver $assetResolver
+		private readonly IAssetResolver $assetResolver,
+		private readonly GlobalChatbotLauncherBootstrap $launcher,
+		private readonly IAuthorizationService $authorization,
+		private readonly ILinkTargetService $links
 	) {}
 
 	// Implementation of IBase
@@ -40,6 +46,13 @@ class Index implements IOutput {
 		$this->view->assign('systemnavi', $this->base3manager->getSystemNavi());
 
 		$this->view->assign('resolve', fn($src) => $this->assetResolver->resolve($src));
+		$this->view->assign('globalChatbotLauncher', $this->launcher->renderAuthorized(
+			$this->authorization,
+			$this->links->getLink(['name' => 'managerchatbot', 'out' => 'html']),
+			'chatbot',
+			'default',
+			['dock_target' => 'body']
+		));
 
 		return $this->view->loadTemplate();
 	}

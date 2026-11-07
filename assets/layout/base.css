@@ -107,3 +107,8 @@ th { text-align:right; padding-right:10px; font-weight:normal; }
   42%  {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 100%,calc(2*100%/3) 0   ,calc(3*100%/3) 100%}
   56%  {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 100%,calc(2*100%/3) 100%,calc(3*100%/3) 0   }
 }
+
+/* A fixed header must shrink with the body while ClientStack docks at the right. */
+body#base3manager.base3-chatbot-docked #head {
+	width: min(100%, calc(100vw - var(--base3-chatbot-dock-width)));
+}
