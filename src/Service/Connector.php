@@ -1,10 +1,25 @@
 <?php declare(strict_types=1);
 
-namespace Base3Manager\Service;
+/***********************************************************************
+ * This file is part of Base3Manager for BASE3 Framework.
+ *
+ * Base3Manager provides manager pages and controls for BASE3.
+ * It composes administration navigation, toolbars and views.
+ * Extensions contribute controls through the existing plugin contracts.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ ***********************************************************************/
 
-use Base3\Api\IClassMap;
-use Base3\Api\IOutput;
-use Base3Manager\Service\Base3Manager;
+
+namespace Base3\Base3Manager\Service;
+
+use Base3\CoreFoundation\Api\IClassMap;
+use Base3\CoreFoundation\Api\IOutput;
+use Base3\Base3Manager\Service\Base3Manager;
 
 class Connector implements IOutput {
 

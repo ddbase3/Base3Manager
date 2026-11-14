@@ -1,11 +1,25 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Base3Manager\Test;
+/***********************************************************************
+ * This file is part of Base3Manager for BASE3 Framework.
+ *
+ * Base3Manager provides manager pages and controls for BASE3.
+ * It composes administration navigation, toolbars and views.
+ * Extensions contribute controls through the existing plugin contracts.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ ***********************************************************************/
+
+namespace Base3\Base3Manager\Test;
 
 use PHPUnit\Framework\TestCase;
-use Base3Manager\Base3ManagerPlugin;
-use Base3\Api\IContainer;
-use Base3\Api\IClassMap;
+use Base3\Base3Manager\Base3ManagerPlugin;
+use Base3\CoreFoundation\Api\IContainer;
+use Base3\CoreFoundation\Api\IClassMap;
 
 class Base3ManagerPluginTest extends TestCase
 {

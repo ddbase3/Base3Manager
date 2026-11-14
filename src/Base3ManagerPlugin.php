@@ -1,29 +1,44 @@
 <?php declare(strict_types=1);
 
-namespace Base3Manager;
+/***********************************************************************
+ * This file is part of Base3Manager for BASE3 Framework.
+ *
+ * Base3Manager provides manager pages and controls for BASE3.
+ * It composes administration navigation, toolbars and views.
+ * Extensions contribute controls through the existing plugin contracts.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ ***********************************************************************/
 
-use Base3\Api\IAssetResolver;
-use Base3\Api\IClassMap;
-use Base3\Api\IContainer;
-use Base3\Api\IMvcView;
-use Base3\Configuration\Api\IConfiguration;
+
+namespace Base3\Base3Manager;
+
+use Base3\CoreFoundation\Api\IAssetResolver;
+use Base3\CoreFoundation\Api\IClassMap;
+use Base3\CoreFoundation\Api\IContainer;
+use Base3\CoreFoundation\Api\IMvcView;
+use Base3\CoreFoundation\Configuration\Api\IConfiguration;
 use Base3\Core\BaseAssetResolver;
 use Base3\Core\Check;
 use Base3\Core\MvcView;
-use Base3\Event\Api\IEventManager;
-use Base3\Event\EventManager;
-use Base3\Language\Api\ILanguage;
-use Base3\Language\MultiLang\MultiLang;
-use Base3\LinkTarget\Api\ILinkTargetService;
-use Base3\LinkTarget\Standard\StandardLinkTargetService;
-use Base3\ServiceSelector\Api\IServiceSelector;
-use Base3\ServiceSelector\LangBased\LangBasedServiceSelector;
-use Base3\Session\Api\ISession;
-use Base3\Session\NoSession\NoSession;
-use Base3\State\Api\IStateStore;
-use Base3\State\No\NoStateStore;
-use Base3Manager\Plugin\AbstractPlugin;
-use Base3Manager\Service\Base3Manager;
+use Base3\CoreFoundation\Event\Api\IEventManager;
+use Base3\Core\Event\EventManager;
+use Base3\CoreFoundation\Language\Api\ILanguage;
+use Base3\Core\Language\MultiLang\MultiLang;
+use Base3\CoreFoundation\LinkTarget\Api\ILinkTargetService;
+use Base3\Core\LinkTarget\Standard\StandardLinkTargetService;
+use Base3\CoreFoundation\ServiceSelector\Api\IServiceSelector;
+use Base3\Core\ServiceSelector\LangBased\LangBasedServiceSelector;
+use Base3\CoreFoundation\Session\Api\ISession;
+use Base3\Core\Session\NoSession\NoSession;
+use Base3\CoreFoundation\State\Api\IStateStore;
+use Base3\Core\State\No\NoStateStore;
+use Base3\Base3Manager\Plugin\AbstractPlugin;
+use Base3\Base3Manager\Service\Base3Manager;
 
 class Base3ManagerPlugin extends AbstractPlugin {
 
@@ -59,7 +74,7 @@ class Base3ManagerPlugin extends AbstractPlugin {
 			->set(IAssetResolver::class, fn() => new BaseAssetResolver(), IContainer::SHARED | IContainer::NOOVERWRITE)
 
 			// for check only
-			->set('delegateworker', fn() => new \Base3\Worker\DelegateWorker())
+			->set('delegateworker', fn() => new \Base3\Core\Worker\DelegateWorker())
 
 			->set('base3managerchecks', [ fn() => new Check($this->container) ]);
 	}

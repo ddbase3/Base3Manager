@@ -4,7 +4,7 @@ Base3Framework plugin manager UI and standalone host integration.
 
 ## Manager layout and floating chatbot
 
-`Base3Manager\Page\Index` renders the shared ClientStack launcher once in the
+`Base3\Base3Manager\Page\Index` renders the shared ClientStack launcher once in the
 page shell, outside the AJAX-updated `#content` container. The launcher loads
 `chatbot/default` through the `ManagerChatbot` output. Both the launcher and
 this endpoint require an explicit ALLOW from the same XRM-backed

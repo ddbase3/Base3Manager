@@ -1,10 +1,25 @@
 <?php declare(strict_types=1);
 
-namespace Base3Manager\Translation;
+/***********************************************************************
+ * This file is part of Base3Manager for BASE3 Framework.
+ *
+ * Base3Manager provides manager pages and controls for BASE3.
+ * It composes administration navigation, toolbars and views.
+ * Extensions contribute controls through the existing plugin contracts.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ ***********************************************************************/
 
-use Base3\Api\IModuleRegistry;
-use Base3\Language\Api\ILanguage;
-use Base3\Translation\Api\ITranslation;
+
+namespace Base3\Base3Manager\Translation;
+
+use Base3\CoreFoundation\Api\IModuleRegistry;
+use Base3\CoreFoundation\Language\Api\ILanguage;
+use Base3\CoreFoundation\Translation\Api\ITranslation;
 
 /** Resolves plugin-owned language bricks through the existing module registry. */
 final class ModuleTranslation implements ITranslation {

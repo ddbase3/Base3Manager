@@ -1,0 +1,14 @@
+{
+	"manifestVersion": 1,
+	"name": "Base3Manager",
+	"namespace": "Base3\\Base3Manager",
+	"version": "0.0.0",
+	"description": "Base3Manager provides manager pages and controls for BASE3. It composes administration navigation, toolbars and views. Extensions contribute controls through the existing plugin contracts.",
+	"license": "GPL-3.0",
+	"dependencies": {
+		"Chatbot": ">=4.23.0",
+		"ClientStack": ">=4.23.0",
+		"Core": ">=4.10.0",
+		"CoreFoundation": ">=4.10.0"
+	}
+}
